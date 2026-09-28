@@ -1,0 +1,7 @@
+# evanexanes.github.io: Evan Exanes's portfolio.
+# This file covers the whole host, including the demo sites under /<repo>/. Those carry a
+# noindex tag on every page instead of a Disallow here: a blocked page's noindex is never read.
+User-agent: *
+Allow: /
+
+Sitemap: https://evanexanes.github.io/sitemap.xml
