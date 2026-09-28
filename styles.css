@@ -1,0 +1,803 @@
+/* ==========================================================================
+   evanexanes.com — Final Prototype (2026-09-28)
+   USERDES (IT-252) · Front-end built from IA chart v2 (peer-tested 2026-09-14)
+
+   Palette tokens are the WCAG-AA verified set from the USERDES Mastery
+   Reference. Contrast ratios below are against Bone (#EFECE3).
+   The dark theme (2026-09-28) remaps the SAME tokens under
+   :root[data-theme="dark"] — the brand denim #4A70A9 is unchanged in both.
+   ========================================================================== */
+
+:root {
+  /* --- Surfaces --- */
+  --bone:        #EFECE3;   /* page canvas                                   */
+  --card:        #F7F5F0;   /* raised surface                                */
+  --rule:        #D8D3C5;   /* decorative hairlines between sections.        */
+                            /* Exempt from WCAG 1.4.11 — they carry no        */
+                            /* information and identify no control.           */
+  --rule-strong: #B9B2A0;   /* emphasised decorative borders                 */
+  --border-ui:   #827D70;   /* BOUNDARIES OF CONTROLS — inputs, secondary    */
+                            /* buttons, the menu toggle. WCAG 1.4.11 requires */
+                            /* 3:1 here: 3.47:1 on bone, 3.77:1 on card.     */
+
+  /* --- Ink --- */
+  --black:       #000000;   /* display headings, wordmark   17.78:1  AAA     */
+  --ink:         #13161C;   /* body text                    15.34:1  AAA     */
+  --slate:       #4A5260;   /* captions, metadata            6.67:1  AAA     */
+
+  /* --- Accents --- */
+  --denim-brand: #4A70A9;   /* THE BRAND DENIM. 4.25:1 on bone — legal for  */
+                            /* large/display type, fills, borders and focus  */
+                            /* rings (all need 3:1). NEVER body text.        */
+  --denim:       #3B5F99;   /* the same denim darkened one step, so it can   */
+                            /* carry text. Links, small copy.  5.42:1  AA    */
+  --denim-dark:  #2F4C7C;   /* link hover                                    */
+  --clay:        #9C4526;   /* trust signals, evidence       5.40:1  AA      */
+
+  /* The five-colour Brand Identity System declared by every shipped USERDES
+     artifact is #EFECE3 / #8FABD4 / #4A70A9 / #000000 / #FFFFFF. All five are
+     live here: bone is the canvas, black the display ink, soft-blue the chip
+     fill, denim-brand the structural blue, white the print ground.
+     --emerald and --crimson are the affirmative and negative halves of the
+     status pair, both in use on the contact form. */
+  --emerald:     #2F6B4F;   /* affirmative states            5.33:1  AA      */
+  --crimson:     #A32E2E;   /* negative states, invalid input 5.95:1 AA      */
+  --soft-blue:   #8FABD4;   /* FILLS ONLY — 1.99:1, never text               */
+  --paper:       #FFFFFF;   /* print surface — the brand white               */
+
+  /* --- Theme-dependent surfaces (added with the dark theme) ---
+     These were raw values or borrowed tokens before; they need their own
+     names because they do NOT simply invert. The code window stays dark in
+     both themes. */
+  --header-bg:    rgba(239, 236, 227, 0.92);
+  --code-bg:      #13161C;
+  --code-fg:      #EFECE3;  /* 15.34:1 on code-bg                          */
+  --code-key:     #8FABD4;  /*  7.72:1                                     */
+  --code-comment: #B9B2A0;  /*  8.57:1                                     */
+  --code-chrome:  #4A5260;  /* window-bar dots and divider (decorative)   */
+
+  /* --- Type --- */
+  --font-display: 'Outfit', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-body:    'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono:    ui-monospace, 'SF Mono', 'Cascadia Mono', 'Roboto Mono', Menlo, monospace;
+
+  /* --- Rhythm --- */
+  --gutter: 24px;
+  --maxw: 1200px;
+  --tap: 44px;              /* WCAG 2.1 minimum touch target                 */
+  --radius: 2px;            /* near-square corners, per the grid tradition  */
+
+  --t-fast: 0.15s ease;
+}
+
+/* ------------------------------------------------------------- dark theme */
+/* Same token names, new values. Ratios are against the dark canvas #12151B;
+   every text pair also clears its bar on the dark card #1A1F28.
+   The attribute is set before first paint by the inline script in <head>
+   (stored choice → ?theme= → system preference), so there is no flash.
+   Screen only: print always uses the light tokens. */
+@media screen {
+  :root[data-theme="dark"] {
+    color-scheme: dark;       /* native scrollbars and form controls follow */
+
+    --bone:        #12151B;   /* page canvas                                */
+    --card:        #1A1F28;   /* raised surface                             */
+    --rule:        #2A303B;   /* decorative hairlines (exempt, 1.4.11)      */
+    --rule-strong: #3D4555;   /* emphasised decorative borders              */
+    --border-ui:   #7A8496;   /* control boundaries      4.85:1 (card 4.38) */
+
+    --black:       #FFFFFF;   /* display headings        18.28:1  AAA       */
+    --ink:         #EFECE3;   /* body text — the brand bone  15.47:1  AAA   */
+    --slate:       #A9B2C0;   /* captions, metadata       8.54:1  AAA       */
+
+    /* --denim-brand stays #4A70A9: 3.64:1 here, 3.29:1 on card — still
+       legal for fills, borders and focus rings (3:1). Still never text. */
+    --denim:       #8FABD4;   /* links — the brand soft-blue  7.79:1  AAA   */
+    --denim-dark:  #B4C8E6;   /* link hover              10.75:1  AAA       */
+    --clay:        #E0906B;   /* trust signals, evidence  7.29:1  AAA       */
+    --emerald:     #5FBF92;   /* affirmative states       8.14:1  AAA       */
+    --crimson:     #F08A8A;   /* negative states          7.58:1  AAA       */
+
+    --header-bg:    rgba(18, 21, 27, 0.92);
+    --code-bg:      #0B0D11;
+    --code-comment: #9AA3B2;  /* 7.64:1 on #0B0D11                          */
+  }
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { font-size: 16px; scroll-behavior: smooth; }
+
+body {
+  background: var(--bone);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+a { color: var(--denim); text-decoration: none; }
+a:hover { color: var(--denim-dark); text-decoration: underline; text-underline-offset: 3px; }
+
+/* Focus is never removed — only restyled. */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+summary:focus-visible {
+  outline: 3px solid var(--denim-brand);
+  outline-offset: 2px;
+  border-radius: var(--radius);
+}
+
+img { max-width: 100%; display: block; }
+
+/* --------------------------------------------------------------- utilities */
+.container { width: 100%; max-width: var(--maxw); margin-inline: auto; padding-inline: var(--gutter); }
+
+.skip-link {
+  position: absolute; left: -9999px; top: 0; z-index: 999;
+  background: var(--black); color: var(--bone);
+  padding: 14px 20px; font-weight: 600;
+}
+.skip-link:focus { left: 0; text-decoration: none; }
+
+/* Off-screen text for assistive tech only. Used to announce that a link opens
+   in a new tab (WCAG 3.2.5) — the ' \2197' marker in .ext is visual only. */
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px;
+  margin: -1px; padding: 0; border: 0;
+  clip-path: inset(50%); overflow: hidden; white-space: nowrap;
+}
+
+/* Section eyebrow: numbered sections, e.g. "01 — Selected work" */
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--slate);
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 18px;
+}
+.eyebrow::after { content: ''; flex: 1; height: 1px; background: var(--denim-brand); }
+
+/* External-link marker. Paired with text, never colour alone (WCAG 1.4.1). */
+.ext::after { content: ' ↗'; font-size: 0.85em; color: var(--clay); }
+
+/* ------------------------------------------------------------------ header */
+/* IA v2: "Every page: menu + Download CV (PDF)". Three menu items only —
+   "Proof" was removed by the peer test, and the old Contact header link
+   was dropped because Contact is already a menu item. */
+.site-header {
+  position: sticky; top: 0; z-index: 100;
+  background: var(--header-bg);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--rule);
+}
+.header-inner {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 24px; min-height: 72px;
+}
+.wordmark {
+  font-family: var(--font-display);
+  font-size: 1.125rem; font-weight: 600; letter-spacing: -0.01em;
+  color: var(--black);
+  display: inline-flex; align-items: center; min-height: var(--tap);
+  white-space: nowrap;        /* the name is one unit — never break it */
+  flex: 0 0 auto;
+}
+.wordmark:hover { color: var(--black); text-decoration: none; }
+/* The wordmark accent. #4A70A9 is 4.25:1 — under the 4.5:1 body-text bar, and
+   although a logotype is exempt from 1.4.3 the exemption is not worth leaning
+   on in a graded deliverable. Sized up to 1.25em/700 (= 22.5 px bold) it clears
+   the large-text threshold (18.66 px bold), where the bar is 3:1. It passes on
+   its own terms, and the accent reads stronger for it. */
+.wordmark .dot { color: var(--denim-brand); font-size: 1.25em; font-weight: 700; line-height: 1; margin-left: -0.06em; }
+
+.site-nav { display: flex; align-items: center; gap: 4px; }
+.site-nav a {
+  color: var(--ink);
+  font-size: 0.9375rem; font-weight: 500;
+  padding: 0 16px;
+  min-height: var(--tap);
+  display: inline-flex; align-items: center;
+  border-bottom: 2px solid transparent;
+  transition: border-color var(--t-fast), color var(--t-fast);
+}
+.site-nav a:hover { color: var(--black); text-decoration: none; border-bottom-color: var(--rule-strong); }
+.site-nav a[aria-current] { color: var(--black); font-weight: 600; border-bottom-color: var(--denim); }
+
+.header-cta { display: flex; align-items: center; gap: 12px; }
+
+/* Theme switch. A utility control, not an IA item — the menu is still three
+   links. aria-pressed carries the state; the icon shows the theme a press
+   will switch TO (moon in light, sun in dark), the same convention as the
+   reference theme. 44 x 44 px target. */
+.theme-toggle {
+  width: var(--tap); height: var(--tap); flex: none;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: none; color: var(--ink);
+  border: 1px solid var(--border-ui); border-radius: var(--radius);
+  cursor: pointer;
+  transition: border-color var(--t-fast), color var(--t-fast);
+}
+.theme-toggle:hover { border-color: var(--ink); color: var(--black); }
+.theme-toggle svg { width: 20px; height: 20px; }
+.theme-toggle .icon-sun { display: none; }
+:root[data-theme="dark"] .theme-toggle .icon-sun { display: block; }
+:root[data-theme="dark"] .theme-toggle .icon-moon { display: none; }
+
+.nav-toggle {
+  display: none;
+  width: var(--tap); height: var(--tap);
+  background: none; border: 1px solid var(--border-ui); border-radius: var(--radius);
+  cursor: pointer; align-items: center; justify-content: center; flex-direction: column; gap: 5px;
+}
+.nav-toggle .bar { display: block; width: 20px; height: 2px; background: var(--ink); transition: transform var(--t-fast), opacity var(--t-fast); }
+.nav-toggle[aria-expanded="true"] .bar:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-toggle[aria-expanded="true"] .bar:nth-child(2) { opacity: 0; }
+.nav-toggle[aria-expanded="true"] .bar:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* ------------------------------------------------------------------ button */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  min-height: var(--tap); padding: 0 22px;
+  font-family: var(--font-body); font-size: 0.9375rem; font-weight: 600;
+  border: 1px solid transparent; border-radius: var(--radius);
+  cursor: pointer; white-space: nowrap;
+  transition: background var(--t-fast), color var(--t-fast), border-color var(--t-fast);
+}
+.btn:hover { text-decoration: none; }
+.btn-primary { background: var(--black); color: var(--bone); }
+.btn-primary:hover { background: var(--denim-dark); color: var(--bone); }
+.btn-secondary { background: transparent; color: var(--ink); border-color: var(--border-ui); }
+.btn-secondary:hover { background: var(--card); color: var(--black); border-color: var(--ink); }
+.btn-ghost { background: transparent; color: var(--denim); padding: 0 4px; }
+.btn-ghost:hover { color: var(--denim-dark); text-decoration: underline; text-underline-offset: 3px; }
+
+/* -------------------------------------------------------------------- hero */
+/* IA v2: "Opens with a one-line intro." Built against the persona constraint
+   of a 30–60 second first review: who, what, proof and CV above the fold. */
+.hero { padding: 88px 0 72px; border-bottom: 1px solid var(--rule); }
+.hero-role {
+  font-family: var(--font-mono); font-size: 0.8125rem;
+  letter-spacing: 0.1em; text-transform: uppercase; color: var(--clay);
+  margin-bottom: 20px;
+}
+.hero-intro {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4.4vw, 3.25rem);
+  line-height: 1.12; letter-spacing: -0.025em; font-weight: 600;
+  color: var(--black);
+  max-width: 20ch;
+  text-wrap: balance;
+}
+.hero-support {
+  margin-top: 24px; max-width: 58ch;
+  font-size: 1.0625rem; color: var(--slate);
+}
+.hero-actions { margin-top: 36px; display: flex; flex-wrap: wrap; gap: 12px; }
+
+.hero-meta {
+  margin-top: 56px; padding-top: 28px; border-top: 1px solid var(--rule);
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px;
+}
+.hero-meta dt {
+  font-family: var(--font-mono); font-size: 0.75rem;
+  letter-spacing: 0.1em; text-transform: uppercase; color: var(--slate);
+  margin-bottom: 8px;
+}
+.hero-meta dd { font-size: 1rem; color: var(--ink); font-weight: 500; }
+
+/* Wednesday revision R1 — the hero's right half carries the proof of
+   "and get found": an excerpt of the page's own Person JSON-LD.
+   On ink: bone 15.34:1, soft-blue 7.72:1, rule-strong 8.57:1 — all AAA.
+   Soft-blue is text here only because the ground is ink, not bone. */
+.hero-grid { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 56px; align-items: center; }
+.hero-proof { margin: 0; }
+.code-window {
+  background: var(--code-bg); border-radius: var(--radius);
+  border: 1px solid var(--rule);          /* edges it on the dark canvas */
+  border-top: 3px solid var(--denim-brand);
+  overflow: hidden;
+}
+.code-bar { display: flex; gap: 6px; padding: 12px 16px; border-bottom: 1px solid var(--code-chrome); }
+.code-bar span { width: 9px; height: 9px; border-radius: 50%; background: var(--code-chrome); }
+.code-window pre {
+  margin: 0; padding: 18px 20px 22px;
+  font-family: var(--font-mono); font-size: 0.8125rem; line-height: 1.7;
+  color: var(--code-fg); white-space: pre-wrap; overflow-wrap: anywhere;
+}
+.code-window .k { color: var(--code-key); }
+.code-window .v { color: var(--code-fg); }
+.code-window .c { color: var(--code-comment); }
+.hero-proof figcaption { margin-top: 12px; font-size: 0.875rem; color: var(--slate); max-width: 48ch; }
+
+/* ----------------------------------------------------------------- section */
+.section { padding: 72px 0; border-bottom: 1px solid var(--rule); }
+.section:last-of-type { border-bottom: none; }
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 2.4vw, 2rem);
+  line-height: 1.2; letter-spacing: -0.015em; font-weight: 600; color: var(--black);
+}
+.section-lede { margin-top: 14px; max-width: 62ch; color: var(--slate); }
+.section-head { margin-bottom: 40px; }
+
+/* ------------------------------------------------------------- work / cards */
+/* IA v2, Work branch: three case studies, "strongest project first".
+   Live-site and code links are NOT here — after revision 2 of the peer test
+   they live only inside each case study. The card links to the case study. */
+.work-list { display: grid; gap: 0; border-top: 1px solid var(--rule); }
+
+.work-item {
+  display: grid; grid-template-columns: 72px 1fr auto;
+  gap: 32px; align-items: start;
+  padding: 32px 0; border-bottom: 1px solid var(--rule);
+  transition: background var(--t-fast);
+}
+.work-item:hover { background: var(--card); }
+.work-index { font-family: var(--font-mono); font-size: 0.8125rem; color: var(--slate); padding-top: 6px; }
+.work-title {
+  font-family: var(--font-display); font-size: 1.375rem; font-weight: 600;
+  letter-spacing: -0.01em; color: var(--black); margin-bottom: 2px;
+}
+/* Padded to a 44 px tap target; the heading margin above is reduced by the
+   same amount so the visual rhythm is unchanged. */
+.work-title a { color: inherit; display: inline-block; padding: 8px 0; }
+.work-title a:hover { color: var(--denim-dark); text-decoration: none; }
+.work-summary { color: var(--slate); max-width: 60ch; }
+.work-action { display: flex; align-items: center; min-height: var(--tap); padding-top: 4px; }
+
+/* Stack tags — monospace chips, soft-blue fill with ink text (fill-only rule) */
+.stack { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; list-style: none; }
+.stack li {
+  font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.02em;
+  color: var(--ink);
+  background: rgba(143, 171, 212, 0.28);                          /* fallback */
+  background: color-mix(in srgb, var(--soft-blue) 28%, transparent);
+  border: 1px solid rgba(74, 112, 169, 0.34);                     /* fallback */
+  border-color: color-mix(in srgb, var(--denim-brand) 34%, transparent);
+  padding: 4px 10px; border-radius: var(--radius);
+}
+
+/* ----------------------------------------------------------- testimonials */
+/* Final-prototype addition (2026-09-28): a SECTION of Home, not a page or a
+   menu item — IA v2 keeps its three branches. The quotes are placeholder
+   text until real, permissioned comments replace them, and the section says
+   so on the page. For the same reason there is deliberately NO Review or
+   AggregateRating structured data: a rating in JSON-LD is a claim to search
+   engines, and there is no real rating to claim yet. */
+.placeholder-note {
+  display: inline-flex; align-items: center; gap: 8px;
+  margin-top: 16px; padding: 6px 12px;
+  font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.04em;
+  color: var(--ink);
+  background: var(--card); border: 1px dashed var(--border-ui); border-radius: var(--radius);
+}
+.placeholder-note::before { content: '!'; font-weight: 700; color: var(--clay); }
+
+.quote-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.quote-card {
+  margin: 0;
+  background: var(--card); border: 1px solid var(--rule);
+  border-top: 3px solid var(--denim-brand); border-radius: var(--radius);
+  padding: 24px 24px 22px;
+  display: flex; flex-direction: column; gap: 16px;
+}
+/* Stars are clay — the token already reserved for trust signals and
+   evidence (5.85:1 on the light card, 6.59:1 on the dark one). The count is
+   in the accessible name, so the glyphs are hidden from screen readers.
+   An unfilled star uses --border-ui (3.77:1), not a hairline colour, so a
+   4-of-5 still reads without relying on the label. */
+.stars { display: flex; gap: 2px; font-size: 1.125rem; line-height: 1; color: var(--clay); letter-spacing: 0; }
+.stars .off { color: var(--border-ui); }
+.quote-card blockquote { color: var(--ink); font-size: 1rem; line-height: 1.6; }
+.quote-card blockquote p::before { content: '\201C'; }
+.quote-card blockquote p::after  { content: '\201D'; }
+.quote-card figcaption { margin-top: auto; padding-top: 14px; border-top: 1px solid var(--rule); }
+.quote-name { display: block; font-family: var(--font-display); font-weight: 600; color: var(--black); }
+.quote-role { display: block; font-size: 0.875rem; color: var(--slate); }
+
+/* ------------------------------------------------------------- case study */
+.breadcrumb {
+  font-family: var(--font-mono); font-size: 0.8125rem; color: var(--slate);
+  padding: 8px 0 0; display: flex; flex-wrap: wrap; gap: 0; align-items: center;
+}
+/* Each crumb is its own target and gets the full 44 x 44 px. The padding
+   supplies the spacing the flex gap used to, and the first crumb pulls left
+   by its own padding so the row still starts flush with the container. */
+.breadcrumb a {
+  color: var(--denim);
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: var(--tap); min-width: var(--tap);
+  padding: 0 9px;
+}
+.breadcrumb a:first-child { margin-left: -9px; }
+.breadcrumb [aria-current="page"] { padding-left: 9px; }
+.breadcrumb [aria-current="page"] { color: var(--ink); }
+
+.case-header { padding: 32px 0 56px; border-bottom: 1px solid var(--rule); }
+.case-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.875rem, 3.6vw, 2.75rem);
+  line-height: 1.15; letter-spacing: -0.022em; font-weight: 600; color: var(--black);
+  max-width: 22ch; text-wrap: balance;
+}
+.case-lede { margin-top: 20px; max-width: 60ch; font-size: 1.0625rem; color: var(--slate); }
+
+/* The payload of peer-test revision 2: live site ↗ and code ↗ live HERE. */
+.case-links {
+  margin-top: 32px; padding: 20px 24px;
+  background: var(--card); border: 1px solid var(--rule);
+  border-left: 3px solid var(--clay); border-radius: var(--radius);
+  display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px;
+}
+.case-links-label {
+  font-family: var(--font-mono); font-size: 0.75rem;
+  letter-spacing: 0.1em; text-transform: uppercase; color: var(--clay);
+  width: 100%;
+}
+
+.case-facts {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 28px; margin-top: 36px; padding-top: 28px; border-top: 1px solid var(--rule);
+}
+.case-facts dt {
+  font-family: var(--font-mono); font-size: 0.75rem;
+  letter-spacing: 0.1em; text-transform: uppercase; color: var(--slate); margin-bottom: 6px;
+}
+.case-facts dd { color: var(--ink); font-weight: 500; }
+
+/* Wednesday revision R2 — schematic before/after on each case study.
+   Every number in a panel is a number the case-study text already states.
+   The shapes are aria-hidden; the captions carry the meaning in words. */
+.case-visual { margin: 0 0 48px; }
+.cv-panels { display: grid; grid-template-columns: 1fr auto 1fr; gap: 20px; align-items: stretch; }
+.cv-panel {
+  background: var(--card); border: 1px solid var(--rule); border-radius: var(--radius);
+  padding: 20px 22px; display: flex; flex-direction: column; gap: 16px;
+}
+.cv-after { border-top: 3px solid var(--denim-brand); }
+.cv-before { border-top: 3px solid var(--rule-strong); }
+.cv-label {
+  font-family: var(--font-mono); font-size: 0.75rem;
+  letter-spacing: 0.1em; text-transform: uppercase; color: var(--clay);
+}
+.cv-cap { margin-top: auto; font-size: 0.9375rem; color: var(--ink); font-weight: 500; }
+.cv-arrow { align-self: center; font-size: 1.5rem; color: var(--denim-brand); }
+.case-visual figcaption { margin-top: 14px; max-width: 68ch; font-size: 0.875rem; color: var(--slate); }
+
+/* Corporate — eleven uneven hand-built pages vs three named templates */
+.cv-pages { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; }
+.cv-pages span {
+  height: 52px; border: 1px solid var(--border-ui); border-radius: var(--radius);
+  background: linear-gradient(var(--rule-strong), var(--rule-strong)) 6px 8px / var(--w) 6px no-repeat,
+              linear-gradient(var(--rule), var(--rule)) 6px 22px / 70% 4px no-repeat;
+}
+.cv-templates { list-style: none; display: grid; gap: 8px; }
+.cv-templates li {
+  min-height: 40px; display: flex; align-items: center; padding: 0 14px;
+  background: var(--bone); border: 1px solid var(--denim-brand); border-left: 6px solid var(--soft-blue);
+  border-radius: var(--radius); font-size: 0.875rem; font-weight: 500; color: var(--ink);
+}
+
+/* Blog — twenty-four thin categories vs six */
+.cv-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.cv-chips span { width: 34px; height: 14px; border-radius: 7px; border: 1px solid var(--border-ui); background: var(--rule); }
+.cv-chips-big span { width: calc(33.333% - 4px); height: 30px; border-radius: var(--radius); border-color: var(--denim-brand); background: var(--soft-blue); }
+
+/* E-commerce — a card that answered nothing vs a page that answers the three questions */
+.cv-product { display: grid; grid-template-columns: 72px 1fr; gap: 8px 14px; align-items: start; }
+.cv-photo { grid-row: span 3; width: 72px; height: 72px; border: 1px solid var(--border-ui); border-radius: var(--radius); background: var(--rule); }
+.cv-line { display: block; height: 8px; border-radius: 4px; background: var(--rule-strong); }
+.cv-line-short { width: 70%; margin-top: 6px; }
+.cv-line-price { width: 30%; }
+.cv-answers { list-style: none; display: grid; gap: 6px; }
+.cv-answers li {
+  font-size: 0.8125rem; color: var(--ink); padding: 6px 10px;
+  background: var(--bone); border-left: 3px solid var(--denim-brand);
+}
+
+.prose { max-width: 68ch; }
+.prose h2 {
+  font-family: var(--font-display); font-size: 1.25rem; font-weight: 600;
+  color: var(--black); margin-top: 40px; margin-bottom: 12px;
+}
+.prose h2:first-child { margin-top: 0; }
+.prose-tight { margin-top: -8px; }
+.prose p + p { margin-top: 16px; }
+.prose ul { margin-top: 14px; padding-left: 22px; }
+.prose li + li { margin-top: 8px; }
+
+.case-nav {
+  display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px;
+  padding: 36px 0; border-top: 1px solid var(--rule);
+}
+
+/* ---------------------------------------------------------------- about */
+.about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; }
+
+.skill-group + .skill-group { margin-top: 28px; }
+.skill-group h3 {
+  font-family: var(--font-mono); font-size: 0.75rem;
+  letter-spacing: 0.1em; text-transform: uppercase; color: var(--slate); margin-bottom: 10px;
+}
+
+.timeline { list-style: none; border-left: 2px solid var(--rule); padding-left: 24px; }
+.timeline li { position: relative; }
+.timeline li + li { margin-top: 28px; }
+.timeline li::before {
+  content: ''; position: absolute; left: -31px; top: 8px;
+  width: 10px; height: 10px; background: var(--denim); border-radius: 50%;
+  border: 2px solid var(--bone);
+}
+.timeline .when {
+  font-family: var(--font-mono); font-size: 0.75rem;
+  letter-spacing: 0.08em; text-transform: uppercase; color: var(--clay); display: block; margin-bottom: 4px;
+}
+.timeline .what { font-weight: 600; color: var(--black); }
+.timeline .where { color: var(--slate); font-size: 0.9375rem; }
+
+/* Certificates — MOVED here from "Proof" by peer-test revision 1. */
+.cert-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+.cert-card {
+  background: var(--card); border: 1px solid var(--rule); border-radius: var(--radius);
+  padding: 20px 22px;
+}
+.cert-card h3 {
+  font-family: var(--font-display); font-size: 1rem; font-weight: 600;
+  color: var(--black); margin-bottom: 4px;
+}
+.cert-count {
+  font-family: var(--font-mono); font-size: 0.75rem;
+  letter-spacing: 0.08em; text-transform: uppercase; color: var(--clay); margin-bottom: 12px;
+}
+.cert-card ul { list-style: none; }
+.cert-card li {
+  font-size: 0.875rem; color: var(--slate);
+  padding-left: 22px; position: relative;
+}
+.cert-card li + li { margin-top: 6px; }
+.cert-card li::before { content: '—'; position: absolute; left: 0; color: var(--rule-strong); }
+
+/* Wednesday revision R3 — the rest of a long group, on request. Same
+   glyph-not-colour state marker as the FAQ; summary clears the 44 px target. */
+.cert-more { margin-top: 10px; border-top: 1px solid var(--rule); }
+.cert-more > summary {
+  list-style: none; cursor: pointer;
+  min-height: var(--tap); display: flex; align-items: center; gap: 8px;
+  font-size: 0.875rem; font-weight: 600; color: var(--denim);
+}
+.cert-more > summary::-webkit-details-marker { display: none; }
+.cert-more > summary::before { content: '+'; font-family: var(--font-mono); color: var(--clay); width: 14px; }
+.cert-more[open] > summary::before { content: '\2212'; }
+.cert-more > summary:hover { color: var(--denim-dark); text-decoration: underline; text-underline-offset: 3px; }
+.cert-more ul { padding-bottom: 4px; }
+
+/* ---------------------------------------------------------------- contact */
+/* IA v2, Contact branch: Email ↗ · Contact form · LinkedIn ↗ · GitHub ↗
+   "all on one page" — the note carried on the chart. */
+.contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; }
+
+.channel-list { list-style: none; border-top: 1px solid var(--rule); }
+.channel-list li { border-bottom: 1px solid var(--rule); }
+.channel-list a {
+  display: flex; align-items: baseline; gap: 16px;
+  min-height: 64px; padding: 14px 0; color: var(--ink);
+}
+.channel-list a:hover { text-decoration: none; color: var(--denim-dark); }
+.channel-name {
+  font-family: var(--font-display); font-size: 1.0625rem; font-weight: 600;
+  min-width: 96px; color: var(--black);
+}
+.channel-value { font-family: var(--font-mono); font-size: 0.875rem; color: var(--slate); }
+.channel-list a:hover .channel-value { color: var(--denim-dark); }
+
+.form-field + .form-field { margin-top: 20px; }
+.form-field label {
+  display: block; margin-bottom: 8px;
+  font-size: 0.875rem; font-weight: 600; color: var(--ink);
+}
+.form-field .hint { display: block; font-weight: 400; color: var(--slate); font-size: 0.8125rem; margin-top: 2px; }
+.form-field input,
+.form-field textarea {
+  width: 100%; min-height: var(--tap); padding: 12px 14px;
+  font-family: var(--font-body); font-size: 1rem; color: var(--ink);
+  background: var(--card); border: 1px solid var(--border-ui); border-radius: var(--radius);
+  transition: border-color var(--t-fast);
+}
+.form-field textarea { min-height: 140px; resize: vertical; line-height: 1.6; }
+.form-field input:hover, .form-field textarea:hover { border-color: var(--slate); }
+
+/* Invalid state. :user-invalid fires only after the person has actually tried
+   the field, so an empty form does not open covered in red. Colour is paired
+   with a thicker edge, never colour alone (WCAG 1.4.1). */
+.form-field input:user-invalid,
+.form-field textarea:user-invalid {
+  border-color: var(--crimson);
+  border-width: 2px;
+}
+.form-note { margin-top: 18px; font-size: 0.875rem; color: var(--slate); }
+.form-status {
+  margin-top: 18px; padding: 14px 16px;
+  background: var(--card); border: 1px solid var(--rule);
+  border-left: 3px solid var(--emerald); border-radius: var(--radius);
+  font-size: 0.9375rem; color: var(--ink);
+}
+.form-status[hidden] { display: none; }
+
+/* -------------------------------------------------------------------- FAQ */
+/* Declared addition beyond IA chart v2 (Revision Mapping §7). Built on native
+   <details>/<summary>: the disclosure semantics, keyboard operation and the
+   expanded/collapsed announcement come from the element itself, so there is no
+   JS to desynchronise from the DOM and nothing to animate against
+   prefers-reduced-motion. Depth stays at 2 — this is a section of Contact,
+   not a fourth branch. */
+.faq-list { border-top: 1px solid var(--rule); max-width: 80ch; }
+
+.faq-item { border-bottom: 1px solid var(--rule); }
+
+.faq-item > summary {
+  display: flex; align-items: flex-start; gap: 20px;
+  min-height: var(--tap); padding: 15px 0;
+  cursor: pointer;
+  color: var(--black);
+  transition: color var(--t-fast);
+}
+
+/* The question is a real h3 inside the summary, so heading navigation reaches
+   each question and not only the section title. It nests under the section's
+   h2 — no level is skipped. */
+.faq-q {
+  font-family: var(--font-display);
+  font-size: 1.0625rem; font-weight: 600; line-height: 1.45;
+  color: inherit;
+}
+
+/* The default triangle is replaced, not merely hidden, so the control still
+   has a state indicator. list-style covers Firefox, the pseudo-element covers
+   older WebKit. */
+.faq-item > summary { list-style: none; }
+.faq-item > summary::-webkit-details-marker { display: none; }
+
+/* State is carried by a change of GLYPH, not of colour (WCAG 1.4.1): + when
+   collapsed, minus when open. Clay measures 5.40:1 on bone. */
+.faq-item > summary::after {
+  content: '+';
+  margin-left: auto; flex: none;
+  font-family: var(--font-mono); font-size: 1.375rem; font-weight: 400;
+  line-height: 1.15; color: var(--clay);
+}
+.faq-item[open] > summary::after { content: '\2212'; }
+
+.faq-item > summary:hover { color: var(--denim-dark); }
+
+.faq-answer { padding: 2px 0 22px; max-width: 64ch; color: var(--slate); }
+.faq-answer p + p { margin-top: 12px; }
+
+/* ----------------------------------------------------------------- footer */
+.site-footer { border-top: 1px solid var(--rule); padding: 40px 0; margin-top: 8px; }
+.footer-inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px; }
+.footer-nav { display: flex; flex-wrap: wrap; gap: 4px; }
+.footer-nav a {
+  color: var(--slate); font-size: 0.875rem;
+  min-height: var(--tap); display: inline-flex; align-items: center; padding: 0 12px;
+}
+.footer-nav a:hover { color: var(--ink); }
+.footer-note { font-family: var(--font-mono); font-size: 0.75rem; color: var(--slate); }
+
+/* ======================================================================
+   RESPONSIVE — 1280 px desktop → 360 px mobile
+   IA v2 rule: "Same order at 360 px — stacked, never reordered or hidden."
+   Every branch present on desktop is present on mobile, in the same order.
+   ====================================================================== */
+
+@media (max-width: 900px) {
+  .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 48px; }
+  .hero-grid { grid-template-columns: 1fr; gap: 40px; }
+  .hero-meta, .case-facts { grid-template-columns: 1fr 1fr; gap: 24px; }
+  .quote-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 720px) {
+  :root { --gutter: 20px; }
+
+  /* Menu becomes a disclosure. It is collapsed, never removed: the same
+     three items in the same order, plus Download CV. */
+  .nav-toggle { display: flex; }
+  .site-nav {
+    display: none;
+    position: absolute; left: 0; right: 0; top: 100%;
+    flex-direction: column; align-items: stretch; gap: 0;
+    background: var(--bone);
+    border-bottom: 1px solid var(--rule);
+    padding: 8px var(--gutter) 16px;
+  }
+  .site-nav.is-open { display: flex; }
+  .site-nav a {
+    padding: 0; min-height: 52px;
+    border-bottom: 1px solid var(--rule);
+    border-left: 2px solid transparent;
+  }
+  .site-nav a[aria-current] { border-bottom-color: var(--rule); border-left-color: var(--denim); padding-left: 12px; }
+  .site-header { position: sticky; }
+  .header-inner { position: relative; min-height: 64px; gap: 10px; }
+  .wordmark { font-size: 1rem; }
+  .header-cta .btn-primary { padding: 0 12px; font-size: 0.8125rem; }
+
+  .hero { padding: 56px 0 48px; }
+  .hero-intro { max-width: 100%; }
+  .hero-actions .btn { width: 100%; }
+  .hero-meta { grid-template-columns: 1fr; gap: 20px; margin-top: 40px; }
+
+  .section { padding: 52px 0; }
+
+  /* Work rows collapse to a single column; the index number stays as a
+     label so the "strongest first" order is still legible. */
+  .work-item { grid-template-columns: 1fr; gap: 12px; padding: 28px 0; }
+  .work-index { padding-top: 0; }
+  .work-action { padding-top: 4px; }
+
+  .case-header { padding: 24px 0 40px; }
+  .case-links { padding: 18px 20px; }
+  .case-facts { grid-template-columns: 1fr; gap: 20px; }
+  .case-nav { gap: 12px; }
+  .case-nav .btn { width: 100%; }
+
+  .cert-grid { grid-template-columns: 1fr; }
+
+  /* Before/after stacks; the arrow turns to point down the new reading order. */
+  .cv-panels { grid-template-columns: 1fr; gap: 10px; }
+  .cv-arrow { transform: rotate(90deg); justify-self: center; }
+  .code-window pre { font-size: 0.75rem; padding: 16px; }
+
+  .channel-list a { flex-direction: column; gap: 4px; min-height: var(--tap); padding: 16px 0; }
+
+  .faq-item > summary { gap: 14px; padding: 14px 0; }
+  .faq-q { font-size: 1rem; }
+  .faq-answer { padding-bottom: 18px; }
+  .channel-name { min-width: 0; }
+
+  .footer-inner { flex-direction: column; align-items: flex-start; gap: 12px; }
+}
+
+/* Hard 360 px check — nothing may overflow the viewport at this width. */
+@media (max-width: 380px) {
+  :root { --gutter: 16px; }
+  .hero-intro { font-size: 1.875rem; }
+  .case-title { font-size: 1.75rem; }
+  .wordmark { font-size: 0.9375rem; }
+  .header-cta .btn-primary { padding: 0 10px; font-size: 0.75rem; }
+}
+
+/* WCAG 2.3.3 — respect a reduced-motion preference. */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Print — the CV and case studies should survive a paper review. */
+@media print {
+  .site-header, .nav-toggle, .site-footer, .hero-actions { display: none; }
+  body { background: var(--paper); }
+  .section, .hero { border-bottom: 1px solid var(--rule); padding: 24px 0; }
+  .code-window { border: 1px solid var(--rule); }
+}
+
+/* Publish copy only: honest labelling of the practice builds. */
+.case-note {
+  margin-top: 24px; max-width: 60ch; padding: 12px 16px;
+  background: var(--card); border: 1px solid var(--rule); border-left: 3px solid var(--denim);
+  border-radius: var(--radius); font-size: 0.9375rem; color: var(--ink);
+}
+.work-tag {
+  font-family: var(--font-mono); font-size: 0.75rem;
+  letter-spacing: 0.1em; text-transform: uppercase; color: var(--clay); margin-bottom: 6px;
+}

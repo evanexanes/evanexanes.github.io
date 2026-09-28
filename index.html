@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Evan Exanes — Web Developer &amp; SEO Specialist</title>
+<meta name="description" content="Portfolio of Evan Prens P. Exanes. Business websites built to load fast, read clearly and keep working after launch — and structured so search engines and AI assistants can read them.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<!-- Theme before first paint, so a dark-theme visitor never sees a light flash.
+     Order: stored choice, then ?theme=dark|light (used to capture frames),
+     then the system preference. Storage can throw (private mode) — ignored. -->
+<script>
+(function () {
+  var t = null;
+  try { t = localStorage.getItem('theme'); } catch (e) {}
+  var q = /[?&]theme=(dark|light)\b/.exec(location.search);
+  if (q) { t = q[1]; }
+  if (t !== 'dark' && t !== 'light') {
+    t = window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  }
+  document.documentElement.setAttribute('data-theme', t);
+})();
+</script>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to main content</a>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="wordmark" href="index.html">Evan Exanes<span class="dot">.</span></a>
+
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="site-nav" aria-label="Open menu">
+      <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+    </button>
+
+    <nav class="site-nav" id="site-nav" aria-label="Main">
+      <a href="index.html#work" aria-current="page">Work</a>
+      <a href="06-about.html">About</a>
+      <a href="07-contact.html">Contact</a>
+    </nav>
+
+    <div class="header-cta">
+      <button class="theme-toggle" type="button" data-theme-toggle aria-pressed="false" aria-label="Dark theme">
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      </button>
+      <a class="btn btn-primary" href="assets/Evan_Exanes_CV.pdf" download="Evan_Exanes_CV.pdf">Download CV (PDF)</a>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+  <section class="hero">
+    <div class="container">
+      <div class="hero-grid">
+      <div class="hero-copy">
+      <p class="hero-role">Web developer &amp; SEO specialist</p>
+
+      <!-- IA v2: "Opens with a one-line intro." -->
+      <h1 class="hero-intro">I build business websites that stay fast &mdash; and get found.</h1>
+
+      <p class="hero-support">
+        Three years of coursework in information technology and hands-on production work on
+        corporate sites, blogs and online stores — WordPress and Elementor for content teams,
+        hand-written HTML and CSS where a page has to be exact. The other half of the job is
+        the technical SEO that decides whether a search engine, or an AI assistant, can read
+        the result at all: structured data, clean slugs, redirects that do not chain.
+      </p>
+
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="assets/Evan_Exanes_CV.pdf" download="Evan_Exanes_CV.pdf">Download CV (PDF)</a>
+        <a class="btn btn-secondary" href="#work">See the work</a>
+      </div>
+      </div>
+
+      <!-- Wednesday revision R1: the right half of the hero at 1280 px was empty.
+           It now carries the proof of the second half of the one-line intro
+           ("and get found"): an excerpt of the Person JSON-LD this page really
+           ships, copied from the script block at the foot of this file. Not a
+           chart box — it is evidence inside the Home intro, not a new branch. -->
+      <figure class="hero-proof">
+        <div class="code-window">
+          <div class="code-bar" aria-hidden="true"><span></span><span></span><span></span></div>
+          <pre><code><span class="c">// What a search engine reads on this page</span>
+{
+  <span class="k">"@type"</span>: <span class="v">"Person"</span>,
+  <span class="k">"name"</span>: <span class="v">"Evan Prens P. Exanes"</span>,
+  <span class="k">"jobTitle"</span>: <span class="v">"Web Developer &amp; SEO Specialist"</span>,
+  <span class="k">"knowsAbout"</span>: [
+    <span class="v">"Technical SEO"</span>,
+    <span class="v">"JSON-LD structured data"</span>,
+    <span class="v">"Generative Engine Optimization"</span>,
+    <span class="c">…</span>
+  ]
+}</code></pre>
+        </div>
+        <figcaption>An excerpt of the structured data this page carries. The layout is for people; this is for search engines and AI assistants.</figcaption>
+      </figure>
+      </div>
+
+      <dl class="hero-meta">
+        <div>
+          <dt>Based in</dt>
+          <dd>Metro Manila, Philippines</dd>
+        </div>
+        <div>
+          <dt>Working in</dt>
+          <dd>WordPress, Elementor, ACF, HTML &amp; CSS</dd>
+        </div>
+        <div>
+          <dt>And in</dt>
+          <dd>Technical SEO, schema markup, AEO &amp; GEO</dd>
+        </div>
+        <div>
+          <dt>Studying</dt>
+          <dd>BS Information Technology, Asia Pacific College</dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- ==================================================================
+       IA v2 — WORK branch. Three case studies, strongest project first.
+       Live-site and code links are deliberately NOT on these rows: peer
+       revision 2 moved them inside each case study so every project has
+       exactly one home.
+       ================================================================== -->
+  <section class="section" id="work">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">01 — Selected work</p>
+        <h2 class="section-title">Four practice builds</h2>
+        <p class="section-lede">
+          Four self-initiated WordPress practice builds, each exercising a
+          different part of the platform. Each case study says what the site is, what I
+          built, what the static copy cannot do, and what I would change. The live site and
+          the source code sit inside the case study they belong to.
+        </p>
+      </div>
+
+      <div class="work-list">
+
+        <article class="work-item">
+          <p class="work-index">01</p>
+          <div>
+            <h3 class="work-title"><a href="02-case-study-corporate.html">Corporate website</a></h3>
+            <p class="work-tag">Practice project</p>
+            <p class="work-summary">
+              A four-page company site (Home, About, Services, Contact) built with
+              Elementor's standard widgets on the OceanWP theme, with a Contact Form 7 form.
+            </p>
+            <ul class="stack">
+              <li>WordPress</li><li>Elementor</li><li>OceanWP</li><li>Contact Form 7</li>
+            </ul>
+          </div>
+          <p class="work-action"><a class="btn btn-ghost" href="02-case-study-corporate.html">Read case study →</a></p>
+        </article>
+
+        <article class="work-item">
+          <p class="work-index">02</p>
+          <div>
+            <h3 class="work-title"><a href="03-case-study-blog.html">Blog website</a></h3>
+            <p class="work-tag">Practice project</p>
+            <p class="work-summary">
+              A travel blog with 33 posts, sorted two ways: six categories for the kind of
+              post and a custom Destinations taxonomy for the place.
+            </p>
+            <ul class="stack">
+              <li>WordPress</li><li>Blocksy</li><li>Custom Post Type UI</li><li>Newsletter</li>
+            </ul>
+          </div>
+          <p class="work-action"><a class="btn btn-ghost" href="03-case-study-blog.html">Read case study →</a></p>
+        </article>
+
+        <article class="work-item">
+          <p class="work-index">03</p>
+          <div>
+            <h3 class="work-title"><a href="04-case-study-ecommerce.html">E-commerce store</a></h3>
+            <p class="work-tag">Practice project</p>
+            <p class="work-summary">
+              A WooCommerce store with 30 products and 44 variations, and Elementor
+              theme-builder templates for the shop, product, cart and account pages.
+            </p>
+            <ul class="stack">
+              <li>WordPress</li><li>WooCommerce</li><li>Elementor</li><li>PayPal</li>
+            </ul>
+          </div>
+          <p class="work-action"><a class="btn btn-ghost" href="04-case-study-ecommerce.html">Read case study →</a></p>
+        </article>
+
+        <article class="work-item">
+          <p class="work-index">04</p>
+          <div>
+            <h3 class="work-title"><a href="05-case-study-personal.html">Personal website</a></h3>
+            <p class="work-tag">Practice project</p>
+            <p class="work-summary">
+              A one-page personal site from June 2025, with six skill bars and a Hire Me form
+              that opens in a popup, built in Elementor on the OceanWP theme.
+            </p>
+            <ul class="stack">
+              <li>WordPress</li><li>Elementor</li><li>OceanWP</li><li>Popup Maker</li>
+            </ul>
+          </div>
+          <p class="work-action"><a class="btn btn-ghost" href="05-case-study-personal.html">Read case study →</a></p>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================================================================
+       Final-prototype addition — testimonials. A section of Home, not a
+       fourth branch: IA v2 still has three menu items at depth 2.
+       PLACEHOLDER CONTENT: real quotes, given with permission and quoted
+       unedited, replace these. No Review / AggregateRating JSON-LD until then.
+       ================================================================== -->
+  <section class="section" id="testimonials" aria-labelledby="testimonials-title">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">02 — What people say</p>
+        <h2 class="section-title" id="testimonials-title">From people I have worked with</h2>
+        <p class="section-lede">
+          Short comments from classmates and collaborators on what working with me was like.
+        </p>
+        <p class="placeholder-note">Placeholder text — real quotes to follow, with permission</p>
+      </div>
+
+      <div class="quote-grid">
+        <figure class="quote-card">
+          <p class="stars" role="img" aria-label="Rated 5 out of 5"><span aria-hidden="true">★★★★★</span></p>
+          <blockquote>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+          </blockquote>
+          <figcaption>
+            <span class="quote-name">Name to follow</span>
+            <span class="quote-role">Classmate, group project</span>
+          </figcaption>
+        </figure>
+
+        <figure class="quote-card">
+          <p class="stars" role="img" aria-label="Rated 5 out of 5"><span aria-hidden="true">★★★★★</span></p>
+          <blockquote>
+            <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+          </blockquote>
+          <figcaption>
+            <span class="quote-name">Name to follow</span>
+            <span class="quote-role">Peer reviewer</span>
+          </figcaption>
+        </figure>
+
+        <figure class="quote-card">
+          <p class="stars" role="img" aria-label="Rated 4 out of 5"><span aria-hidden="true">★★★★<span class="off">★</span></span></p>
+          <blockquote>
+            <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+          </blockquote>
+          <figcaption>
+            <span class="quote-name">Name to follow</span>
+            <span class="quote-role">Classmate, research group</span>
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">03 — How I work</p>
+        <h2 class="section-title">Built to be handed over</h2>
+        <p class="section-lede">
+          A site I finish is a site someone else can run. That means named custom fields
+          instead of hard-coded text, a template for anything that repeats, and a short
+          written handover so the next person is not reverse-engineering my work.
+        </p>
+        <p class="section-lede">
+          It also means the site is legible to machines. Structured data describes what a page
+          <em>is</em> rather than leaving a crawler to guess from the layout, slugs stay stable
+          so links do not rot, and redirects resolve in one hop instead of a chain. That work is
+          invisible on the page and decides whether the page is quoted at all — which is what
+          <abbr title="Answer Engine Optimization">AEO</abbr> and
+          <abbr title="Generative Engine Optimization">GEO</abbr> actually mean: being readable
+          to the assistant answering the question, not only to the search index.
+        </p>
+      </div>
+      <p class="hero-actions">
+        <a class="btn btn-secondary" href="06-about.html">More about me</a>
+        <a class="btn btn-secondary" href="07-contact.html">Get in touch</a>
+      </p>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <p class="footer-note">© 2026 Evan Prens P. Exanes</p>
+    <nav class="footer-nav" aria-label="Footer">
+      <a href="index.html#work">Work</a>
+      <a href="06-about.html">About</a>
+      <a href="07-contact.html">Contact</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+<!-- Person JSON-LD. Every value here is stated somewhere in the rendered pages;
+     the profile URLs are read out of 07-contact.html rather than retyped. Structured
+     data that contradicts the visible page is worse than none. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Evan Prens P. Exanes",
+  "jobTitle": "Web Developer & SEO Specialist",
+  "email": "mailto:exanesevan@gmail.com",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Metro Manila",
+    "addressCountry": "PH"
+  },
+  "alumniOf": [
+    {
+      "@type": "CollegeOrUniversity",
+      "name": "Asia Pacific College"
+    },
+    {
+      "@type": "HighSchool",
+      "name": "Monlimar Development Academy Inc."
+    }
+  ],
+  "knowsAbout": [
+    "WordPress",
+    "Elementor",
+    "Advanced Custom Fields",
+    "HTML",
+    "CSS",
+    "Technical SEO",
+    "Schema markup",
+    "JSON-LD structured data",
+    "Answer Engine Optimization",
+    "Generative Engine Optimization",
+    "Web accessibility (WCAG AA)",
+    "Information architecture"
+  ],
+  "sameAs": [
+    "https://www.linkedin.com/in/evan-prens-exanes-409434378/",
+    "https://github.com/evanexanes"
+  ]
+}
+</script>
+
+</body>
+</html>
