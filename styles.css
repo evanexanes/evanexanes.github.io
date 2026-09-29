@@ -753,6 +753,8 @@ html.drawer-open { overflow: hidden; scrollbar-gutter: stable; }   /* no layout 
   font-family: var(--font-display); font-weight: 600; line-height: 1.15; color: var(--black);
   font-size: clamp(1.35rem, 1rem + 1.4vw, 2rem);
 }
+.edu-school a { color: inherit; text-decoration: underline; text-decoration-color: var(--rule); text-underline-offset: 4px; text-decoration-thickness: 2px; }
+.edu-school a:hover { text-decoration-color: currentColor; }
 .edu-degree { margin-top: 6px; color: var(--slate); }
 
 /* Certificates: MOVED here from "Proof" by peer-test revision 1. Addendum 1 (D17): five
