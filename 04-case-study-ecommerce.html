@@ -17,6 +17,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <!-- Theme before first paint, so a dark-theme visitor never sees a light flash.
      Order: stored choice, then ?theme=dark|light (used to capture frames),
      then the system preference. Storage can throw (private mode) — ignored. -->
@@ -39,7 +40,16 @@
 
 <header class="site-header">
   <div class="container header-inner">
-    <a class="wordmark" href="index.html">Evan Exanes<span class="dot">.</span></a>
+    <a class="wordmark" href="index.html" aria-label="Evan Exanes, Web developer · SEO — home">
+      <svg class="logo-mark" viewBox="0 0 40 40" aria-hidden="true" focusable="false">
+        <defs>
+          <linearGradient id="logo-grad-light" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#243B61"/><stop offset="1" stop-color="#4A70A9"/></linearGradient>
+          <linearGradient id="logo-grad-dark" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8FABD4"/><stop offset="1" stop-color="#DCE6F3"/></linearGradient>
+        </defs>
+        <path d="M13 8 L5 20 L13 32"/><path d="M19 9h14M19 20h10M19 31h14M19 9v22"/>
+      </svg>
+      <span class="wordmark-text"><span class="wordmark-name">Evan Exanes</span><span class="wordmark-sub">Web developer · SEO</span></span>
+    </a>
     <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="site-nav" aria-label="Open menu">
       <span class="bar"></span><span class="bar"></span><span class="bar"></span>
     </button>
@@ -189,13 +199,31 @@
 </main>
 
 <footer class="site-footer">
-  <div class="container footer-inner">
-    <p class="footer-note">© 2026 Evan Prens P. Exanes</p>
-    <nav class="footer-nav" aria-label="Footer">
-      <a href="index.html#work">Work</a>
-      <a href="06-about.html">About</a>
-      <a href="07-contact.html">Contact</a>
-    </nav>
+  <div class="container">
+    <div class="footer-card">
+      <div class="footer-band">
+        <div>
+          <p class="footer-title">Have a site that needs building or fixing?</p>
+          <p class="footer-sub">Replies within one working day.</p>
+        </div>
+        <div class="footer-actions">
+          <a class="btn btn-light" href="https://cal.com/evan-exanes/30min" target="_blank" rel="noopener noreferrer" data-cal-link="evan-exanes/30min" data-cal-namespace="30min" data-cal-config='{"layout":"month_view"}'><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>Schedule a call<span class="visually-hidden"> (opens a booking calendar in a pop-up or a new tab)</span></a>
+          <a class="btn btn-outline-light" href="mailto:exanesevan@gmail.com">Email me</a>
+        </div>
+      </div>
+      <div class="footer-base">
+        <a class="footer-brand" href="index.html" aria-label="Evan Exanes — home">
+          <svg class="logo-mark" viewBox="0 0 40 40" aria-hidden="true" focusable="false"><path d="M13 8 L5 20 L13 32"/><path d="M19 9h14M19 20h10M19 31h14M19 9v22"/></svg>
+          <span>Evan Exanes</span>
+        </a>
+        <ul class="social-list" aria-label="Social profiles">
+          <li><a class="social-link" href="https://www.linkedin.com/in/evan-prens-exanes-409434378/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn (opens in a new tab)" title="LinkedIn"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zM9 9h3.8v1.7h.05c.53-1 1.83-2.05 3.77-2.05C20.6 8.65 21 11.2 21 14.5V21h-4v-5.8c0-1.4 0-3.2-1.95-3.2S12.8 13.5 12.8 15.1V21H9z"/></svg></a></li>
+          <li><a class="social-link" href="https://github.com/evanexanes" target="_blank" rel="noopener noreferrer" aria-label="GitHub (opens in a new tab)" title="GitHub"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.1-1.47-1.1-1.47-.9-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.89 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02a9.5 9.5 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.69-4.57 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2z"/></svg></a></li>
+          <li><a class="social-link" href="https://www.facebook.com/eekswiii" target="_blank" rel="noopener noreferrer" aria-label="Facebook (opens in a new tab)" title="Facebook"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M13.5 22v-8h2.7l.4-3.2h-3.1V8.8c0-.9.3-1.5 1.6-1.5h1.7V4.4c-.3 0-1.3-.1-2.5-.1-2.5 0-4.1 1.5-4.1 4.2v2.3H7.4V14h2.8v8z"/></svg></a></li>
+        </ul>
+        <p class="footer-note">© 2026 Evan Prens P. Exanes</p>
+      </div>
+    </div>
   </div>
 </footer>
 

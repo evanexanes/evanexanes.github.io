@@ -65,9 +65,24 @@
   --gutter: 24px;
   --maxw: 1200px;
   --tap: 44px;              /* WCAG 2.1 minimum touch target                 */
-  --radius: 2px;            /* near-square corners, per the grid tradition  */
+  --radius: 12px;           /* buttons, inputs, icon buttons (was 2px)      */
+  --radius-sm: 8px;         /* tags, chips, tooltips                        */
+  --radius-lg: 16px;        /* cards, header, map, footer card              */
 
   --t-fast: 0.15s ease;
+
+  /* --- Brand & interaction pass (2026-09-29) ---
+     Denim depth: navy -> brand denim. White text passes AA on every stop
+     (#243B61 11.21, #3B5F99 6.40, #4A70A9 5.02). Elements using a gradient also
+     set background-color to the LIGHTEST stop, which is what capture.py audits. */
+  --grad-brand:  linear-gradient(120deg, #243B61 0%, #3B5F99 55%, #4A70A9 100%);
+  --grad-footer: linear-gradient(135deg, #13161C 0%, #1C2C48 55%, #243B61 100%);
+  --shadow-float: 0 6px 18px rgba(19, 22, 28, 0.06);
+  --shadow-lift:  0 10px 24px rgba(19, 22, 28, 0.12);
+  /* Motion: exit ~65% of enter, so hovering off feels responsive. */
+  --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --t-enter: 200ms var(--ease-out);
+  --t-exit:  130ms ease;
 }
 
 /* ------------------------------------------------------------- dark theme */
@@ -99,6 +114,8 @@
     --crimson:     #F08A8A;   /* negative states          7.58:1  AAA       */
 
     --header-bg:    rgba(18, 21, 27, 0.92);
+    --shadow-float: 0 6px 18px rgba(0, 0, 0, 0.30);
+    --shadow-lift:  0 10px 24px rgba(0, 0, 0, 0.35);
     --code-bg:      #0B0D11;
     --code-comment: #9AA3B2;  /* 7.64:1 on #0B0D11                          */
   }
@@ -106,7 +123,9 @@
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-html { font-size: 16px; scroll-behavior: smooth; }
+/* scroll-padding-top: in-page anchors (#work, #faq) land below the floating
+   header instead of under it (12 px float + 68 px bar + 20 px air). */
+html { font-size: 16px; scroll-behavior: smooth; scroll-padding-top: 100px; }
 
 body {
   background: var(--bone);
@@ -130,7 +149,7 @@ select:focus-visible,
 summary:focus-visible {
   outline: 3px solid var(--denim-brand);
   outline-offset: 2px;
-  border-radius: var(--radius);
+  border-radius: var(--radius-sm);
 }
 
 img { max-width: 100%; display: block; }
@@ -170,31 +189,66 @@ img { max-width: 100%; display: block; }
 /* IA v2: "Every page: menu + Download CV (PDF)". Three menu items only —
    "Proof" was removed by the peer test, and the old Contact header link
    was dropped because Contact is already a menu item. */
+/* Floating header (2026-09-29). The sticky element is a transparent strip whose
+   12 px top padding is the "float"; the visible bar is .header-inner, inset from
+   the container edges with a 16 px radius. Scrolled (JS adds .is-scrolled via an
+   IntersectionObserver in script.js), the bar takes the denim gradient: a
+   ::before layer fades in over a solid #4A70A9 (the lightest stop, which is what
+   the contrast audit measures). */
 .site-header {
   position: sticky; top: 0; z-index: 100;
-  background: var(--header-bg);
-  backdrop-filter: blur(8px);
-  border-bottom: 1px solid var(--rule);
+  padding-top: 12px;
+  pointer-events: none;       /* the transparent strip and the sides must not swallow clicks... */
 }
 .header-inner {
+  position: relative; isolation: isolate;
+  pointer-events: auto;       /* ...only the bar (and its open menu) takes them */
   display: flex; align-items: center; justify-content: space-between;
-  gap: 24px; min-height: 72px;
+  gap: 24px; min-height: 68px;
+  width: calc(100% - 2 * var(--gutter));
+  max-width: calc(var(--maxw) - 2 * var(--gutter));
+  padding-inline: 18px 12px;
+  background-color: var(--header-bg);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-float);
+  transition: background-color var(--t-enter), border-color var(--t-enter), box-shadow var(--t-enter);
 }
+.header-inner::before {
+  content: ''; position: absolute; inset: -1px; z-index: -1;
+  border-radius: inherit;
+  background-color: #4A70A9; background-image: var(--grad-brand);
+  opacity: 0; transition: opacity var(--t-enter);
+}
+
+/* Logo: the <E mark + name + subline. The link's accessible name starts with
+   the visible name (WCAG 2.5.3); the SVG is decorative. */
 .wordmark {
-  font-family: var(--font-display);
-  font-size: 1.125rem; font-weight: 600; letter-spacing: -0.01em;
+  display: inline-flex; align-items: center; gap: 10px;
+  min-height: var(--tap); flex: 0 0 auto;
   color: var(--black);
-  display: inline-flex; align-items: center; min-height: var(--tap);
-  white-space: nowrap;        /* the name is one unit — never break it */
-  flex: 0 0 auto;
 }
 .wordmark:hover { color: var(--black); text-decoration: none; }
-/* The wordmark accent. #4A70A9 is 4.25:1 — under the 4.5:1 body-text bar, and
-   although a logotype is exempt from 1.4.3 the exemption is not worth leaning
-   on in a graded deliverable. Sized up to 1.25em/700 (= 22.5 px bold) it clears
-   the large-text threshold (18.66 px bold), where the bar is 3:1. It passes on
-   its own terms, and the accent reads stronger for it. */
-.wordmark .dot { color: var(--denim-brand); font-size: 1.25em; font-weight: 700; line-height: 1; margin-left: -0.06em; }
+.logo-mark {
+  width: 30px; height: 30px; flex: none;
+  fill: none; stroke: url(#logo-grad-light); stroke-width: 4.5;
+  stroke-linecap: round; stroke-linejoin: round;
+  transition: transform var(--t-exit);
+}
+:root[data-theme="dark"] .logo-mark { stroke: url(#logo-grad-dark); }
+.wordmark-text { display: flex; flex-direction: column; line-height: 1; }
+.wordmark-name {
+  font-family: var(--font-display);
+  font-size: 1.125rem; font-weight: 600; letter-spacing: -0.01em;
+  white-space: nowrap;        /* the name is one unit — never break it */
+}
+.wordmark-sub {
+  margin-top: 4px; padding-top: 3px; border-top: 1px solid currentColor;
+  font-family: var(--font-mono); font-size: 0.625rem;
+  letter-spacing: 0.1em; text-transform: uppercase; white-space: nowrap;
+  color: var(--slate);        /* 6.67:1 light, 8.54:1 dark */
+}
 
 .site-nav { display: flex; align-items: center; gap: 4px; }
 .site-nav a {
@@ -221,16 +275,15 @@ img { max-width: 100%; display: block; }
   background: none; color: var(--ink);
   border: 1px solid var(--border-ui); border-radius: var(--radius);
   cursor: pointer;
-  transition: border-color var(--t-fast), color var(--t-fast);
+  transition: background-color var(--t-exit), border-color var(--t-exit), color var(--t-exit);
 }
-.theme-toggle:hover { border-color: var(--ink); color: var(--black); }
-.theme-toggle svg { width: 20px; height: 20px; }
+.theme-toggle svg { width: 20px; height: 20px; transition: transform var(--t-exit); }
 .theme-toggle .icon-sun { display: none; }
 :root[data-theme="dark"] .theme-toggle .icon-sun { display: block; }
 :root[data-theme="dark"] .theme-toggle .icon-moon { display: none; }
 
 .nav-toggle {
-  display: none;
+  display: none; flex: none;              /* never squashed below the 44 px tap size */
   width: var(--tap); height: var(--tap);
   background: none; border: 1px solid var(--border-ui); border-radius: var(--radius);
   cursor: pointer; align-items: center; justify-content: center; flex-direction: column; gap: 5px;
@@ -240,6 +293,43 @@ img { max-width: 100%; display: block; }
 .nav-toggle[aria-expanded="true"] .bar:nth-child(2) { opacity: 0; }
 .nav-toggle[aria-expanded="true"] .bar:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
+/* Scrolled state — everything on the bar turns white on the gradient. */
+.site-header.is-scrolled .header-inner {
+  background-color: #4A70A9; border-color: transparent;
+  box-shadow: 0 12px 28px rgba(19, 22, 28, 0.25);
+}
+.site-header.is-scrolled .header-inner::before { opacity: 1; }
+.site-header.is-scrolled .wordmark,
+.site-header.is-scrolled .wordmark:hover,
+.site-header.is-scrolled .wordmark-sub,
+.site-header.is-scrolled .site-nav a,
+.site-header.is-scrolled .site-nav a:hover,
+.site-header.is-scrolled .site-nav a[aria-current],
+.site-header.is-scrolled .theme-toggle { color: #FFFFFF; }
+.site-header.is-scrolled .logo-mark { stroke: #FFFFFF; }
+.site-header.is-scrolled .site-nav a:hover { border-bottom-color: rgba(255, 255, 255, 0.6); }
+.site-header.is-scrolled .site-nav a[aria-current] { border-bottom-color: #FFFFFF; }
+.site-header.is-scrolled .theme-toggle,
+.site-header.is-scrolled .nav-toggle { border-color: rgba(255, 255, 255, 0.7); }
+.site-header.is-scrolled .nav-toggle .bar { background: #FFFFFF; }
+.site-header.is-scrolled .header-cta .btn-primary { background: #FFFFFF; color: #243B61; box-shadow: none; }
+/* Keyboard focus on the gradient: the global ring is #4A70A9, the gradient's own lightest
+   stop (1.0:1), so it goes white here (5.02:1), as it does on the footer card. */
+.site-header.is-scrolled :focus-visible { outline-color: #FFFFFF; }
+
+@media (hover: hover) {
+  .wordmark:hover .logo-mark { transform: translateX(-2px); transition: transform var(--t-enter); }
+  .theme-toggle:hover {
+    background-color: color-mix(in srgb, var(--soft-blue) 22%, transparent);
+    border-color: var(--denim-brand); color: var(--black);
+    transition-duration: 200ms; transition-timing-function: var(--ease-out);
+  }
+  .theme-toggle:hover .icon-moon { transform: rotate(-20deg); transition: transform var(--t-enter); }
+  .theme-toggle:hover .icon-sun  { transform: rotate(45deg);  transition: transform var(--t-enter); }
+  .site-header.is-scrolled .theme-toggle:hover { background-color: rgba(255, 255, 255, 0.14); border-color: #FFFFFF; color: #FFFFFF; }
+}
+.theme-toggle:focus-visible { background-color: color-mix(in srgb, var(--soft-blue) 22%, transparent); }
+
 /* ------------------------------------------------------------------ button */
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 8px;
@@ -247,13 +337,20 @@ img { max-width: 100%; display: block; }
   font-family: var(--font-body); font-size: 0.9375rem; font-weight: 600;
   border: 1px solid transparent; border-radius: var(--radius);
   cursor: pointer; white-space: nowrap;
-  transition: background var(--t-fast), color var(--t-fast), border-color var(--t-fast);
+  transition: background-color var(--t-exit), color var(--t-exit), border-color var(--t-exit),
+              transform var(--t-exit), box-shadow var(--t-exit);
 }
 .btn:hover { text-decoration: none; }
-.btn-primary { background: var(--black); color: var(--bone); }
-.btn-primary:hover { background: var(--denim-dark); color: var(--bone); }
-.btn-secondary { background: transparent; color: var(--ink); border-color: var(--border-ui); }
-.btn-secondary:hover { background: var(--card); color: var(--black); border-color: var(--ink); }
+.btn:active { transform: translateY(1px); }
+/* Primary: the denim-depth gradient. background-color is the lightest stop
+   (#4A70A9, 5.02:1 with white) — what the audit measures. */
+.btn-primary { background-color: #4A70A9; background-image: var(--grad-brand); color: #FFFFFF; }
+.btn-primary:hover { color: #FFFFFF; }
+.btn-secondary { background: transparent; color: var(--denim); border: 1.5px solid var(--denim-brand); }
+.btn-secondary:hover {
+  background-color: color-mix(in srgb, var(--soft-blue) 18%, transparent);
+  color: var(--denim-dark); border-color: var(--denim-dark);
+}
 .btn-ghost { background: transparent; color: var(--denim); padding: 0 4px; }
 .btn-ghost:hover { color: var(--denim-dark); text-decoration: underline; text-underline-offset: 3px; }
 
@@ -304,7 +401,11 @@ img { max-width: 100%; display: block; }
   overflow: hidden;
 }
 .code-bar { display: flex; gap: 6px; padding: 12px 16px; border-bottom: 1px solid var(--code-chrome); }
-.code-bar span { width: 9px; height: 9px; border-radius: 50%; background: var(--code-chrome); }
+.code-bar span { width: 10px; height: 10px; border-radius: 50%; background: var(--code-chrome); }
+/* macOS window controls — decorative (the bar is aria-hidden), same in both themes. */
+.code-bar span:nth-child(1) { background: #FF5F57; }
+.code-bar span:nth-child(2) { background: #FEBC2E; }
+.code-bar span:nth-child(3) { background: #28C840; }
 .code-window pre {
   margin: 0; padding: 18px 20px 22px;
   font-family: var(--font-mono); font-size: 0.8125rem; line-height: 1.7;
@@ -335,10 +436,20 @@ img { max-width: 100%; display: block; }
 .work-item {
   display: grid; grid-template-columns: 72px 1fr auto;
   gap: 32px; align-items: start;
-  padding: 32px 0; border-bottom: 1px solid var(--rule);
-  transition: background var(--t-fast);
+  position: relative;
+  padding: 32px 0;
+  border-radius: var(--radius-lg);
+  padding-inline: 16px; margin-inline: -16px;   /* 16 = smallest gutter: no overflow at 360 */
+  transition: background-color var(--t-exit), box-shadow var(--t-exit), transform var(--t-exit);
 }
-.work-item:hover { background: var(--card); }
+/* The row is a rounded card on hover/focus, so its divider is drawn inset by that same 16 px:
+   a border-bottom would curl up at both ends and run 16 px wider than the list's top rule. */
+.work-item::after {
+  content: ''; position: absolute; inset-inline: 16px; bottom: 0; height: 1px;
+  background: var(--rule); transition: opacity var(--t-exit);
+}
+.work-item:focus-within { background: var(--card); box-shadow: var(--shadow-lift); }
+.work-item:focus-within::after { opacity: 0; }
 .work-index { font-family: var(--font-mono); font-size: 0.8125rem; color: var(--slate); padding-top: 6px; }
 .work-title {
   font-family: var(--font-display); font-size: 1.375rem; font-weight: 600;
@@ -360,7 +471,8 @@ img { max-width: 100%; display: block; }
   background: color-mix(in srgb, var(--soft-blue) 28%, transparent);
   border: 1px solid rgba(74, 112, 169, 0.34);                     /* fallback */
   border-color: color-mix(in srgb, var(--denim-brand) 34%, transparent);
-  padding: 4px 10px; border-radius: var(--radius);
+  padding: 4px 10px; border-radius: var(--radius-sm);
+  transition: background-color var(--t-exit), border-color var(--t-exit), transform var(--t-exit);
 }
 
 /* ----------------------------------------------------------- testimonials */
@@ -383,9 +495,15 @@ img { max-width: 100%; display: block; }
 .quote-card {
   margin: 0;
   background: var(--card); border: 1px solid var(--rule);
-  border-top: 3px solid var(--denim-brand); border-radius: var(--radius);
+  border-radius: var(--radius-lg);
+  position: relative; overflow: hidden;   /* clips the top bar to the radius */
+  transition: transform var(--t-exit), box-shadow var(--t-exit), border-color var(--t-exit);
   padding: 24px 24px 22px;
   display: flex; flex-direction: column; gap: 16px;
+}
+.quote-card::before {
+  content: ''; position: absolute; inset: 0 0 auto 0; height: 3px;
+  background: var(--denim-brand);
 }
 /* Stars are clay — the token already reserved for trust signals and
    evidence (5.85:1 on the light card, 6.59:1 on the dark one). The count is
@@ -544,9 +662,11 @@ img { max-width: 100%; display: block; }
 /* Certificates — MOVED here from "Proof" by peer-test revision 1. */
 .cert-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
 .cert-card {
-  background: var(--card); border: 1px solid var(--rule); border-radius: var(--radius);
+  background: var(--card); border: 1px solid var(--rule); border-radius: var(--radius-lg);
+  transition: transform var(--t-exit), box-shadow var(--t-exit), border-color var(--t-exit);
   padding: 20px 22px;
 }
+.cert-card:focus-within { border-color: var(--denim-brand); box-shadow: var(--shadow-lift); }
 .cert-card h3 {
   font-family: var(--font-display); font-size: 1rem; font-weight: 600;
   color: var(--black); margin-bottom: 4px;
@@ -572,29 +692,73 @@ img { max-width: 100%; display: block; }
   font-size: 0.875rem; font-weight: 600; color: var(--denim);
 }
 .cert-more > summary::-webkit-details-marker { display: none; }
-.cert-more > summary::before { content: '+'; font-family: var(--font-mono); color: var(--clay); width: 14px; }
-.cert-more[open] > summary::before { content: '\2212'; }
+/* + / − drawn as two bars: the vertical bar collapses to 0 as it turns, so the
+   state is still a change of SHAPE, not colour (WCAG 1.4.1). Clay 5.40:1. */
+.cert-more > summary::before,
+.faq-item > summary::after {
+  content: ''; flex: none; width: 14px; height: 14px;
+  background:
+    linear-gradient(var(--clay), var(--clay)) center / 14px 2px no-repeat,
+    linear-gradient(var(--clay), var(--clay)) center / 2px 14px no-repeat;
+  transition: transform var(--t-enter), background-size var(--t-enter);
+}
+.cert-more[open] > summary::before,
+.faq-item[open] > summary::after { transform: rotate(180deg); background-size: 14px 2px, 2px 0; }
+/* The glyph grows on keyboard focus as it does on hover (the [open] rules are more specific,
+   so an open item keeps its half turn). Cancelled under reduced motion below. */
+.cert-more > summary:focus-visible::before,
+.faq-item > summary:focus-visible::after { transform: scale(1.15); }
+.cert-more[open] > summary:focus-visible::before,
+.faq-item[open] > summary:focus-visible::after { transform: rotate(180deg) scale(1.15); }
 .cert-more > summary:hover { color: var(--denim-dark); text-decoration: underline; text-underline-offset: 3px; }
 .cert-more ul { padding-bottom: 4px; }
 
 /* ---------------------------------------------------------------- contact */
-/* IA v2, Contact branch: Email ↗ · Contact form · LinkedIn ↗ · GitHub ↗
-   "all on one page" — the note carried on the chart. */
+/* IA v2, Contact branch, "all on one page" (the note carried on the chart). Form on the
+   left; the right column is Email, Working hours, Schedule a call, Follow (icon links),
+   then the map. */
 .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; }
 
-.channel-list { list-style: none; border-top: 1px solid var(--rule); }
-.channel-list li { border-bottom: 1px solid var(--rule); }
-.channel-list a {
-  display: flex; align-items: baseline; gap: 16px;
-  min-height: 64px; padding: 14px 0; color: var(--ink);
+/* Info stack (2026-09-29): email stays as copyable text; socials are icon-only
+   links whose accessible name comes from aria-label. */
+.info-list { list-style: none; display: grid; gap: 4px; }
+.info-list li { display: flex; align-items: center; gap: 14px; min-height: 64px; }
+.info-icon {
+  width: var(--tap); height: var(--tap); flex: none;
+  display: grid; place-items: center;
+  border-radius: var(--radius); border: 1px solid var(--rule);
+  background: var(--card); color: var(--denim);
 }
-.channel-list a:hover { text-decoration: none; color: var(--denim-dark); }
-.channel-name {
-  font-family: var(--font-display); font-size: 1.0625rem; font-weight: 600;
-  min-width: 96px; color: var(--black);
+.info-icon svg { width: 20px; height: 20px; }
+.info-icon-brand { background-color: #4A70A9; background-image: var(--grad-brand); border-color: transparent; color: #FFFFFF; }
+.info-label { display: block; font-family: var(--font-display); font-weight: 600; color: var(--black); line-height: 1.3; }
+.info-value { font-size: 0.9375rem; color: var(--slate); }
+/* Inline text links are ~19 px tall: pad them to a 44 px+ hit area and cancel the padding with
+   a negative margin, so the rows do not move. */
+.info-list a { font-size: 0.9375rem; display: inline-block; padding-block: 13px; margin-block: -13px; }
+
+.follow { display: flex; align-items: center; gap: 14px; margin-top: 16px; }
+.follow-label { font-family: var(--font-display); font-weight: 600; color: var(--black); }
+.social-list { list-style: none; display: flex; gap: 10px; }
+.social-link {
+  width: var(--tap); height: var(--tap);
+  display: grid; place-items: center;
+  border-radius: var(--radius); border: 1px solid var(--rule);
+  background: var(--card); color: var(--denim);
+  transition: background-color var(--t-exit), color var(--t-exit), border-color var(--t-exit),
+              transform var(--t-exit), box-shadow var(--t-exit);
 }
-.channel-value { font-family: var(--font-mono); font-size: 0.875rem; color: var(--slate); }
-.channel-list a:hover .channel-value { color: var(--denim-dark); }
+.social-link svg { width: 20px; height: 20px; }
+.social-link:hover { text-decoration: none; }
+.social-link:focus-visible { background-color: #4A70A9; background-image: var(--grad-brand); color: #FFFFFF; }
+
+.map { margin: 24px 0 0; }
+.map iframe {
+  display: block; width: 100%; aspect-ratio: 4 / 3;   /* reserved space: no layout shift */
+  border: 1px solid var(--rule); border-radius: var(--radius-lg);
+  background: var(--card);
+}
+.map figcaption { margin-top: 10px; font-size: 0.875rem; color: var(--slate); }
 
 .form-field + .form-field { margin-top: 20px; }
 .form-field label {
@@ -611,6 +775,11 @@ img { max-width: 100%; display: block; }
 }
 .form-field textarea { min-height: 140px; resize: vertical; line-height: 1.6; }
 .form-field input:hover, .form-field textarea:hover { border-color: var(--slate); }
+
+/* Placeholders show an example and vanish on typing; the label above stays
+   (a placeholder alone fails WCAG 3.3.2). Slate: 6.2:1 on the card. */
+.form-field input::placeholder,
+.form-field textarea::placeholder { color: var(--slate); opacity: 1; }
 
 /* Invalid state. :user-invalid fires only after the person has actually tried
    the field, so an empty form does not open covered in red. Colour is paired
@@ -665,29 +834,117 @@ img { max-width: 100%; display: block; }
 
 /* State is carried by a change of GLYPH, not of colour (WCAG 1.4.1): + when
    collapsed, minus when open. Clay measures 5.40:1 on bone. */
-.faq-item > summary::after {
-  content: '+';
-  margin-left: auto; flex: none;
-  font-family: var(--font-mono); font-size: 1.375rem; font-weight: 400;
-  line-height: 1.15; color: var(--clay);
-}
-.faq-item[open] > summary::after { content: '\2212'; }
+.faq-item > summary::after { margin-left: auto; margin-top: 6px; }
 
 .faq-item > summary:hover { color: var(--denim-dark); }
 
 .faq-answer { padding: 2px 0 22px; max-width: 64ch; color: var(--slate); }
 .faq-answer p + p { margin-top: 12px; }
 
-/* ----------------------------------------------------------------- footer */
-.site-footer { border-top: 1px solid var(--rule); padding: 40px 0; margin-top: 8px; }
-.footer-inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px; }
-.footer-nav { display: flex; flex-wrap: wrap; gap: 4px; }
-.footer-nav a {
-  color: var(--slate); font-size: 0.875rem;
-  min-height: var(--tap); display: inline-flex; align-items: center; padding: 0 12px;
+/* Smooth open/close where the browser can animate to height:auto; elsewhere
+   the answer simply appears. The global reduced-motion rule does not match
+   ::details-content, so that block switches this transition off itself. */
+@supports (interpolate-size: allow-keywords) {
+  .faq-list { interpolate-size: allow-keywords; }
+  .faq-item::details-content {
+    height: 0; overflow: clip;
+    transition: height var(--t-enter), content-visibility var(--t-enter) allow-discrete;
+  }
+  .faq-item[open]::details-content { height: auto; }
 }
-.footer-nav a:hover { color: var(--ink); }
-.footer-note { font-family: var(--font-mono); font-size: 0.75rem; color: var(--slate); }
+
+/* ----------------------------------------------------------------- footer */
+/* Footer (2026-09-29): a call to action, not a second menu — the header already
+   has Work · About · Contact. background-color is the gradient's lightest stop
+   (#243B61), what the audit measures: bone 9.5:1, #A9B2C0 5.2:1, #DCE6F3 8.9:1. */
+.site-footer { padding: 56px 0 16px; }
+.footer-card {
+  background-color: #243B61; background-image: var(--grad-footer);
+  color: #EFECE3;
+  border-radius: var(--radius-lg);
+  padding: 40px clamp(20px, 4vw, 44px) 24px;
+}
+:root[data-theme="dark"] .footer-card { box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06); }
+.site-footer--compact .footer-card { padding-block: 12px; }
+.footer-band {
+  display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 24px;
+  padding-bottom: 28px; border-bottom: 1px solid rgba(239, 236, 227, 0.15);
+}
+.footer-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.375rem, 2.4vw, 1.875rem); font-weight: 600;
+  line-height: 1.15; letter-spacing: -0.015em; color: #FFFFFF;
+  max-width: 22ch; text-wrap: balance;
+}
+.footer-sub { margin-top: 8px; color: #A9B2C0; }
+.footer-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.btn-light { background: #FFFFFF; color: #243B61; }
+.btn-light:hover { color: #243B61; }
+.btn-light svg { width: 16px; height: 16px; }
+/* Cal's own click handler ignores a click whose target is an SVG element, while script.js
+   cancels the link for it: a click on the icon would do nothing. Let the <a> take the hit. */
+[data-cal-link] svg { pointer-events: none; }
+.btn-outline-light { background: transparent; color: #DCE6F3; border: 1.5px solid #8FABD4; }
+.btn-outline-light:hover { color: #FFFFFF; border-color: #FFFFFF; background: rgba(255, 255, 255, 0.08); }
+.footer-base {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px;
+  padding-top: 20px;
+}
+.site-footer--compact .footer-base { padding-top: 0; }
+.footer-brand {
+  display: inline-flex; align-items: center; gap: 10px; min-height: var(--tap);
+  font-family: var(--font-display); font-weight: 600; color: #FFFFFF;
+}
+.footer-brand:hover { color: #FFFFFF; text-decoration: none; }
+.site-footer .footer-brand .logo-mark { width: 26px; height: 26px; stroke: #FFFFFF; }
+.footer-card .social-link { background: rgba(255, 255, 255, 0.08); border-color: rgba(255, 255, 255, 0.12); color: #DCE6F3; }
+.footer-note { font-family: var(--font-mono); font-size: 0.75rem; color: #A9B2C0; }
+/* Keyboard focus on the navy band: the default #4A70A9 ring is only 2.2:1 against
+   #243B61, so it goes white here; the social buttons keep their focus fill. */
+.footer-card a:focus-visible { outline-color: #FFFFFF; }
+.footer-card .social-link:focus-visible { background-color: #4A70A9; background-image: var(--grad-brand); color: #FFFFFF; }
+
+/* ------------------------------------------------ hover layer (2026-09-29) */
+/* Hover only where a pointer can hover, so a tap on a phone never leaves a card
+   stuck "lifted". Entering uses --t-enter; the base rules carry --t-exit, so
+   leaving is faster. Tags and cards are not links: no pointer cursor. */
+@media (hover: hover) {
+  .btn-primary:hover { box-shadow: 0 8px 18px rgba(36, 59, 97, 0.28); transform: translateY(-1px);
+                        transition-duration: 200ms; transition-timing-function: var(--ease-out); }
+  .btn-secondary:hover { transform: translateY(-1px); transition-duration: 200ms; transition-timing-function: var(--ease-out); }
+  .btn-light:hover { transform: translateY(-1px); box-shadow: 0 8px 18px rgba(0, 0, 0, 0.25);
+                     transition-duration: 200ms; transition-timing-function: var(--ease-out); }
+
+  .stack li:hover {
+    background: color-mix(in srgb, var(--soft-blue) 45%, transparent);
+    border-color: var(--denim-brand);
+    transform: translateY(-1px); transition-duration: 200ms; transition-timing-function: var(--ease-out);
+  }
+  .quote-card:hover,
+  .cert-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lift);
+    border-color: color-mix(in srgb, var(--denim-brand) 55%, var(--rule));
+    transition: transform var(--t-enter), box-shadow var(--t-enter), border-color var(--t-enter);
+  }
+  .quote-card:hover::before { background: var(--grad-brand); }
+  .work-item:hover {
+    background: var(--card); box-shadow: var(--shadow-lift); transform: translateY(-2px);
+    transition: background-color var(--t-enter), box-shadow var(--t-enter), transform var(--t-enter);
+  }
+  .work-item:hover::after { opacity: 0; }
+  .cert-more > summary:hover::before,
+  .faq-item > summary:hover::after { transform: scale(1.15); }
+
+  .social-link:hover {
+    background-color: #4A70A9; background-image: var(--grad-brand);
+    color: #FFFFFF; border-color: transparent;
+    transform: translateY(-2px); box-shadow: var(--shadow-lift);
+    transition: background-color var(--t-enter), color var(--t-enter), transform var(--t-enter), box-shadow var(--t-enter);
+  }
+  .cert-more[open] > summary:hover::before,
+  .faq-item[open] > summary:hover::after { transform: rotate(180deg) scale(1.15); }
+}
 
 /* ======================================================================
    RESPONSIVE — 1280 px desktop → 360 px mobile
@@ -702,20 +959,30 @@ img { max-width: 100%; display: block; }
   .quote-grid { grid-template-columns: 1fr; }
 }
 
-@media (max-width: 720px) {
-  :root { --gutter: 20px; }
+/* The desktop bar (name + subline + three links + theme + CV button) needs ~740 px of
+   bar, so it fits from 801 px viewports up. At and below 800 px the links collapse into the
+   disclosure menu. Header/nav rules only: every other rule keeps its 720 px break. The
+   hamburger sits against the theme toggle, and one 12 px gap spaces all three controls. */
+@media (max-width: 800px) {
+  .header-inner { gap: 12px; }
+  .nav-toggle { display: flex; margin-left: auto; }
 
   /* Menu becomes a disclosure. It is collapsed, never removed: the same
      three items in the same order, plus Download CV. */
-  .nav-toggle { display: flex; }
   .site-nav {
     display: none;
-    position: absolute; left: 0; right: 0; top: 100%;
+    position: absolute; left: 0; right: 0; top: calc(100% + 8px);
     flex-direction: column; align-items: stretch; gap: 0;
-    background: var(--bone);
-    border-bottom: 1px solid var(--rule);
-    padding: 8px var(--gutter) 16px;
+    background: var(--card);
+    border: 1px solid var(--rule); border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lift);
+    padding: 8px 16px 12px;
   }
+  .site-header.is-scrolled .site-nav {
+    background-color: #4A70A9; background-image: var(--grad-brand); border-color: transparent;
+  }
+  .site-header.is-scrolled .site-nav a { border-bottom-color: rgba(255, 255, 255, 0.25); }
+  .site-header.is-scrolled .site-nav a[aria-current] { border-bottom-color: rgba(255, 255, 255, 0.25); border-left-color: #FFFFFF; }
   .site-nav.is-open { display: flex; }
   .site-nav a {
     padding: 0; min-height: 52px;
@@ -723,9 +990,14 @@ img { max-width: 100%; display: block; }
     border-left: 2px solid transparent;
   }
   .site-nav a[aria-current] { border-bottom-color: var(--rule); border-left-color: var(--denim); padding-left: 12px; }
-  .site-header { position: sticky; }
-  .header-inner { position: relative; min-height: 64px; gap: 10px; }
-  .wordmark { font-size: 1rem; }
+}
+
+@media (max-width: 720px) {
+  :root { --gutter: 20px; }
+
+  .header-inner { min-height: 60px; padding-inline: 12px 8px; }
+  .wordmark-name { font-size: 1rem; }
+  .logo-mark { width: 26px; height: 26px; }
   .header-cta .btn-primary { padding: 0 12px; font-size: 0.8125rem; }
 
   .hero { padding: 56px 0 48px; }
@@ -737,7 +1009,7 @@ img { max-width: 100%; display: block; }
 
   /* Work rows collapse to a single column; the index number stays as a
      label so the "strongest first" order is still legible. */
-  .work-item { grid-template-columns: 1fr; gap: 12px; padding: 28px 0; }
+  .work-item { grid-template-columns: 1fr; gap: 12px; padding-block: 28px; }
   .work-index { padding-top: 0; }
   .work-action { padding-top: 4px; }
 
@@ -754,14 +1026,14 @@ img { max-width: 100%; display: block; }
   .cv-arrow { transform: rotate(90deg); justify-self: center; }
   .code-window pre { font-size: 0.75rem; padding: 16px; }
 
-  .channel-list a { flex-direction: column; gap: 4px; min-height: var(--tap); padding: 16px 0; }
 
   .faq-item > summary { gap: 14px; padding: 14px 0; }
   .faq-q { font-size: 1rem; }
   .faq-answer { padding-bottom: 18px; }
-  .channel-name { min-width: 0; }
 
-  .footer-inner { flex-direction: column; align-items: flex-start; gap: 12px; }
+  .footer-band { align-items: flex-start; }
+  .footer-actions, .footer-actions .btn { width: 100%; }
+  .footer-base { flex-direction: column; align-items: flex-start; gap: 12px; }
 }
 
 /* Hard 360 px check — nothing may overflow the viewport at this width. */
@@ -769,18 +1041,43 @@ img { max-width: 100%; display: block; }
   :root { --gutter: 16px; }
   .hero-intro { font-size: 1.875rem; }
   .case-title { font-size: 1.75rem; }
-  .wordmark { font-size: 0.9375rem; }
+  .logo-mark { width: 24px; height: 24px; }
   .header-cta .btn-primary { padding: 0 10px; font-size: 0.75rem; }
+}
+
+/* Below 520 px the bar cannot hold name + subline + controls + CV button (the name
+   alone is ~169 px): keep the <E mark only, as the owner approved for phones. The
+   link's aria-label still names it, and the CV button never shrinks. */
+@media (max-width: 520px) {
+  .wordmark-text { display: none; }
+  .header-cta .btn-primary { flex-shrink: 0; }
+}
+
+/* 320-350 px phones leave a 288-318 px bar: tighter gaps and button padding, full label kept. */
+@media (max-width: 350px) {
+  .header-inner, .header-cta { gap: 8px; }
+  .header-inner { padding-inline: 8px 6px; }
+  .header-cta .btn-primary { padding: 0 8px; }
 }
 
 /* WCAG 2.3.3 — respect a reduced-motion preference. */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
+  .faq-item::details-content { transition: none; }
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+  .btn:hover, .btn:active, .btn-light:hover, .stack li:hover, .quote-card:hover, .cert-card:hover,
+  .work-item:hover, .social-link:hover, .wordmark:hover .logo-mark,
+  .theme-toggle:hover svg, .theme-toggle:hover .icon-moon, .theme-toggle:hover .icon-sun,
+  .cert-more > summary:hover::before, .faq-item > summary:hover::after,
+  .cert-more > summary:focus-visible::before, .faq-item > summary:focus-visible::after { transform: none; }
+  .cert-more[open] > summary:hover::before,
+  .faq-item[open] > summary:hover::after,
+  .cert-more[open] > summary:focus-visible::before,
+  .faq-item[open] > summary:focus-visible::after { transform: rotate(180deg); }
 }
 
 /* Print — the CV and case studies should survive a paper review. */
