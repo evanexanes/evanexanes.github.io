@@ -118,12 +118,11 @@
 
           <form action="https://api.web3forms.com/submit" method="post" id="contact-form">
             <input type="hidden" name="access_key" value="dae31f1c-c049-45db-a905-1a70c41cd405">
-            <input type="hidden" name="subject" value="New message from your portfolio">
             <input type="hidden" name="from_name" value="Portfolio contact form">
             <input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" style="display:none" aria-hidden="true">
             <div class="form-field">
-              <label for="cf-name">Your name</label>
-              <input type="text" id="cf-name" name="name" autocomplete="name" placeholder="e.g. Juan Dela Cruz" required>
+              <label for="cf-name">Full name</label>
+              <input type="text" id="cf-name" name="name" autocomplete="name" placeholder="Your name" required>
             </div>
 
             <div class="form-field">
@@ -132,6 +131,14 @@
                 <span class="hint">So I can reply. Nothing else is sent here.</span>
               </label>
               <input type="email" id="cf-email" name="email" autocomplete="email" placeholder="you@company.com" required>
+            </div>
+
+            <div class="form-field">
+              <label for="cf-topic">
+                Topic
+                <span class="hint">What is this regarding?</span>
+              </label>
+              <input type="text" id="cf-topic" name="subject" placeholder="Write a subject" required>
             </div>
 
             <div class="form-field">

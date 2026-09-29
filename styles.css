@@ -101,6 +101,8 @@
      set background-color to the LIGHTEST stop, which is what capture.py audits. */
   --grad-brand:  linear-gradient(120deg, #243B61 0%, #3B5F99 55%, #4A70A9 100%);
   --grad-footer: linear-gradient(135deg, #13161C 0%, #1C2C48 55%, #243B61 100%);
+  --shadow-xs:    0 1px 2px rgba(19, 22, 28, 0.05);
+  --shadow-sm:    0 1px 3px rgba(19, 22, 28, 0.08), 0 1px 2px rgba(19, 22, 28, 0.04);
   --shadow-float: 0 6px 18px rgba(19, 22, 28, 0.06);
   --shadow-lift:  0 10px 24px rgba(19, 22, 28, 0.12);
   /* Motion: exit ~65% of enter, so hovering off feels responsive. */
@@ -138,6 +140,8 @@
     --crimson:     #F08A8A;   /* negative states          7.58:1  AAA       */
 
     --header-bg:    rgba(18, 21, 27, 0.92);
+    --shadow-xs:    0 1px 2px rgba(0, 0, 0, 0.35);
+    --shadow-sm:    0 1px 3px rgba(0, 0, 0, 0.40), 0 1px 2px rgba(0, 0, 0, 0.30);
     --shadow-float: 0 6px 18px rgba(0, 0, 0, 0.30);
     --shadow-lift:  0 10px 24px rgba(0, 0, 0, 0.35);
     --code-bg:      #0B0D11;
@@ -421,12 +425,19 @@ html.drawer-open { overflow: hidden; scrollbar-gutter: stable; }   /* no layout 
               transform var(--t-exit), box-shadow var(--t-exit);
 }
 .btn:hover { text-decoration: none; }
-.btn:active { transform: translateY(1px); }
+.btn:active { transform: translateY(1px); box-shadow: 0 1px 2px rgba(19, 22, 28, 0.1); }
 /* Primary: the denim-depth gradient. background-color is the lightest stop
    (#4A70A9, 5.02:1 with white) — what the audit measures. */
-.btn-primary { background-color: #4A70A9; background-image: var(--grad-brand); color: #FFFFFF; }
+.btn-primary {
+  background-color: #4A70A9; background-image: var(--grad-brand); color: #FFFFFF;
+  box-shadow: 0 2px 6px rgba(36, 59, 97, 0.20), 0 1px 2px rgba(36, 59, 97, 0.12);
+}
 .btn-primary:hover { color: #FFFFFF; }
-.btn-secondary { background: transparent; color: var(--denim); border: 1.5px solid var(--denim-brand); }
+.btn-secondary {
+  background: transparent; color: var(--denim); border: 1.5px solid var(--denim-brand);
+  box-shadow: var(--shadow-xs);
+}
+.btn-secondary:active { box-shadow: none; }
 .btn-secondary:hover {
   background-color: color-mix(in srgb, var(--soft-blue) 18%, transparent);
   color: var(--denim-dark); border-color: var(--denim-dark);
@@ -587,7 +598,8 @@ html.drawer-open { overflow: hidden; scrollbar-gutter: stable; }   /* no layout 
   border: 1px solid rgba(74, 112, 169, 0.34);                     /* fallback */
   border-color: color-mix(in srgb, var(--denim-brand) 34%, transparent);
   padding: 4px 10px; border-radius: var(--radius-sm);
-  transition: background-color var(--t-exit), border-color var(--t-exit), transform var(--t-exit);
+  box-shadow: var(--shadow-xs);
+  transition: background-color var(--t-exit), border-color var(--t-exit), transform var(--t-exit), box-shadow var(--t-exit);
 }
 
 /* ----------------------------------------------------------- testimonials */
@@ -771,6 +783,8 @@ html.drawer-open { overflow: hidden; scrollbar-gutter: stable; }   /* no layout 
 .edu-logo {
   width: 72px; height: 72px; display: grid; place-items: center; overflow: hidden;
   background: #FFFFFF; border: 1px solid var(--rule); border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-float);
+  transition: transform var(--t-exit), box-shadow var(--t-exit), border-color var(--t-exit);
 }
 .edu-logo img { width: 56px; height: 56px; object-fit: contain; }
 .edu-school {
@@ -980,7 +994,7 @@ html.drawer-open { overflow: hidden; scrollbar-gutter: stable; }   /* no layout 
 }
 
 /* ----------------------------------------------------------------- footer */
-.btn-light { background: #FFFFFF; color: #243B61; }
+.btn-light { background: #FFFFFF; color: #243B61; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12); }
 .btn-light:hover { color: #243B61; }
 .btn-light svg { width: 16px; height: 16px; }
 /* Cal's own click handler ignores a click whose target is an SVG element, while script.js
@@ -1128,14 +1142,22 @@ html.drawer-open .qa-launcher, html.drawer-open .qa-panel { display: none; }
 @media (hover: hover) {
   .btn-primary:hover { box-shadow: 0 8px 18px rgba(36, 59, 97, 0.28); transform: translateY(-1px);
                         transition-duration: 200ms; transition-timing-function: var(--ease-out); }
-  .btn-secondary:hover { transform: translateY(-1px); transition-duration: 200ms; transition-timing-function: var(--ease-out); }
+  .btn-secondary:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(74, 112, 169, 0.16); transition-duration: 200ms; transition-timing-function: var(--ease-out); }
   .btn-light:hover { transform: translateY(-1px); box-shadow: 0 8px 18px rgba(0, 0, 0, 0.25);
                      transition-duration: 200ms; transition-timing-function: var(--ease-out); }
 
   .stack li:hover {
     background: color-mix(in srgb, var(--soft-blue) 45%, transparent);
     border-color: var(--denim-brand);
+    box-shadow: 0 2px 6px rgba(74, 112, 169, 0.18);
     transform: translateY(-1px); transition-duration: 200ms; transition-timing-function: var(--ease-out);
+  }
+  .edu-logo:hover,
+  .edu-row:hover .edu-logo {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lift);
+    border-color: var(--denim-brand);
+    transition: transform var(--t-enter), box-shadow var(--t-enter), border-color var(--t-enter);
   }
   .work-item:hover {
     background: var(--card); box-shadow: var(--shadow-lift); transform: translateY(-2px);
@@ -1230,6 +1252,7 @@ html.drawer-open .qa-launcher, html.drawer-open .qa-panel { display: none; }
     transition-duration: 0.01ms !important;
   }
   .btn:hover, .btn:active, .btn-light:hover, .stack li:hover,
+  .edu-logo:hover, .edu-row:hover .edu-logo,
   .work-item:hover, .social-link:hover, .wordmark:hover .logo-mark,
   .theme-toggle:hover svg, .theme-toggle:hover .icon-moon, .theme-toggle:hover .icon-sun,
   .cert-more > summary:hover::before, .faq-item > summary:hover::after,
