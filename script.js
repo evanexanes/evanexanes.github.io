@@ -1,42 +1,87 @@
-/* evanexanes.com — Final Prototype (2026-09-28)
-   Three behaviours: the mobile menu disclosure, the theme switch, and the
-   contact-form confirmation. The menu is collapsed at
-   narrow widths, never removed — IA v2 requires the same three items in the
-   same order at 360 px. */
-
+/* evanexanes.com — Pass 2 (2026-09-29)
+   The mobile drawer: at 1024 px and below the hamburger opens a modal side panel with the
+   same three links, Schedule a call, Download CV and the theme switch. Focus moves in and is
+   trapped; Esc, the close button and the shade close it and return focus to the hamburger. */
 (function () {
   'use strict';
 
   var toggle = document.getElementById('nav-toggle');
-  var nav = document.getElementById('site-nav');
-  if (!toggle || !nav) { return; }
+  var drawer = document.getElementById('site-drawer');
+  var shade = document.getElementById('drawer-shade');
+  if (!toggle || !drawer || !shade) { return; }
+  var root = document.documentElement;
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var hideTimer = null;
 
-  function setOpen(open) {
-    nav.classList.toggle('is-open', open);
-    toggle.setAttribute('aria-expanded', String(open));
-    toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+  function isOpen() { return toggle.getAttribute('aria-expanded') === 'true'; }
+
+  function focusables() {
+    var all = drawer.querySelectorAll('a[href], button:not([disabled])');
+    var out = [];
+    for (var i = 0; i < all.length; i++) {
+      if (all[i].getClientRects().length) { out.push(all[i]); }
+    }
+    return out;
+  }
+
+  function open() {
+    clearTimeout(hideTimer);
+    drawer.hidden = false;
+    shade.hidden = false;
+    root.classList.add('drawer-open');
+    toggle.setAttribute('aria-expanded', 'true');
+    toggle.setAttribute('aria-label', 'Close menu');
+    void drawer.offsetWidth;   /* commit the shown frame so the slide-in runs */
+    drawer.classList.add('is-open');
+    shade.classList.add('is-open');
+    var start = drawer.querySelector('.drawer-nav a');   /* the first page link, not the wordmark */
+    var f = focusables();
+    if (start) { start.focus(); } else if (f.length) { f[0].focus(); }
+  }
+
+  function close(returnFocus) {
+    if (!isOpen()) { return; }
+    drawer.classList.remove('is-open');
+    shade.classList.remove('is-open');
+    root.classList.remove('drawer-open');
+    toggle.setAttribute('aria-expanded', 'false');
+    toggle.setAttribute('aria-label', 'Open menu');
+    hideTimer = setTimeout(function () { drawer.hidden = true; shade.hidden = true; },
+                           reduce.matches ? 0 : 260);
+    if (returnFocus) { toggle.focus(); }
   }
 
   toggle.addEventListener('click', function () {
-    setOpen(toggle.getAttribute('aria-expanded') !== 'true');
+    if (isOpen()) { close(true); } else { open(); }
+  });
+  shade.addEventListener('click', function () { close(true); });
+  drawer.addEventListener('click', function (e) {
+    if (e.target.closest('[data-drawer-close]')) { close(true); return; }
+    /* A link (a page, the CV, or Schedule a call, whose pop-up must not sit behind the panel).
+       The link is about to be hidden and a hidden element cannot keep focus, so focus goes back to
+       the hamburger, except for an in-page anchor (#work): there the browser moves focus to the
+       target, and pulling it back to the hamburger would fight that. */
+    var link = e.target.closest('a[href]');
+    if (link) { close(link.getAttribute('href').indexOf('#') < 0); }
   });
 
-  /* Escape closes the menu and returns focus to the control that opened it. */
   document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') {
-      setOpen(false);
-      toggle.focus();
+    if (!isOpen()) { return; }
+    if (e.key === 'Escape') { e.preventDefault(); close(true); return; }   /* the quick-answer panel then leaves this Esc alone */
+    if (e.key !== 'Tab') { return; }
+    var f = focusables();
+    if (!f.length) { return; }
+    var first = f[0], last = f[f.length - 1];
+    if (!drawer.contains(document.activeElement)) {   /* focus escaped (for example to <body>): pull it back in */
+      e.preventDefault(); (e.shiftKey ? last : first).focus(); return;
     }
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
   });
 
-  /* Following a link should not leave an open menu behind it. */
-  nav.addEventListener('click', function (e) {
-    if (e.target.closest('a')) { setOpen(false); }
-  });
-
-  /* Returning to desktop width clears the mobile state. */
-  var wide = window.matchMedia('(min-width: 801px)');
-  var onChange = function (e) { if (e.matches) { setOpen(false); } };
+  /* Returning to desktop width closes the drawer. */
+  var wide = window.matchMedia('(min-width: 1025px)');
+  var onChange = function (e) { if (e.matches) { close(false); } };
   if (wide.addEventListener) { wide.addEventListener('change', onChange); }
   else if (wide.addListener) { wide.addListener(onChange); }
 })();
@@ -48,20 +93,22 @@
   'use strict';
 
   var root = document.documentElement;
-  var btn = document.querySelector('[data-theme-toggle]');
-  if (!btn) { return; }
+  var btns = document.querySelectorAll('[data-theme-toggle]');
+  if (!btns.length) { return; }
 
   function sync() {
-    btn.setAttribute('aria-pressed', String(root.getAttribute('data-theme') === 'dark'));
+    var dark = String(root.getAttribute('data-theme') === 'dark');
+    for (var i = 0; i < btns.length; i++) { btns[i].setAttribute('aria-pressed', dark); }
   }
 
-  btn.addEventListener('click', function () {
+  function flip() {
     var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
     root.setAttribute('data-theme', next);
     try { localStorage.setItem('theme', next); } catch (e) {}
     sync();
-  });
+  }
 
+  for (var i = 0; i < btns.length; i++) { btns[i].addEventListener('click', flip); }
   sync();
 })();
 
@@ -160,6 +207,135 @@
   document.addEventListener('touchstart', onIntent, { passive: true });
 })();
 
+
+/* Quick answers (Pass 2, 2026-09-29). Pre-written answers to common questions: tap a question,
+   read the answer. Not AI, and it says so. No network request, no storage. Built here so a page
+   without scripts simply doesn't show it; Schedule a call and Email me stay on every page anyway. */
+(function () {
+  'use strict';
+
+  var CAL = 'https://cal.com/evan-exanes/30min';
+  var QA = [
+    { q: 'What do you build?', a: 'Business websites: company sites, blogs and online stores. WordPress and Elementor for content teams, hand-written HTML and CSS where a page has to be exact.', link: { href: 'index.html#work', text: 'See the work' } },
+    { q: 'Do you do SEO?', a: 'Yes, technical SEO: structured data (JSON-LD), clean slugs, redirects that don\'t chain, and AEO and GEO so AI assistants can read the site too.' },
+    { q: 'Which tools do you use?', a: 'WordPress, Elementor, ACF, WooCommerce, HTML and CSS. Each case study lists the exact stack.', link: { href: 'index.html#work', text: 'See the case studies' } },
+    { q: 'Where are you based?', a: 'Taguig City, Metro Manila, Philippines, and I work remotely. Calls are booked on Cal.com.' },
+    { q: 'How fast do you reply?', a: 'Within one working day.' },
+    { q: 'How do rates work?', a: 'I quote each project after a 30-minute call, because a four-page company site and a thirty-product store are different jobs. There\'s no public rate card.' },
+    { q: 'Can I see your CV?', a: 'Yes, here it is as a PDF.', link: { href: 'assets/Evan_Exanes_CV.pdf', text: 'Download CV (PDF)', download: 'Evan_Exanes_CV.pdf' } }
+  ];
+
+  function el(tag, cls, text) {
+    var n = document.createElement(tag);
+    if (cls) { n.className = cls; }
+    if (text) { n.textContent = text; }
+    return n;
+  }
+  var ICON_CHAT = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 5h16v11H9l-5 4z"/></svg>';
+  var ICON_X = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+
+  var launcher = el('button', 'qa-launcher');
+  launcher.type = 'button';
+  launcher.id = 'qa-launcher';
+  launcher.setAttribute('aria-label', 'Quick answers');
+  launcher.setAttribute('aria-expanded', 'false');
+  launcher.setAttribute('aria-controls', 'qa-panel');
+  launcher.innerHTML = ICON_CHAT;
+
+  var panel = el('div', 'qa-panel');
+  panel.id = 'qa-panel';
+  panel.setAttribute('role', 'dialog');
+  panel.setAttribute('aria-labelledby', 'qa-title');
+  panel.hidden = true;
+
+  var head = el('div', 'qa-head');
+  var titles = el('div');
+  var title = el('p', 'qa-title', 'Quick answers');
+  title.id = 'qa-title';
+  titles.appendChild(title);
+  titles.appendChild(el('p', 'qa-sub', 'Common questions about working with Evan'));
+  var closeBtn = el('button', 'qa-close');
+  closeBtn.type = 'button';
+  closeBtn.setAttribute('aria-label', 'Close quick answers');
+  closeBtn.innerHTML = ICON_X;
+  head.appendChild(titles);
+  head.appendChild(closeBtn);
+
+  var log = el('div', 'qa-log');
+  log.setAttribute('role', 'log');
+  log.setAttribute('aria-live', 'polite');
+  log.appendChild(el('p', 'qa-bubble', 'Hi! Pick a question below. For anything else, book a call or send an email.'));
+
+  var chips = el('div', 'qa-chips');
+  var foot = el('div', 'qa-foot');
+  foot.innerHTML = '<a class="btn btn-primary" href="' + CAL + '" target="_blank" rel="noopener noreferrer" data-cal-link="evan-exanes/30min" data-cal-namespace="30min" data-cal-config=\'{"layout":"month_view"}\'>Schedule a call<span class="visually-hidden"> (opens a booking calendar in a pop-up or a new tab)</span></a>' +
+                   '<a class="btn btn-secondary" href="mailto:exanesevan@gmail.com">Email me</a>';
+  var note = el('p', 'qa-note', 'Pre-written answers, not AI.');
+
+  panel.appendChild(head);
+  panel.appendChild(log);
+  panel.appendChild(chips);
+  panel.appendChild(foot);
+  panel.appendChild(note);
+  document.body.appendChild(panel);
+  document.body.appendChild(launcher);
+
+  var asked = [];
+
+  function renderChips() {
+    chips.innerHTML = '';
+    var left = [];
+    for (var i = 0; i < QA.length; i++) { if (asked.indexOf(i) < 0) { left.push(i); } }
+    if (!left.length) { asked = []; left = QA.map(function (_, k) { return k; }); }
+    for (var j = 0; j < left.length; j++) {
+      var b = el('button', 'qa-chip', QA[left[j]].q);
+      b.type = 'button';
+      b.setAttribute('data-qa', String(left[j]));
+      chips.appendChild(b);
+    }
+  }
+
+  function answer(i) {
+    var item = QA[i];
+    log.appendChild(el('p', 'qa-bubble qa-bubble--me', item.q));
+    var reply = el('div', 'qa-bubble');
+    reply.appendChild(el('p', '', item.a));
+    if (item.link) {
+      var a = el('a', 'qa-link', item.link.text);
+      a.href = item.link.href;
+      if (item.link.download) { a.setAttribute('download', item.link.download); }
+      reply.appendChild(a);
+    }
+    log.appendChild(reply);
+    log.scrollTop = log.scrollHeight;
+    asked.push(i);
+    renderChips();
+    var first = chips.querySelector('.qa-chip');
+    if (first) { first.focus(); }
+  }
+
+  function setOpen(open) {
+    panel.hidden = !open;
+    launcher.setAttribute('aria-expanded', String(open));
+    document.documentElement.classList.toggle('qa-open', open);
+    if (open) {
+      var first = chips.querySelector('.qa-chip');
+      if (first) { first.focus(); }
+    }
+  }
+
+  launcher.addEventListener('click', function () { setOpen(panel.hidden); });
+  closeBtn.addEventListener('click', function () { setOpen(false); launcher.focus(); });
+  chips.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-qa]');
+    if (b) { answer(Number(b.getAttribute('data-qa'))); }
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && !panel.hidden && !e.defaultPrevented) { setOpen(false); launcher.focus(); }
+  });
+
+  renderChips();
+})();
 
 /* Contact form. Sends through Web3Forms, which emails the message to the site owner.
    The status line only claims success when the service confirms it; otherwise it says
