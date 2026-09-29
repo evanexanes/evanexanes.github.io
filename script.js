@@ -149,10 +149,115 @@
   }
 })();
 
+/* Cookie and embed consent (2026-09-29). Nothing third-party loads until the visitor says yes:
+   the Google Map on Contact (a gate that mounts the iframe) and Cal.com's pop-up script. The
+   choice is one localStorage note, 'site-consent' = 'accepted' | 'declined'. Without scripts the
+   map stays a link and Schedule a call opens Cal.com in a new tab. */
+(function () {
+  'use strict';
+
+  var KEY = 'site-consent';
+  var root = document.documentElement;
+  var banner = null;
+
+  function read() { try { return localStorage.getItem(KEY); } catch (e) { return null; } }
+  function write(v) { try { localStorage.setItem(KEY, v); } catch (e) {} }
+
+  window.siteConsent = { allowed: function () { return read() === 'accepted'; } };
+
+  function mount(fig) {
+    if (fig.querySelector('iframe')) { return; }
+    var f = document.createElement('iframe');
+    f.src = fig.getAttribute('data-map-src');
+    f.title = fig.getAttribute('data-map-title') || 'Map';
+    f.loading = 'lazy';
+    f.referrerPolicy = 'no-referrer-when-downgrade';
+    var gate = fig.querySelector('.map-gate');
+    if (gate) { gate.hidden = true; }
+    fig.insertBefore(f, fig.firstChild);
+  }
+  function unmount(fig) {
+    var f = fig.querySelector('iframe');
+    if (f) { fig.removeChild(f); }
+    var gate = fig.querySelector('.map-gate');
+    if (gate) { gate.hidden = false; }
+  }
+  function eachMap(fn) {
+    var figs = document.querySelectorAll('[data-map-src]');
+    for (var i = 0; i < figs.length; i++) { fn(figs[i]); }
+  }
+
+  function hide() {
+    if (!banner) { return; }
+    banner.parentNode.removeChild(banner);
+    banner = null;
+    root.classList.remove('consent-open');
+    root.style.removeProperty('--consent-h');
+  }
+
+  function choose(v) {
+    var was = read();
+    write(v);
+    hide();
+    if (v === 'accepted') { eachMap(mount); return; }
+    eachMap(unmount);
+    /* Cal.com's script cannot be unloaded; a page that already has it starts over without it. */
+    if (was === 'accepted' && window.Cal && window.Cal.loaded) { location.reload(); }
+  }
+
+  function show(focus) {
+    if (banner) { return; }
+    banner = document.createElement('section');
+    banner.className = 'consent';
+    banner.setAttribute('role', 'region');
+    banner.setAttribute('aria-label', 'Cookies and embedded content');
+    banner.tabIndex = -1;
+    banner.innerHTML =
+      '<p class="consent-title">Cookies and embedded content</p>' +
+      '<p class="consent-text">This site keeps two small notes on your device: your light or dark theme, if you switch it, ' +
+      'and this choice. If you allow embeds, the Google Map on Contact and the Cal.com booking pop-up load too, and Google ' +
+      'and Cal.com may set their own cookies. If you decline, the map stays off and Schedule a call opens Cal.com in a new tab.</p>' +
+      '<div class="consent-actions">' +
+      '<button type="button" class="btn btn-secondary" data-consent="accepted">Allow embeds</button>' +
+      '<button type="button" class="btn btn-secondary" data-consent="declined">Decline</button>' +
+      '</div>';
+    banner.addEventListener('click', function (e) {
+      var b = e.target.closest && e.target.closest('[data-consent]');
+      if (b) { choose(b.getAttribute('data-consent')); }
+    });
+    document.body.insertBefore(banner, document.body.firstChild);
+    root.classList.add('consent-open');
+    root.style.setProperty('--consent-h', (banner.offsetHeight + 24) + 'px');
+    if (focus) { banner.focus(); }
+  }
+
+  window.addEventListener('resize', function () {
+    if (banner) { root.style.setProperty('--consent-h', (banner.offsetHeight + 24) + 'px'); }
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && banner && read() !== null) { hide(); }
+  });
+
+  var reopen = document.querySelectorAll('[data-consent-open]');
+  for (var i = 0; i < reopen.length; i++) {
+    reopen[i].hidden = false;
+    reopen[i].addEventListener('click', function () { show(true); });
+  }
+  var loaders = document.querySelectorAll('[data-map-load]');
+  for (var k = 0; k < loaders.length; k++) {
+    loaders[k].hidden = false;
+    loaders[k].addEventListener('click', function (e) { mount(e.target.closest('[data-map-src]')); });
+  }
+
+  var saved = read();
+  if (saved === 'accepted') { eachMap(mount); }
+  if (saved === null) { show(false); }
+})();
+
 /* Schedule a call (Cal.com pop-up). Every [data-cal-link] is a real link to the
    booking page, so it still works with scripts blocked. Cal's embed script is
    fetched on the first sign of intent (pointer over, focus, touch) on one of
-   those links, not on page load; it then turns the click into a pop-up. Cal's
+   those links, not on page load, and only once embeds are allowed; it then turns the click into a pop-up. Cal's
    embed never calls preventDefault, so once it has really loaded (its
    cal-modal-box element is defined) one capture listener cancels the plain
    click, leaving the pop-up only; a blocked embed leaves the link to open. */
@@ -195,6 +300,7 @@
   }
 
   function onIntent(e) {
+    if (!(window.siteConsent && window.siteConsent.allowed())) { return; }
     if (e.target && e.target.closest && e.target.closest('[data-cal-link]')) { load(); }
   }
   document.addEventListener('click', function (e) {

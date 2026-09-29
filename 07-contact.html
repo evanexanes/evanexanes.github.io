@@ -13,9 +13,8 @@
 <meta property="og:url" content="https://evanexanes.github.io/07-contact.html">
 <meta property="og:locale" content="en_PH">
 <meta name="twitter:card" content="summary">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="preload" href="assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/outfit-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="styles.css">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <!-- Theme before first paint, so a dark-theme visitor never sees a light flash.
@@ -188,10 +187,12 @@
             </ul>
           </div>
 
-          <figure class="map">
-            <iframe src="https://maps.google.com/maps?q=Taguig%20City%2C%20Metro%20Manila&amp;z=12&amp;output=embed"
-                    title="Map: Taguig City, Metro Manila" loading="lazy"
-                    referrerpolicy="no-referrer-when-downgrade"></iframe>
+          <figure class="map" data-map-src="https://maps.google.com/maps?q=Taguig%20City%2C%20Metro%20Manila&amp;z=12&amp;output=embed" data-map-title="Map: Taguig City, Metro Manila">
+            <div class="map-gate">
+              <p class="map-gate-title">The map is switched off</p>
+              <p>Google Maps is not loaded, so Google receives nothing from this visit. Load it for this page, or use Open in Google Maps below.</p>
+              <button type="button" class="btn btn-secondary" data-map-load hidden>Load the map</button>
+            </div>
             <figcaption>Based in Taguig City, Metro Manila ·
               <a href="https://www.google.com/maps/search/?api=1&amp;query=Taguig%20City%2C%20Metro%20Manila" target="_blank" rel="noopener noreferrer">Open in Google Maps<span class="visually-hidden"> (opens in a new tab)</span></a></figcaption>
           </figure>
@@ -382,6 +383,7 @@
     </div>
     <div class="footer-bottom">
       <p class="footer-note">© 2026 Evan Prens P. Exanes</p>
+      <button type="button" class="footer-consent" data-consent-open hidden>Cookie settings</button>
       <a class="footer-top" href="#main">Back to top <span aria-hidden="true">↑</span></a>
     </div>
   </div>
