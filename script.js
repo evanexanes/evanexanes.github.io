@@ -322,6 +322,7 @@
 
   var CAL = 'https://cal.com/evan-exanes/30min';
   var QA = [
+    { q: 'Who is Evan Prens P. Exanes?', a: 'I\'m a web developer and SEO specialist in Metro Manila, Philippines. I build business websites in WordPress and Elementor, write HTML and CSS by hand where a page has to be exact, and do the technical SEO that lets search engines and AI assistants read them. I\'m studying for a Bachelor of Science in Information Technology at Asia Pacific College, 2025 to 2029.', link: { href: '06-about.html', text: 'More about me' } },
     { q: 'What do you build?', a: 'Business websites: company sites, blogs and online stores. WordPress and Elementor for content teams, hand-written HTML and CSS where a page has to be exact.', link: { href: 'index.html#work', text: 'See the work' } },
     { q: 'Do you do SEO?', a: 'Yes, technical SEO: structured data (JSON-LD), clean slugs, redirects that don\'t chain, and AEO and GEO so AI assistants can read the site too.' },
     { q: 'Which tools do you use?', a: 'WordPress, Elementor, ACF, WooCommerce, HTML and CSS. Each case study lists the exact stack.', link: { href: 'index.html#work', text: 'See the case studies' } },
