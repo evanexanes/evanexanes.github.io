@@ -322,7 +322,7 @@
 
   var CAL = 'https://cal.com/evan-exanes/30min';
   var QA = [
-    { q: 'Who is Evan Prens P. Exanes?', a: 'I\'m a web developer and SEO specialist in Metro Manila, Philippines. I build business websites in WordPress and Elementor, write HTML and CSS by hand where a page has to be exact, and do the technical SEO that lets search engines and AI assistants read them. I\'m studying for a Bachelor of Science in Information Technology at Asia Pacific College, 2025 to 2029.', link: { href: '06-about.html', text: 'More about me' } },
+    { q: 'Who is Evan Prens P. Exanes?', a: 'I\'m Evan, a web developer and SEO specialist in Metro Manila, Philippines. I build business websites in WordPress and Elementor, write HTML and CSS by hand where a page has to be exact, and do the technical SEO that lets search engines and AI assistants read them.\n\nI\'m also studying for a Bachelor of Science in Information Technology at Asia Pacific College, 2025 to 2029.', link: { href: '06-about.html', text: 'More about me' } },
     { q: 'What do you build?', a: 'Business websites: company sites, blogs and online stores. WordPress and Elementor for content teams, hand-written HTML and CSS where a page has to be exact.', link: { href: 'index.html#work', text: 'See the work' } },
     { q: 'Do you do SEO?', a: 'Yes, technical SEO: structured data (JSON-LD), clean slugs, redirects that don\'t chain, and AEO and GEO so AI assistants can read the site too.' },
     { q: 'Which tools do you use?', a: 'WordPress, Elementor, ACF, WooCommerce, HTML and CSS. Each case study lists the exact stack.', link: { href: 'index.html#work', text: 'See the case studies' } },
@@ -374,14 +374,16 @@
   log.appendChild(el('p', 'qa-bubble', 'Hi! Pick a question below. For anything else, book a call or send an email.'));
 
   var chips = el('div', 'qa-chips');
+  var body = el('div', 'qa-body');
+  body.appendChild(log);
+  body.appendChild(chips);
   var foot = el('div', 'qa-foot');
   foot.innerHTML = '<a class="btn btn-primary" href="' + CAL + '" target="_blank" rel="noopener noreferrer" data-cal-link="evan-exanes/30min" data-cal-namespace="30min" data-cal-config=\'{"layout":"month_view"}\'>Schedule a call<span class="visually-hidden"> (opens a booking calendar in a pop-up or a new tab)</span></a>' +
                    '<a class="btn btn-secondary" href="mailto:exanesevan@gmail.com">Email me</a>';
   var note = el('p', 'qa-note', 'Pre-written answers, not AI.');
 
   panel.appendChild(head);
-  panel.appendChild(log);
-  panel.appendChild(chips);
+  panel.appendChild(body);
   panel.appendChild(foot);
   panel.appendChild(note);
   document.body.appendChild(panel);
@@ -406,7 +408,7 @@
     var item = QA[i];
     log.appendChild(el('p', 'qa-bubble qa-bubble--me', item.q));
     var reply = el('div', 'qa-bubble');
-    reply.appendChild(el('p', '', item.a));
+    item.a.split('\n\n').forEach(function (para) { reply.appendChild(el('p', 'qa-para', para)); });
     if (item.link) {
       var a = el('a', 'qa-link', item.link.text);
       a.href = item.link.href;
@@ -414,11 +416,13 @@
       reply.appendChild(a);
     }
     log.appendChild(reply);
-    log.scrollTop = log.scrollHeight;
     asked.push(i);
     renderChips();
+    /* Keep the answer, not the next chip, in view: the question and its reply scroll to the top of the body. */
+    var question = reply.previousSibling;
+    body.scrollTop += question.getBoundingClientRect().top - body.getBoundingClientRect().top - 8;
     var first = chips.querySelector('.qa-chip');
-    if (first) { first.focus(); }
+    if (first) { first.focus({ preventScroll: true }); }
   }
 
   function setOpen(open) {
