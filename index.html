@@ -270,51 +270,64 @@
     </div>
   </section>
 
-  <!-- Addendum 1 (D18): the placeholder testimonials are replaced by real findings from the
-       peer test of the site map (three classmates, 14 September 2026). The findings are
-       summarised, not quoted, and the testers stay unnamed because no consent was recorded.
+  <!-- "What people say": three placeholder cards (lorem ipsum, labelled on the page).
        A section of Home, not a fourth branch: IA v2 still has three menu items at depth 2.
-       No Review or AggregateRating JSON-LD: there is no rating to claim. -->
-  <section class="section" id="testing" aria-labelledby="testing-title">
+       No Review or AggregateRating JSON-LD: there is no rating to claim.
+       Photos: swap each .quote-avatar src (and give it a real alt) when permissioned
+       photos arrive. -->
+  <section class="section" id="testimonials" aria-labelledby="testimonials-title">
     <div class="container">
       <div class="section-head">
-        <h2 class="section-title" id="testing-title">What testing changed</h2>
+        <h2 class="section-title" id="testimonials-title">From people I have worked with</h2>
         <p class="section-lede">
-          Three classmates tested the site map before I built it. They raised 13 separate
-          points: I adopted 10 and declined 3.
+          Short comments from classmates and collaborators on what working with me was like.
         </p>
+        <p class="placeholder-note">Placeholder text — real quotes to follow, with permission</p>
       </div>
 
-      <ul class="finding-list">
-        <li class="finding">
-          <div class="finding-said">
-            <p class="finding-label">What all three testers found</p>
-            <p>The top-level menu label &ldquo;Proof&rdquo; was unclear.</p>
-          </div>
-          <div class="finding-link" aria-hidden="true"><span class="finding-line"></span><span>so I</span></div>
-          <div class="finding-did">
-            <p class="finding-label">What I changed</p>
-            <p>Removed it from the menu. Certificates moved to the About page.</p>
-          </div>
-        </li>
-        <li class="finding">
-          <div class="finding-said">
-            <p class="finding-label">What two testers found</p>
-            <p>Live-site and code links appeared in two places.</p>
-          </div>
-          <div class="finding-link" aria-hidden="true"><span class="finding-line"></span><span>so I</span></div>
-          <div class="finding-did">
-            <p class="finding-label">What I changed</p>
-            <p>They now live only inside each case study.</p>
-          </div>
-        </li>
-      </ul>
+      <div class="quote-grid">
+        <figure class="quote-card">
+          <p class="stars" role="img" aria-label="Rated 5 out of 5"><span aria-hidden="true">★★★★★</span></p>
+          <blockquote>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+          </blockquote>
+          <figcaption>
+            <img class="quote-avatar" src="assets/avatar-placeholder.svg" alt="" width="48" height="48">
+            <span class="quote-who">
+              <span class="quote-name">Name to follow</span>
+              <span class="quote-role">Classmate, group project</span>
+            </span>
+          </figcaption>
+        </figure>
 
-      <p class="finding-note">
-        Only one of the three replies answered the four find-it tasks: all four found
-        directly, ease 3 out of 5. The other two sent written critiques, so I report those
-        tasks as not answered, not as failures. Peer test of 14 September 2026.
-      </p>
+        <figure class="quote-card">
+          <p class="stars" role="img" aria-label="Rated 5 out of 5"><span aria-hidden="true">★★★★★</span></p>
+          <blockquote>
+            <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+          </blockquote>
+          <figcaption>
+            <img class="quote-avatar" src="assets/avatar-placeholder.svg" alt="" width="48" height="48">
+            <span class="quote-who">
+              <span class="quote-name">Name to follow</span>
+              <span class="quote-role">Peer reviewer</span>
+            </span>
+          </figcaption>
+        </figure>
+
+        <figure class="quote-card">
+          <p class="stars" role="img" aria-label="Rated 4 out of 5"><span aria-hidden="true">★★★★<span class="off">★</span></span></p>
+          <blockquote>
+            <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+          </blockquote>
+          <figcaption>
+            <img class="quote-avatar" src="assets/avatar-placeholder.svg" alt="" width="48" height="48">
+            <span class="quote-who">
+              <span class="quote-name">Name to follow</span>
+              <span class="quote-role">Classmate, research group</span>
+            </span>
+          </figcaption>
+        </figure>
+      </div>
     </div>
   </section>
 
