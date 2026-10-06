@@ -251,10 +251,7 @@
 
   var saved = read();
   if (saved === 'accepted') { eachMap(mount); }
-  /* Only a page that can load something third-party asks on arrival (Contact, with its map). Elsewhere
-     nothing loads without a yes, Schedule a call opens in a new tab, and the choice stays one tap away
-     in the footer's Cookie settings, so the banner never covers the first screen. */
-  if (saved === null && document.querySelector('[data-map-src]')) { show(false); }
+  if (saved === null) { show(false); }
 })();
 
 /* Schedule a call (Cal.com pop-up). Every [data-cal-link] is a real link to the
