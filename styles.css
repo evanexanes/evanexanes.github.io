@@ -1083,25 +1083,6 @@ html.drawer-open { overflow: hidden; scrollbar-gutter: stable; }   /* no layout 
   .footer-bottom { padding-right: 72px; }   /* keeps Back to top clear of the assistant launcher */
 }
 
-/* ------------------------------------------------------- measured, not claimed */
-/* Home: Lighthouse figures, measured 2026-10-05. Two plain tables, no stat cards. Table text uses
-   --ink and --slate, which are theme-aware tokens, so both themes keep their contrast. */
-.measure-block + .measure-block { margin-top: 48px; }
-.measure-heading { font-family: var(--font-display); font-size: 1.25rem; font-weight: 600; color: var(--black); }
-.measure-table { width: 100%; max-width: 760px; margin-top: 14px; border-collapse: collapse; font-size: 0.9375rem; }
-.measure-table caption { text-align: left; padding-bottom: 10px; font-size: 0.875rem; color: var(--slate); }
-.measure-table th, .measure-table td { padding: 12px 10px; text-align: left; border-bottom: 1px solid var(--rule); vertical-align: top; }
-.measure-table thead th { font-weight: 600; color: var(--ink); border-bottom: 2px solid var(--rule-strong); }
-.measure-table tbody th { font-weight: 500; color: var(--ink); }
-.measure-table td { font-variant-numeric: tabular-nums; color: var(--ink); }
-.measure-note { margin-top: 16px; max-width: 62ch; color: var(--slate); }
-.measure-note + .measure-note { margin-top: 10px; }
-.measure-method { margin-top: 32px; max-width: 62ch; font-size: 0.875rem; color: var(--slate); }
-@media (max-width: 480px) {
-  .measure-table { font-size: 0.875rem; }
-  .measure-table th, .measure-table td { padding: 10px 6px; }
-}
-
 /* A link inside running text must be told apart by more than colour (WCAG 1.4.1). */
 main p a:not(.btn):not(.qa-link):not(.btn-ghost) { text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
 
