@@ -123,22 +123,25 @@
           <a class="btn btn-secondary" href="index.html#work">See the work</a>
         </div>
 
-        <!-- Stats (2026-10-08): three numbers a visitor can check. "8 case studies" counts the
-             LIVE site: the publish step adds two case studies to the six in this folder, and
-             publish_portfolio.py fails if this number and the published case-study pages disagree.
-             The real number is in the markup; script.js counts it up from 0 once, on sight. -->
+        <!-- Stats (2026-10-09, option E): one card, three numbers, and each one links to where
+             it can be checked. "8 case studies" counts the LIVE site: the publish step adds two
+             case studies to the six in this folder, and publish_portfolio.py fails if this number
+             and the published case-study pages disagree. script.js counts each number up once. -->
         <dl class="about-stats">
           <div class="about-stat">
             <dt>completed certificates</dt>
-            <dd><span class="stat-num" data-count-to="36" aria-hidden="true">36</span><span class="visually-hidden">36</span></dd>
+            <dd class="stat-value"><span class="stat-num" data-count-to="33" aria-hidden="true">33</span><span class="visually-hidden">33</span></dd>
+            <dd class="stat-proof"><a href="#certificates">PDF for every certificate</a></dd>
           </div>
           <div class="about-stat">
             <dt>case studies on this site</dt>
-            <dd><span class="stat-num" data-count-to="8" aria-hidden="true">8</span><span class="visually-hidden">8</span></dd>
+            <dd class="stat-value"><span class="stat-num" data-count-to="8" aria-hidden="true">8</span><span class="visually-hidden">8</span></dd>
+            <dd class="stat-proof"><a href="index.html#work">Read them</a></dd>
           </div>
           <div class="about-stat">
             <dt>public repositories on GitHub</dt>
-            <dd><span class="stat-num" data-count-to="10" aria-hidden="true">10</span><span class="visually-hidden">10</span></dd>
+            <dd class="stat-value"><span class="stat-num" data-count-to="10" aria-hidden="true">10</span><span class="visually-hidden">10</span></dd>
+            <dd class="stat-proof"><a href="https://github.com/evanexanes" target="_blank" rel="noopener noreferrer">Open GitHub <span aria-hidden="true">↗</span><span class="visually-hidden"> (opens in a new tab)</span></a></dd>
           </div>
         </dl>
       </div>
@@ -277,113 +280,107 @@
     </div>
   </section>
 
-  <!-- Addendum 1 (D17): five recognised credentials first, all 36 behind one disclosure.
-       The issuer text follows the vault catalog's issuing body. Each featured row links to the
-       certificate PDF in assets/certificates/. -->
+  <!-- Certificates (2026-10-09): 33 certificates, grouped by subject, no hand-picked "featured"
+       row. Four subject tiles say what the list covers and jump into it; the list itself stays
+       behind one disclosure, and script.js opens it when a tile is used. Every row links to its
+       PDF in assets/certificates/. A Verify link appears only where the issuer's own page was
+       tested on 2026-10-09 and shows the record (13 of 33). The eight Microsoft 365 course IDs
+       from September 2025 answer 404 on LinkedIn, so they carry the PDF only. -->
   <section class="section" id="certificates">
     <div class="container">
-      <div class="section-head">
-        <h2 class="section-title">36 completed certificates</h2>
-        <p class="section-lede">
-          Most are LinkedIn Learning, SoloLearn, Cisco Networking Academy and IBM courses taken
-          alongside coursework. These five are the ones worth reading first.
-        </p>
+      <div class="cert-head">
+        <div class="section-head">
+          <h2 class="section-title">33 certificates, each with its proof</h2>
+          <p class="section-lede">
+            Short courses I finished alongside my degree, most of them on LinkedIn Learning and
+            DataCamp. Every certificate opens as a PDF. Where the issuer keeps a public record,
+            a Verify link opens it on their site.
+          </p>
+        </div>
+        <dl class="cert-key">
+          <div><dt>PDF</dt><dd>The certificate file, hosted on this site. All 33.</dd></div>
+          <div><dt class="cert-key-verify">Verify <span aria-hidden="true">↗</span></dt><dd>The issuer's own record, on Credly or LinkedIn. 13 of the 33.</dd></div>
+        </dl>
       </div>
 
-      <ul class="cert-featured">
-        <li class="cert-row">
-          <span class="cert-issuer">IBM SkillsBuild</span>
-          <span class="cert-title">Career Management Essentials<span class="cert-subject">Business, project management &amp; tools</span></span>
-          <a class="cert-verify" href="assets/certificates/ibm-career-management-essentials.pdf" target="_blank" rel="noopener" aria-label="Verify: Career Management Essentials (PDF, opens in a new tab)">Verify</a>
-        </li>
-        <li class="cert-row">
-          <span class="cert-issuer">Linux Foundation</span>
-          <span class="cert-title">Introduction to Linux (LFS101)<span class="cert-subject">Networking, cloud &amp; Linux</span></span>
-          <a class="cert-verify" href="assets/certificates/linux-foundation-introduction-to-linux.pdf" target="_blank" rel="noopener" aria-label="Verify: Introduction to Linux (PDF, opens in a new tab)">Verify</a>
-        </li>
-        <li class="cert-row">
-          <span class="cert-issuer">IBM SkillsBuild</span>
-          <span class="cert-title">Project Management Fundamentals<span class="cert-subject">Business, project management &amp; tools</span></span>
-          <a class="cert-verify" href="assets/certificates/ibm-project-management-fundamentals.pdf" target="_blank" rel="noopener" aria-label="Verify: Project Management Fundamentals (PDF, opens in a new tab)">Verify</a>
-        </li>
-        <li class="cert-row">
-          <span class="cert-issuer">Cisco Networking Academy</span>
-          <span class="cert-title">Exploring Networking with Cisco Packet Tracer<span class="cert-subject">Networking, cloud &amp; Linux</span></span>
-          <a class="cert-verify" href="assets/certificates/cisco-exploring-networking-packet-tracer.pdf" target="_blank" rel="noopener" aria-label="Verify: Exploring Networking with Cisco Packet Tracer (PDF, opens in a new tab)">Verify</a>
-        </li>
-        <li class="cert-row">
-          <span class="cert-issuer">Oracle / CodeCombat</span>
-          <span class="cert-title">Java Foundations<span class="cert-subject">Programming &amp; data structures</span></span>
-          <a class="cert-verify" href="assets/certificates/oracle-java-foundations.pdf" target="_blank" rel="noopener" aria-label="Verify: Java Foundations (PDF, opens in a new tab)">Verify</a>
-        </li>
-      </ul>
+      <nav class="cert-topics" aria-label="Certificates by subject">
+        <a class="cert-topic" href="#cert-programming"><span class="cert-topic-n">15</span><span class="cert-topic-name">Programming &amp; data structures</span><span class="cert-topic-covers">Java, Python, recursion, linked lists, stacks and trees</span></a>
+        <a class="cert-topic" href="#cert-business"><span class="cert-topic-n">12</span><span class="cert-topic-name">Business, project management &amp; Microsoft 365</span><span class="cert-topic-covers">Project management, career skills and the Microsoft 365 apps</span></a>
+        <a class="cert-topic" href="#cert-networking"><span class="cert-topic-n">3</span><span class="cert-topic-name">Networking &amp; Linux</span><span class="cert-topic-covers">Cisco Packet Tracer and the Linux command line</span></a>
+        <a class="cert-topic" href="#cert-ai"><span class="cert-topic-n">3</span><span class="cert-topic-name">AI &amp; workspace tools</span><span class="cert-topic-covers">Prompt engineering, ChatGPT agents and Notion</span></a>
+      </nav>
 
-      <details class="cert-more cert-all">
-        <summary>Show all 36 certificates</summary>
+      <details class="cert-more cert-all" id="cert-list">
+        <summary>Show all 33 certificates</summary>
         <div class="cert-groups">
-          <div class="cert-group">
-            <h3>Programming &amp; data structures <span class="cert-count">13 certificates</span></h3>
-            <ul>
-              <li><span class="c-title">Java Foundations</span><span class="c-issuer">Oracle / CodeCombat</span></li>
-              <li><span class="c-title">Introduction to Object-Oriented Programming in Java</span><span class="c-issuer">SoloLearn</span></li>
-              <li><span class="c-title">Python Data Structures: Trees</span><span class="c-issuer">LinkedIn Learning</span></li>
-              <li><span class="c-title">Introduction to Java</span><span class="c-issuer">SoloLearn</span></li>
-              <li><span class="c-title">Intermediate Java</span><span class="c-issuer">SoloLearn</span></li>
-              <li><span class="c-title">Learning Java 11</span><span class="c-issuer">LinkedIn Learning</span></li>
-              <li><span class="c-title">Python for Non-Programmers</span><span class="c-issuer">LinkedIn Learning</span></li>
-              <li><span class="c-title">Introduction to Python</span><span class="c-issuer">SoloLearn</span></li>
-              <li><span class="c-title">Learning Python</span><span class="c-issuer">LinkedIn Learning</span></li>
-              <li><span class="c-title">Intermediate Python</span><span class="c-issuer">SoloLearn</span></li>
-              <li><span class="c-title">Python Data Structures: Linked Lists</span><span class="c-issuer">LinkedIn Learning</span></li>
-              <li><span class="c-title">Python Data Structures: Stacks, Deques, Queues</span><span class="c-issuer">LinkedIn Learning</span></li>
-              <li><span class="c-title">CodeCombat Completion Certificate</span><span class="c-issuer">CodeCombat</span></li>
-            </ul>
+          <div class="cert-col">
+            <div class="cert-group" id="cert-programming">
+              <h3>Programming &amp; data structures <span class="cert-count">15 certificates</span></h3>
+              <ul>
+                <li><span class="c-name"><span class="c-title">Java Foundations</span><span class="c-issuer">Oracle Academy</span></span><a class="c-pdf" href="assets/certificates/oracle-java-foundations.pdf" target="_blank" rel="noopener" aria-label="Java Foundations certificate (PDF, opens in a new tab)">PDF</a></li>
+                <li><span class="c-name"><span class="c-title">Introduction to Java</span><span class="c-issuer">DataCamp</span></span><a class="c-pdf" href="assets/certificates/datacamp-introduction-to-java.pdf" target="_blank" rel="noopener" aria-label="Introduction to Java certificate (PDF, opens in a new tab)">PDF</a></li>
+                <li><span class="c-name"><span class="c-title">Intermediate Java</span><span class="c-issuer">DataCamp</span></span><a class="c-pdf" href="assets/certificates/datacamp-intermediate-java.pdf" target="_blank" rel="noopener" aria-label="Intermediate Java certificate (PDF, opens in a new tab)">PDF</a></li>
+                <li><span class="c-name"><span class="c-title">Introduction to Object-Oriented Programming in Java</span><span class="c-issuer">DataCamp</span></span><a class="c-pdf" href="assets/certificates/datacamp-oop-in-java.pdf" target="_blank" rel="noopener" aria-label="Introduction to Object-Oriented Programming in Java certificate (PDF, opens in a new tab)">PDF</a></li>
+                <li><span class="c-name"><span class="c-title">Learning Java 11</span><span class="c-issuer">LinkedIn Learning</span></span><a class="c-pdf" href="assets/certificates/linkedin-learning-java-11.pdf" target="_blank" rel="noopener" aria-label="Learning Java 11 certificate (PDF, opens in a new tab)">PDF</a><a class="c-verify" href="https://www.linkedin.com/learning/certificates/5e227eea0f0b5d51c6be31c85f93ede5e0e9e613166cddbca9b652727cee5e72" target="_blank" rel="noopener noreferrer" aria-label="Verify Learning Java 11 on LinkedIn Learning (opens in a new tab)">Verify <span aria-hidden="true">↗</span></a></li>
+                <li><span class="c-name"><span class="c-title">Introduction to Python</span><span class="c-issuer">DataCamp</span></span><a class="c-pdf" href="assets/certificates/datacamp-introduction-to-python.pdf" target="_blank" rel="noopener" aria-label="Introduction to Python certificate (PDF, opens in a new tab)">PDF</a></li>
+                <li><span class="c-name"><span class="c-title">Intermediate Python</span><span class="c-issuer">DataCamp</span></span><a class="c-pdf" href="assets/certificates/datacamp-intermediate-python.pdf" target="_blank" rel="noopener" aria-label="Intermediate Python certificate (PDF, opens in a new tab)">PDF</a></li>
+                <li><span class="c-name"><span class="c-title">Python for Non-Programmers</span><span class="c-issuer">LinkedIn Learning</span></span><a class="c-pdf" href="assets/certificates/linkedin-python-for-non-programmers.pdf" target="_blank" rel="noopener" aria-label="Python for Non-Programmers certificate (PDF, opens in a new tab)">PDF</a><a class="c-verify" href="https://www.linkedin.com/learning/certificates/feb793d12759a1afca8086e19fe1069960782a7a439c50d6dd40aabc8b69b02c" target="_blank" rel="noopener noreferrer" aria-label="Verify Python for Non-Programmers on LinkedIn Learning (opens in a new tab)">Verify <span aria-hidden="true">↗</span></a></li>
+                <li><span class="c-name"><span class="c-title">Learning Python</span><span class="c-issuer">LinkedIn Learning</span></span><a class="c-pdf" href="assets/certificates/linkedin-learning-python.pdf" target="_blank" rel="noopener" aria-label="Learning Python certificate (PDF, opens in a new tab)">PDF</a><a class="c-verify" href="https://www.linkedin.com/learning/certificates/ae433077758f1baa7e156836f4fc7a4d118c8458b0f07b454a052c8894a0c3da" target="_blank" rel="noopener noreferrer" aria-label="Verify Learning Python on LinkedIn Learning (opens in a new tab)">Verify <span aria-hidden="true">↗</span></a></li>
+                <li><span class="c-name"><span class="c-title">Python: Recursion</span><span class="c-issuer">LinkedIn Learning</span></span><a class="c-pdf" href="assets/certificates/linkedin-python-recursion.pdf" target="_blank" rel="noopener" aria-label="Python: Recursion certificate (PDF, opens in a new tab)">PDF</a><a class="c-verify" href="https://www.linkedin.com/learning/certificates/c348df6c920cf55e7f144c3b630d49f7d7a706f427ddc0bc5f95dc8d98a93ff4" target="_blank" rel="noopener noreferrer" aria-label="Verify Python: Recursion on LinkedIn Learning (opens in a new tab)">Verify <span aria-hidden="true">↗</span></a></li>
+                <li><span class="c-name"><span class="c-title">Python Data Structures: Linked Lists</span><span class="c-issuer">LinkedIn Learning</span></span><a class="c-pdf" href="assets/certificates/linkedin-python-linked-lists.pdf" target="_blank" rel="noopener" aria-label="Python Data Structures: Linked Lists certificate (PDF, opens in a new tab)">PDF</a><a class="c-verify" href="https://www.linkedin.com/learning/certificates/f843a45ca3bf9e12fe1662be8169087d56285497dfaf67b48d5c46a107e584fd" target="_blank" rel="noopener noreferrer" aria-label="Verify Python Data Structures: Linked Lists on LinkedIn Learning (opens in a new tab)">Verify <span aria-hidden="true">↗</span></a></li>
+                <li><span class="c-name"><span class="c-title">Python Data Structures: Stacks, Deques, and Queues</span><span class="c-issuer">LinkedIn Learning</span></span><a class="c-pdf" href="assets/certificates/linkedin-python-stacks-deques-queues.pdf" target="_blank" rel="noopener" aria-label="Python Data Structures: Stacks, Deques, and Queues certificate (PDF, opens in a new tab)">PDF</a><a class="c-verify" href="https://www.linkedin.com/learning/certificates/aa478b8592f4f62399150c522a1813aeb30bbbe668d911d863fcc60b59531376" target="_blank" rel="noopener noreferrer" aria-label="Verify Python Data Structures: Stacks, Deques, and Queues on LinkedIn Learning (opens in a new tab)">Verify <span aria-hidden="true">↗</span></a></li>
+                <li><span class="c-name"><span class="c-title">Python Data Structures: Trees</span><span class="c-issuer">LinkedIn Learning</span></span><a class="c-pdf" href="assets/certificates/linkedin-python-trees.pdf" target="_blank" rel="noopener" aria-label="Python Data Structures: Trees certificate (PDF, opens in a new tab)">PDF</a><a class="c-verify" href="https://www.linkedin.com/learning/certificates/6a6ff6dcc10b8d3bce9f21509a5ac1b4ba8550913bf71d9069ee4c2b3d0a6e24" target="_blank" rel="noopener noreferrer" aria-label="Verify Python Data Structures: Trees on LinkedIn Learning (opens in a new tab)">Verify <span aria-hidden="true">↗</span></a></li>
+                <li><span class="c-name"><span class="c-title">Introduction to Computer Science (Python)</span><span class="c-issuer">CodeCombat</span></span><a class="c-pdf" href="assets/certificates/codecombat-introduction-to-computer-science.pdf" target="_blank" rel="noopener" aria-label="Introduction to Computer Science (Python) certificate (PDF, opens in a new tab)">PDF</a></li>
+                <li><span class="c-name"><span class="c-title">Get Ready for Your Coding Interview</span><span class="c-issuer">LinkedIn Learning</span></span><a class="c-pdf" href="assets/certificates/linkedin-coding-interview.pdf" target="_blank" rel="noopener" aria-label="Get Ready for Your Coding Interview certificate (PDF, opens in a new tab)">PDF</a><a class="c-verify" href="https://www.linkedin.com/learning/certificates/bde98190f9bc829b3e002f420eb8a1f0901a27b014258cfab507d4e3d77b6e85" target="_blank" rel="noopener noreferrer" aria-label="Verify Get Ready for Your Coding Interview on LinkedIn Learning (opens in a new tab)">Verify <span aria-hidden="true">↗</span></a></li>
+              </ul>
+            </div>
           </div>
-          <div class="cert-group">
-            <h3>Networking, cloud &amp; Linux <span class="cert-count">3 certificates</span></h3>
-            <ul>
-              <li><span class="c-title">Getting Started with Cisco Packet Tracer</span></li>
-              <li><span class="c-title">Exploring Networking with Cisco Packet Tracer</span></li>
-              <li><span class="c-title">Introduction to Linux (LFS101)</span><span class="c-issuer">Linux Foundation</span></li>
-            </ul>
-          </div>
-          <div class="cert-group">
-            <h3>AI, design &amp; innovation <span class="cert-count">4 certificates</span></h3>
-            <ul>
-              <li><span class="c-title">IBM Enterprise Design Thinking Practitioner</span></li>
-              <li><span class="c-title">Understanding Prompt Engineering</span></li>
-              <li><span class="c-title">Prompt Engineering and AI Agents with ChatGPT</span></li>
-              <li><span class="c-title">Notion Academy Certification</span></li>
-            </ul>
-          </div>
-          <div class="cert-group">
-            <h3>Business, project management &amp; tools <span class="cert-count">13 certificates</span></h3>
-            <ul>
-              <li><span class="c-title">Project Management Fundamentals</span><span class="c-issuer">IBM SkillsBuild</span></li>
-              <li><span class="c-title">Career Management Essentials</span><span class="c-issuer">IBM SkillsBuild</span></li>
-              <li><span class="c-title">Excel Essential Training (Microsoft 365)</span><span class="c-issuer">LinkedIn Learning</span></li>
-              <li><span class="c-title">Excel Essential Training (Microsoft 365), NASBA credit</span><span class="c-issuer">LinkedIn Learning</span></li>
-              <li><span class="c-title">Microsoft Teams Essential Training</span><span class="c-issuer">LinkedIn Learning</span></li>
-              <li><span class="c-title">OneDrive for Business Essential Training</span><span class="c-issuer">LinkedIn Learning</span></li>
-              <li><span class="c-title">OneNote for Windows 10 Essential Training</span><span class="c-issuer">LinkedIn Learning</span></li>
-              <li><span class="c-title">Outlook Essential Training (Microsoft 365)</span><span class="c-issuer">LinkedIn Learning</span></li>
-              <li><span class="c-title">PowerPoint Essential Training (Microsoft 365)</span><span class="c-issuer">LinkedIn Learning</span></li>
-              <li><span class="c-title">Word Essential Training (Microsoft 365)</span><span class="c-issuer">LinkedIn Learning</span></li>
-              <li><span class="c-title">Learning SharePoint Online</span><span class="c-issuer">LinkedIn Learning</span></li>
-              <li><span class="c-title">Team Collaboration in Microsoft 365</span><span class="c-issuer">LinkedIn Learning</span></li>
-              <li><span class="c-title">Working Smarter with Microsoft 365</span><span class="c-issuer">LinkedIn Learning</span></li>
-            </ul>
-          </div>
-          <div class="cert-group">
-            <h3>Communication <span class="cert-count">3 certificates</span></h3>
-            <ul>
-              <li><span class="c-title">English for IT, Part 1</span></li>
-              <li><span class="c-title">English for IT, Part 2</span></li>
-              <li><span class="c-title">Master LinkedIn Learning Certificate</span></li>
-            </ul>
+          <div class="cert-col">
+            <div class="cert-group" id="cert-business">
+              <h3>Business, project management &amp; Microsoft 365 <span class="cert-count">12 certificates</span></h3>
+              <ul>
+                <li><span class="c-name"><span class="c-title">Project Management Fundamentals</span><span class="c-issuer">IBM SkillsBuild · Credly</span></span><a class="c-pdf" href="assets/certificates/ibm-project-management-fundamentals.pdf" target="_blank" rel="noopener" aria-label="Project Management Fundamentals certificate (PDF, opens in a new tab)">PDF</a><a class="c-verify" href="https://www.credly.com/go/Py6nTpje" target="_blank" rel="noopener noreferrer" aria-label="Verify Project Management Fundamentals on Credly (opens in a new tab)">Verify <span aria-hidden="true">↗</span></a></li>
+                <li><span class="c-name"><span class="c-title">Career Management Essentials</span><span class="c-issuer">IBM SkillsBuild · Credly</span></span><a class="c-pdf" href="assets/certificates/ibm-career-management-essentials.pdf" target="_blank" rel="noopener" aria-label="Career Management Essentials certificate (PDF, opens in a new tab)">PDF</a><a class="c-verify" href="https://www.credly.com/badges/1df012a1-92ec-438c-b377-a71666d5154f" target="_blank" rel="noopener noreferrer" aria-label="Verify Career Management Essentials on Credly (opens in a new tab)">Verify <span aria-hidden="true">↗</span></a></li>
+                <li><span class="c-name"><span class="c-title">Excel Essential Training (Microsoft 365)</span><span class="c-issuer">LinkedIn Learning · NASBA CPE credit</span></span><a class="c-pdf" href="assets/certificates/linkedin-excel-essential-training.pdf" target="_blank" rel="noopener" aria-label="Excel Essential Training (Microsoft 365) certificate (PDF, opens in a new tab)">PDF</a><a class="c-verify" href="https://www.linkedin.com/learning/certificates/970d48c12590f7038524f17ba11b0b4f202b026212ab518ae66fc94e4de1fef3" target="_blank" rel="noopener noreferrer" aria-label="Verify Excel Essential Training (Microsoft 365) on LinkedIn Learning (opens in a new tab)">Verify <span aria-hidden="true">↗</span></a></li>
+                <li><span class="c-name"><span class="c-title">Microsoft Teams Essential Training</span><span class="c-issuer">LinkedIn Learning</span></span><a class="c-pdf" href="assets/certificates/linkedin-teams-essential-training.pdf" target="_blank" rel="noopener" aria-label="Microsoft Teams Essential Training certificate (PDF, opens in a new tab)">PDF</a></li>
+                <li><span class="c-name"><span class="c-title">Outlook Essential Training (Microsoft 365)</span><span class="c-issuer">LinkedIn Learning</span></span><a class="c-pdf" href="assets/certificates/linkedin-outlook-essential-training.pdf" target="_blank" rel="noopener" aria-label="Outlook Essential Training (Microsoft 365) certificate (PDF, opens in a new tab)">PDF</a></li>
+                <li><span class="c-name"><span class="c-title">Word Essential Training (Microsoft 365)</span><span class="c-issuer">LinkedIn Learning</span></span><a class="c-pdf" href="assets/certificates/linkedin-word-essential-training.pdf" target="_blank" rel="noopener" aria-label="Word Essential Training (Microsoft 365) certificate (PDF, opens in a new tab)">PDF</a></li>
+                <li><span class="c-name"><span class="c-title">PowerPoint Essential Training (Microsoft 365)</span><span class="c-issuer">LinkedIn Learning</span></span><a class="c-pdf" href="assets/certificates/linkedin-powerpoint-essential-training.pdf" target="_blank" rel="noopener" aria-label="PowerPoint Essential Training (Microsoft 365) certificate (PDF, opens in a new tab)">PDF</a></li>
+                <li><span class="c-name"><span class="c-title">OneDrive for Business Essential Training</span><span class="c-issuer">LinkedIn Learning</span></span><a class="c-pdf" href="assets/certificates/linkedin-onedrive-essential-training.pdf" target="_blank" rel="noopener" aria-label="OneDrive for Business Essential Training certificate (PDF, opens in a new tab)">PDF</a></li>
+                <li><span class="c-name"><span class="c-title">OneNote for Windows 10 Essential Training</span><span class="c-issuer">LinkedIn Learning</span></span><a class="c-pdf" href="assets/certificates/linkedin-onenote-essential-training.pdf" target="_blank" rel="noopener" aria-label="OneNote for Windows 10 Essential Training certificate (PDF, opens in a new tab)">PDF</a></li>
+                <li><span class="c-name"><span class="c-title">Learning SharePoint Online</span><span class="c-issuer">LinkedIn Learning</span></span><a class="c-pdf" href="assets/certificates/linkedin-sharepoint-online.pdf" target="_blank" rel="noopener" aria-label="Learning SharePoint Online certificate (PDF, opens in a new tab)">PDF</a></li>
+                <li><span class="c-name"><span class="c-title">Team Collaboration in Microsoft 365</span><span class="c-issuer">LinkedIn Learning</span></span><a class="c-pdf" href="assets/certificates/linkedin-team-collaboration-m365.pdf" target="_blank" rel="noopener" aria-label="Team Collaboration in Microsoft 365 certificate (PDF, opens in a new tab)">PDF</a></li>
+                <li><span class="c-name"><span class="c-title">Working Smarter with Microsoft 365 (learning path)</span><span class="c-issuer">LinkedIn Learning</span></span><a class="c-pdf" href="assets/certificates/linkedin-working-smarter-m365.pdf" target="_blank" rel="noopener" aria-label="Working Smarter with Microsoft 365 certificate (PDF, opens in a new tab)">PDF</a><a class="c-verify" href="https://www.linkedin.com/learning/certificates/b229408dddc86561ad20c3d65e0150f4ab546a605e5cd14cfa199cd2661740fd" target="_blank" rel="noopener noreferrer" aria-label="Verify Working Smarter with Microsoft 365 on LinkedIn Learning (opens in a new tab)">Verify <span aria-hidden="true">↗</span></a></li>
+              </ul>
+            </div>
+            <div class="cert-group" id="cert-networking">
+              <h3>Networking &amp; Linux <span class="cert-count">3 certificates</span></h3>
+              <ul>
+                <li><span class="c-name"><span class="c-title">Getting Started with Cisco Packet Tracer</span><span class="c-issuer">Cisco Networking Academy</span></span><a class="c-pdf" href="assets/certificates/cisco-getting-started-packet-tracer.pdf" target="_blank" rel="noopener" aria-label="Getting Started with Cisco Packet Tracer certificate (PDF, opens in a new tab)">PDF</a></li>
+                <li><span class="c-name"><span class="c-title">Exploring Networking with Cisco Packet Tracer</span><span class="c-issuer">Cisco Networking Academy</span></span><a class="c-pdf" href="assets/certificates/cisco-exploring-networking-packet-tracer.pdf" target="_blank" rel="noopener" aria-label="Exploring Networking with Cisco Packet Tracer certificate (PDF, opens in a new tab)">PDF</a></li>
+                <li><span class="c-name"><span class="c-title">Introduction to Linux (LFS101)</span><span class="c-issuer">Linux Foundation</span></span><a class="c-pdf" href="assets/certificates/linux-foundation-introduction-to-linux.pdf" target="_blank" rel="noopener" aria-label="Introduction to Linux (LFS101) certificate (PDF, opens in a new tab)">PDF</a></li>
+              </ul>
+            </div>
+            <div class="cert-group" id="cert-ai">
+              <h3>AI &amp; workspace tools <span class="cert-count">3 certificates</span></h3>
+              <ul>
+                <li><span class="c-name"><span class="c-title">Understanding Prompt Engineering</span><span class="c-issuer">DataCamp</span></span><a class="c-pdf" href="assets/certificates/datacamp-understanding-prompt-engineering.pdf" target="_blank" rel="noopener" aria-label="Understanding Prompt Engineering certificate (PDF, opens in a new tab)">PDF</a></li>
+                <li><span class="c-name"><span class="c-title">Prompt Engineering and AI Agents with ChatGPT</span><span class="c-issuer">LinkedIn Learning</span></span><a class="c-pdf" href="assets/certificates/linkedin-prompt-engineering-ai-agents-chatgpt.pdf" target="_blank" rel="noopener" aria-label="Prompt Engineering and AI Agents with ChatGPT certificate (PDF, opens in a new tab)">PDF</a><a class="c-verify" href="https://www.linkedin.com/learning/certificates/d8b713615d2545d2776ef70861ba16e569b1432a37897a4f3cbc76b6d18c2df7" target="_blank" rel="noopener noreferrer" aria-label="Verify Prompt Engineering and AI Agents with ChatGPT on LinkedIn Learning (opens in a new tab)">Verify <span aria-hidden="true">↗</span></a></li>
+                <li><span class="c-name"><span class="c-title">Notion Academy: Essentials</span><span class="c-issuer">Notion Academy</span></span><a class="c-pdf" href="assets/certificates/notion-academy-essentials.pdf" target="_blank" rel="noopener" aria-label="Notion Academy: Essentials certificate (PDF, opens in a new tab)">PDF</a></li>
+              </ul>
+            </div>
           </div>
         </div>
       </details>
+
+      <div class="cert-assess">
+        <h3>Coursework assessments</h3>
+        <p>Final tests passed on OpenEDG as part of coursework. No certificate was issued, so these are not counted above.</p>
+        <ul>
+          <li><span class="a-title">English for IT, Part 1</span><span class="a-meta">OpenEDG · Aug 2025 · passed, 90%</span></li>
+          <li><span class="a-title">English for IT, Part 2</span><span class="a-meta">OpenEDG · Oct 2025 · passed, 100%</span></li>
+        </ul>
+      </div>
     </div>
   </section>
 

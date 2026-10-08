@@ -527,6 +527,33 @@
   window.addEventListener('beforeprint', finish);
 })();
 
+/* Certificates (2026-10-09): the subject tiles jump into a list that sits behind one
+   <details>. Open it first, so the jump lands on a visible group. A link that arrives with
+   #cert-... in the URL gets the same treatment. Without JavaScript a tile still scrolls to
+   the closed list, and its "Show all 33 certificates" summary is right there. */
+(function () {
+  'use strict';
+
+  var list = document.getElementById('cert-list');
+  if (!list) { return; }
+
+  function openFor(hash) {
+    if (!hash || hash.length < 2) { return null; }
+    var target = document.getElementById(hash.slice(1));
+    if (!target || !list.contains(target)) { return null; }
+    list.open = true;
+    return target;
+  }
+
+  document.querySelectorAll('.cert-topic').forEach(function (a) {
+    a.addEventListener('click', function () { openFor(a.getAttribute('href')); });
+  });
+  window.addEventListener('hashchange', function () { openFor(window.location.hash); });
+
+  var arrived = openFor(window.location.hash);
+  if (arrived) { arrived.scrollIntoView(); }
+})();
+
 /* Contact form. Sends through Web3Forms, which emails the message to the site owner.
    The status line only claims success when the service confirms it; otherwise it says
    so and points at the email address. The browser still runs its own required-field
