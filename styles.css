@@ -764,6 +764,21 @@ html.drawer-open { overflow: hidden; scrollbar-gutter: stable; }   /* no layout 
 .portrait-actions .btn { flex: 1 1 auto; justify-content: center; }
 .portrait-actions .btn svg { width: 18px; height: 18px; flex: none; }
 
+/* About stats (2026-10-08): three checkable numbers fill the column beside the portrait.
+   The number is the focal point, so it takes the display face; the label stays slate.
+   column-reverse puts the number on top while the <dt> stays first for screen readers. */
+.about-stats {
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px;
+  margin-top: 44px; padding-top: 28px; border-top: 1px solid var(--rule);
+}
+.about-stat { display: flex; flex-direction: column-reverse; justify-content: flex-end; gap: 8px; min-width: 0; }
+.about-stat dt { font-size: 0.875rem; line-height: 1.4; color: var(--slate); }
+.about-stat dd {
+  margin: 0; font-family: var(--font-display); font-weight: 700;
+  font-size: clamp(2.25rem, 1.6rem + 2vw, 2.75rem); line-height: 1; letter-spacing: -0.02em;
+  color: var(--black); font-variant-numeric: tabular-nums;
+}
+
 /* Addendum 1 (D15): the skills ledger. Confidence is carried by type size, so the daily row
    is the one focal point and "Still learning" is quiet without being hidden. */
 .ledger { border-top: 1px solid var(--rule); }

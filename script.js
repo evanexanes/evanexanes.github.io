@@ -486,6 +486,47 @@
   });
 })();
 
+/* About stats: each number counts up from 0 the first time it scrolls into view. The real
+   number is already in the HTML, so a visitor without JavaScript, or one who asked for reduced
+   motion, sees it straight away. Screen readers get the hidden copy, never the moving one. */
+(function () {
+  'use strict';
+
+  var nums = document.querySelectorAll('.stat-num[data-count-to]');
+  if (!nums.length || !('IntersectionObserver' in window)) { return; }
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { return; }
+
+  function finish() {
+    nums.forEach(function (el) { el.textContent = el.getAttribute('data-count-to'); });
+  }
+
+  function countUp(el) {
+    var target = parseInt(el.getAttribute('data-count-to'), 10);
+    var start = null;
+    function step(now) {
+      if (start === null) { start = now; }
+      var p = Math.min(1, (now - start) / 1500);
+      el.textContent = String(Math.round(target * (1 - Math.pow(1 - p, 3))));  /* ease-out cubic */
+      if (p < 1) { window.requestAnimationFrame(step); }
+    }
+    window.requestAnimationFrame(step);
+  }
+
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (!entry.isIntersecting) { return; }
+      io.unobserve(entry.target);
+      countUp(entry.target);
+    });
+  }, { threshold: 0.5 });
+
+  nums.forEach(function (el) {
+    el.textContent = '0';
+    io.observe(el);
+  });
+  window.addEventListener('beforeprint', finish);
+})();
+
 /* Contact form. Sends through Web3Forms, which emails the message to the site owner.
    The status line only claims success when the service confirms it; otherwise it says
    so and points at the email address. The browser still runs its own required-field
