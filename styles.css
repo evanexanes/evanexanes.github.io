@@ -559,6 +559,9 @@ html.drawer-open { overflow: hidden; scrollbar-gutter: stable; }   /* no layout 
    Live-site and code links are NOT here — after revision 2 of the peer test
    they live only inside each case study. The card links to the case study. */
 .work-list { display: grid; gap: 0; border-top: 1px solid var(--rule); }
+/* Sub-block under the case studies (first-year code): same rows, smaller lead-in. */
+.work-sub { margin-top: 72px; margin-bottom: 24px; }
+.work-sub .section-title { font-size: 1.5rem; }
 
 .work-item {
   display: grid; grid-template-columns: 1fr auto;
