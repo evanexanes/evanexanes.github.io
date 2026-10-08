@@ -1081,10 +1081,17 @@ html.drawer-open { overflow: hidden; scrollbar-gutter: stable; }   /* no layout 
   .footer-about { grid-column: 1 / -1; }
 }
 @media (max-width: 600px) {
-  .footer-columns, .footer-nav-lists { grid-template-columns: 1fr; gap: 28px; }
+  .footer-columns { grid-template-columns: 1fr; gap: 28px; }
+  /* 2-1 on phones (USERDES instructor's note, 2026-10-08): Pages beside Work, Contact full width
+     below, because the email address needs the whole row. */
+  .footer-nav-lists { grid-template-columns: 1fr 1fr; gap: 20px; }
   .cta-actions .btn { width: 100%; justify-content: center; }
-  .footer-bottom { padding-right: 72px; }   /* keeps Back to top clear of the assistant launcher */
+  .footer-bottom { padding-right: 72px; }   /* keeps Cookie settings clear of the assistant launcher */
 }
+@media (max-width: 340px) {
+  .footer-nav-lists { grid-template-columns: 1fr; gap: 28px; }
+}
+.footer-top[hidden] { display: none; }
 
 /* A link inside running text must be told apart by more than colour (WCAG 1.4.1). */
 main p a:not(.btn):not(.qa-link):not(.btn-ghost) { text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
@@ -1103,6 +1110,22 @@ main p a:not(.btn):not(.qa-link):not(.btn-ghost) { text-decoration: underline; t
 /* Two-tone ring: white against the dark footer and the CTA card, navy against a light page. */
 .qa-launcher:focus-visible { outline: 3px solid #FFFFFF; outline-offset: 0; box-shadow: 0 0 0 6px #243B61; }
 html.drawer-open .qa-launcher, html.drawer-open .qa-panel { display: none; }
+
+/* Back to top sits above the launcher, centred on it. Outlined, not filled, so the launcher
+   stays the one brand-coloured control in the corner. Border and arrow use --denim: 3:1+ in both themes. */
+.to-top {
+  position: fixed; right: 22px; bottom: 84px; z-index: 150;
+  width: var(--tap); height: var(--tap); border-radius: 50%; cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: var(--card); color: var(--denim); border: 2px solid var(--denim);
+  box-shadow: 0 6px 16px rgba(36, 59, 97, 0.18);
+}
+.to-top[hidden] { display: none; }
+.to-top svg { width: 20px; height: 20px; }
+.to-top:hover { background: var(--denim); color: var(--card); }
+/* Same two-tone ring as the launcher: readable over the light page and the dark footer. */
+.to-top:focus-visible { outline: 3px solid #FFFFFF; outline-offset: 0; box-shadow: 0 0 0 6px #243B61; }
+html.drawer-open .to-top, html.qa-open .to-top, html.consent-open .to-top { display: none; }
 .qa-panel {
   position: fixed; right: 16px; bottom: 84px; z-index: 150;
   width: 360px; max-width: calc(100vw - 32px);
@@ -1288,7 +1311,7 @@ html.drawer-open .qa-launcher, html.drawer-open .qa-panel { display: none; }
 
 /* Print — the CV and case studies should survive a paper review. */
 @media print {
-  .site-header, .nav-toggle, .site-footer, .closing-cta, .hero-actions { display: none; }
+  .site-header, .nav-toggle, .site-footer, .closing-cta, .hero-actions, .to-top { display: none; }
   body { background: var(--paper); }
   .section, .hero { border-bottom: 1px solid var(--rule); padding: 24px 0; }
   .code-window { border: 1px solid var(--rule); }

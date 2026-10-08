@@ -448,6 +448,44 @@
   renderChips();
 })();
 
+/* Back to top: a floating button stacked above the Quick answers launcher, shown after one
+   screen of scrolling. It replaces the footer link, which stays in the HTML for no-JS visits. */
+(function () {
+  'use strict';
+
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className = 'to-top';
+  btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 19V5M5 12l7-7 7 7"/></svg><span class="visually-hidden">Back to top</span>';
+  btn.hidden = true;
+  document.body.appendChild(btn);
+
+  Array.prototype.forEach.call(document.querySelectorAll('.footer-top'), function (a) { a.hidden = true; });
+
+  var ticking = false;
+  function update() {
+    ticking = false;
+    /* Never hide the button while it has focus, or keyboard focus falls back to the body. */
+    if (document.activeElement === btn) { return; }
+    btn.hidden = window.scrollY < window.innerHeight;
+  }
+  window.addEventListener('scroll', function () {
+    if (!ticking) { ticking = true; window.requestAnimationFrame(update); }
+  }, { passive: true });
+  window.addEventListener('resize', update);
+  /* activeElement still points at the button during blur, so re-check on the next tick. */
+  btn.addEventListener('blur', function () { window.setTimeout(update, 0); });
+  update();
+
+  btn.addEventListener('click', function () {
+    window.scrollTo({ top: 0, behavior: reduce.matches ? 'auto' : 'smooth' });
+    /* Keyboard users continue from the top of the page, not from the hidden button. */
+    var home = document.querySelector('.wordmark');
+    if (home) { home.focus({ preventScroll: true }); }
+  });
+})();
+
 /* Contact form. Sends through Web3Forms, which emails the message to the site owner.
    The status line only claims success when the service confirms it; otherwise it says
    so and points at the email address. The browser still runs its own required-field
