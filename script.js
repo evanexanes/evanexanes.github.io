@@ -554,6 +554,111 @@
   if (arrived) { arrived.scrollIntoView(); }
 })();
 
+/* Testimonials carousel. Autoplay stays off under reduced motion, waits while the pointer or
+   keyboard focus is inside or the section is off screen, and stops for good after the first
+   manual move, because the page has no pause button. */
+(function () {
+  'use strict';
+
+  var stage = document.querySelector('[data-carousel]');
+  if (!stage) { return; }
+  var viewport = stage.querySelector('.t-viewport');
+  var track = stage.querySelector('.t-track');
+  var slides = stage.querySelectorAll('.t-slide');
+  var prev = stage.querySelector('.t-prev');
+  var next = stage.querySelector('.t-next');
+  var count = stage.querySelector('.t-count');
+  var total = slides.length;
+  if (total < 2 || !viewport || !track || !prev || !next || !count) { return; }
+
+  var interval = parseInt(stage.getAttribute('data-interval'), 10) || 7000;
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var index = 0;
+  var timer = null;
+  var stopped = reduce.matches;
+  var hovering = false;
+  var focused = false;
+  var visible = true;
+  var startX = null;
+
+  function show(i) {
+    index = (i + total) % total;
+    track.style.transform = 'translateX(' + (-100 * index) + '%)';
+    for (var k = 0; k < total; k++) {
+      var on = k === index;
+      slides[k].classList.toggle('is-active', on);
+      slides[k].setAttribute('aria-hidden', on ? 'false' : 'true');
+    }
+    count.textContent = (index + 1) + ' / ' + total;
+  }
+
+  function clear() {
+    if (timer) { clearTimeout(timer); timer = null; }
+  }
+
+  /* Slide changes are announced only once the visitor drives the carousel. */
+  function schedule() {
+    clear();
+    track.setAttribute('aria-live', stopped ? 'polite' : 'off');
+    if (stopped || hovering || focused || !visible || document.hidden) { return; }
+    timer = setTimeout(function () { show(index + 1); schedule(); }, interval);
+  }
+
+  function move(step) {
+    stopped = true;
+    clear();
+    show(index + step);
+    schedule();
+  }
+
+  prev.addEventListener('click', function () { move(-1); });
+  next.addEventListener('click', function () { move(1); });
+  stage.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowLeft') { move(-1); }
+    else if (e.key === 'ArrowRight') { move(1); }
+  });
+
+  viewport.addEventListener('pointerdown', function (e) { startX = e.clientX; });
+  viewport.addEventListener('pointerup', function (e) {
+    if (startX === null) { return; }
+    var dx = e.clientX - startX;
+    startX = null;
+    if (dx < -40) { move(1); }
+    else if (dx > 40) { move(-1); }
+  });
+  viewport.addEventListener('pointercancel', function () { startX = null; });
+
+  stage.addEventListener('mouseenter', function () { hovering = true; clear(); });
+  stage.addEventListener('mouseleave', function () { hovering = false; schedule(); });
+  stage.addEventListener('focusin', function (e) {
+    /* A mouse click leaves focus on the arrow; only keyboard focus should hold the autoplay. */
+    focused = e.target.matches(':focus-visible');
+    if (focused) { clear(); }
+  });
+  stage.addEventListener('focusout', function () { focused = false; schedule(); });
+  document.addEventListener('visibilitychange', schedule);
+
+  var onMotionChange = function (e) {
+    if (e.matches) { stopped = true; clear(); }
+  };
+  if (reduce.addEventListener) { reduce.addEventListener('change', onMotionChange); }
+  else if (reduce.addListener) { reduce.addListener(onMotionChange); }
+
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(function (entries) {
+      visible = entries[entries.length - 1].isIntersecting;
+      schedule();
+    }, { threshold: 0.4 }).observe(stage);
+  }
+
+  stage.classList.add('is-enhanced');
+  prev.hidden = false;
+  next.hidden = false;
+  count.hidden = false;
+  show(0);
+  schedule();
+})();
+
 /* Contact form. Sends through Web3Forms, which emails the message to the site owner.
    The status line only claims success when the service confirms it; otherwise it says
    so and points at the email address. The browser still runs its own required-field

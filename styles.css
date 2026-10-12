@@ -605,44 +605,79 @@ html.drawer-open { overflow: hidden; scrollbar-gutter: stable; }   /* no layout 
   transition: background-color var(--t-exit), border-color var(--t-exit), transform var(--t-exit), box-shadow var(--t-exit);
 }
 
-/* ----------------------------------------------------------- quote cards */
-/* "What people say": a SECTION of Home, not a menu item (IA v2 keeps three branches).
-   Quotes are placeholder text until real, permissioned comments replace them, and the
-   section says so on the page. Deliberately NO Review or AggregateRating JSON-LD: there
-   is no real rating to claim. */
-.placeholder-note {
-  display: inline-flex; align-items: center; gap: 8px;
-  margin-top: 16px; padding: 6px 12px;
-  font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.04em;
-  color: var(--ink);
-  background: var(--card); border: 1px dashed var(--border-ui); border-radius: var(--radius);
+/* ------------------------------------------------------------ testimonials */
+/* A section of Home, not a menu item (IA v2 keeps three branches). Without script the
+   slides stack as a list; script.js adds .is-enhanced and turns them into a carousel.
+   No star ratings: one writer gave none, and a mixed set would break the identical format. */
+.t-slide {
+  margin: 0; padding: 32px 0; border-top: 1px solid var(--rule);
+  display: grid; grid-template-columns: 240px minmax(0, 1fr);
+  grid-template-areas: "photo mark" "photo quote" "photo who";
+  align-content: center; column-gap: 64px; row-gap: 20px;
 }
-.placeholder-note::before { content: '!'; font-weight: 700; color: var(--clay); }
+.t-slide:first-child { padding-top: 0; border-top: 0; }
+.t-photo {
+  grid-area: photo; display: block; align-self: center;
+  width: 240px; height: 240px; border-radius: 50%; object-fit: cover; object-position: 50% 35%;
+}
+/* Decorative opening quote; the quote text itself carries no quotation marks on desktop. */
+.t-mark {
+  grid-area: mark; height: 56px;
+  font-family: var(--font-display); font-weight: 600; font-size: 112px; line-height: 0.7;
+  color: var(--denim-brand);
+}
+.t-quote { grid-area: quote; margin: 0; font-size: 1.375rem; line-height: 1.55; color: var(--ink); }
+.t-quote p { margin: 0; }
+.t-who { grid-area: who; display: flex; flex-direction: column; gap: 2px; }
+.t-name { font-family: var(--font-display); font-weight: 600; font-size: 1.1875rem; line-height: 1.25; color: var(--black); }
+.t-role { font-size: 0.9375rem; line-height: 1.4; color: var(--slate); }
 
-.quote-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-.quote-card {
-  margin: 0;
-  background: var(--card); border: 1px solid var(--rule);
-  border-top: 3px solid var(--denim-brand); border-radius: var(--radius);
-  padding: 24px 24px 22px;
-  display: flex; flex-direction: column; gap: 16px;
+.t-stage.is-enhanced {
+  display: grid; align-items: center; column-gap: 20px; row-gap: 28px;
+  grid-template-columns: 44px minmax(0, 1fr) 44px;
+  grid-template-areas: "prev view next" ". count .";
 }
-/* Stars use --clay, the token reserved for trust signals. The count is in the accessible
-   name, so the glyphs are hidden from screen readers. An unfilled star uses --border-ui. */
-.stars { display: flex; gap: 2px; font-size: 1.125rem; line-height: 1; color: var(--clay); }
-.stars .off { color: var(--border-ui); }
-.quote-card blockquote { color: var(--ink); font-size: 1rem; line-height: 1.6; }
-.quote-card blockquote p::before { content: '\201C'; }
-.quote-card blockquote p::after  { content: '\201D'; }
-.quote-card figcaption {
-  margin-top: auto; padding-top: 14px; border-top: 1px solid var(--rule);
-  display: flex; align-items: center; gap: 12px;
+.is-enhanced .t-prev { grid-area: prev; }
+.is-enhanced .t-next { grid-area: next; }
+.is-enhanced .t-viewport { grid-area: view; min-width: 0; overflow: hidden; touch-action: pan-y; }
+.is-enhanced .t-track { display: flex; transition: transform 550ms var(--ease-out); }
+.is-enhanced .t-slide {
+  flex: 0 0 100%; padding: 16px 0; border-top: 0;
+  opacity: 0; transition: opacity 400ms ease;
 }
-.quote-avatar { width: 48px; height: 48px; border-radius: 50%; flex: none; }
-.quote-who { display: flex; flex-direction: column; }
-.quote-name { display: block; font-family: var(--font-display); font-weight: 600; color: var(--black); }
-.quote-role { display: block; font-size: 0.875rem; color: var(--slate); }
-@media (max-width: 700px) { .quote-grid { grid-template-columns: 1fr; } }
+.is-enhanced .t-slide.is-active { opacity: 1; }
+.is-enhanced .t-arrow {
+  display: grid; place-items: center; width: 44px; height: 44px; padding: 0;
+  border: 0; border-radius: var(--radius);
+  background: var(--denim-brand); color: #FFFFFF; cursor: pointer;
+  transition: filter var(--t-exit), transform var(--t-enter);
+}
+.is-enhanced .t-arrow:hover { filter: brightness(0.9); }
+.is-enhanced .t-arrow:active { transform: scale(0.96); }
+.is-enhanced .t-count {
+  grid-area: count; justify-self: start; margin: 0;
+  font-size: 0.9375rem; line-height: 1; color: var(--slate); font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 700px) {
+  .t-slide {
+    grid-template-columns: minmax(0, 1fr); grid-template-areas: "photo" "quote" "who";
+    justify-items: start; column-gap: 0;
+  }
+  .t-photo { width: 96px; height: 96px; }
+  .t-mark { display: none; }
+  .t-quote { font-size: 1.125rem; }
+  .t-quote p::before { content: '\201C'; }
+  .t-quote p::after  { content: '\201D'; }
+  .t-stage.is-enhanced {
+    column-gap: 12px; row-gap: 20px;
+    grid-template-areas: "view view view" "prev count next";
+  }
+  .is-enhanced .t-count { justify-self: center; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .is-enhanced .t-track, .is-enhanced .t-slide, .is-enhanced .t-arrow { transition: none; }
+}
 
 /* ------------------------------------------------------------- case study */
 .breadcrumb {
