@@ -9,18 +9,19 @@ Date           Description                      Programmer name
 ======================================================================
 09/28/2026     Initial Implementation           EPPE
 11/09/2026     Added file header                EPPE with Claude
+11/09/2026     Plain section comments           EPPE with Claude
 ======================================================================
 */
 
-/* ==========================================================================
-   evanexanes.com — Final Prototype (2026-09-28)
+/*
+   evanexanes.com, Final Prototype (2026-09-28)
    USERDES (IT-252) · Front-end built from IA chart v2 (peer-tested 2026-09-14)
 
    Palette tokens are the WCAG-AA verified set from the USERDES Mastery
    Reference. Contrast ratios below are against Bone (#EFECE3).
    The dark theme (2026-09-28) remaps the SAME tokens under
-   :root[data-theme="dark"] — the brand denim #4A70A9 is unchanged in both.
-   ========================================================================== */
+   :root[data-theme="dark"]. The brand denim #4A70A9 is unchanged in both.
+   */
 
 /* Fonts are served from this site (assets/fonts), so a visit never contacts Google. Both files are
    variable fonts: one file per script subset covers every weight the pages use. */
@@ -47,24 +48,24 @@ Date           Description                      Programmer name
 
 
 :root {
-  /* --- Surfaces --- */
+  /* Surfaces */
   --bone:        #EFECE3;   /* page canvas                                   */
   --card:        #F7F5F0;   /* raised surface                                */
   --rule:        #D8D3C5;   /* decorative hairlines between sections.        */
-                            /* Exempt from WCAG 1.4.11 — they carry no        */
+                            /* Exempt from WCAG 1.4.11. They carry no        */
                             /* information and identify no control.           */
   --rule-strong: #B9B2A0;   /* emphasised decorative borders                 */
-  --border-ui:   #827D70;   /* BOUNDARIES OF CONTROLS — inputs, secondary    */
+  --border-ui:   #827D70;   /* BOUNDARIES OF CONTROLS, inputs, secondary    */
                             /* buttons, the menu toggle. WCAG 1.4.11 requires */
                             /* 3:1 here: 3.47:1 on bone, 3.77:1 on card.     */
 
-  /* --- Ink --- */
+  /* Ink */
   --black:       #000000;   /* display headings, wordmark   17.78:1  AAA     */
   --ink:         #13161C;   /* body text                    15.34:1  AAA     */
   --slate:       #4A5260;   /* captions, metadata            6.67:1  AAA     */
 
-  /* --- Accents --- */
-  --denim-brand: #4A70A9;   /* THE BRAND DENIM. 4.25:1 on bone — legal for  */
+  /* Accents */
+  --denim-brand: #4A70A9;   /* THE BRAND DENIM. 4.25:1 on bone, legal for  */
                             /* large/display type, fills, borders and focus  */
                             /* rings (all need 3:1). NEVER body text.        */
   --denim:       #3B5F99;   /* the same denim darkened one step, so it can   */
@@ -80,10 +81,10 @@ Date           Description                      Programmer name
      status pair, both in use on the contact form. */
   --emerald:     #2F6B4F;   /* affirmative states            5.33:1  AA      */
   --crimson:     #A32E2E;   /* negative states, invalid input 5.95:1 AA      */
-  --soft-blue:   #8FABD4;   /* FILLS ONLY — 1.99:1, never text               */
-  --paper:       #FFFFFF;   /* print surface — the brand white               */
+  --soft-blue:   #8FABD4;   /* FILLS ONLY, 1.99:1, never text               */
+  --paper:       #FFFFFF;   /* print surface, the brand white               */
 
-  /* --- Theme-dependent surfaces (added with the dark theme) ---
+  /* Theme-dependent surfaces (added with the dark theme)
      These were raw values or borrowed tokens before; they need their own
      names because they do NOT simply invert. The code window stays dark in
      both themes. */
@@ -94,12 +95,12 @@ Date           Description                      Programmer name
   --code-comment: #B9B2A0;  /*  8.57:1                                     */
   --code-chrome:  #4A5260;  /* window-bar dots and divider (decorative)   */
 
-  /* --- Type --- */
+  /* Type */
   --font-display: 'Outfit', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
   --font-body:    'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
   --font-mono:    ui-monospace, 'SF Mono', 'Cascadia Mono', 'Roboto Mono', Menlo, monospace;
 
-  /* --- Rhythm --- */
+  /* Rhythm */
   --gutter: 24px;
   --maxw: 1200px;
   --tap: 44px;              /* WCAG 2.1 minimum touch target                 */
@@ -109,7 +110,7 @@ Date           Description                      Programmer name
 
   --t-fast: 0.15s ease;
 
-  /* --- Brand & interaction pass (2026-09-29) ---
+  /* Brand & interaction pass (2026-09-29)
      Denim depth: navy -> brand denim. White text passes AA on every stop
      (#243B61 11.21, #3B5F99 6.40, #4A70A9 5.02). Elements using a gradient also
      set background-color to the LIGHTEST stop, which is what capture.py audits. */
@@ -125,7 +126,7 @@ Date           Description                      Programmer name
   --t-exit:  130ms ease;
 }
 
-/* ------------------------------------------------------------- dark theme */
+/* Dark theme */
 /* Same token names, new values. Ratios are against the dark canvas #12151B;
    every text pair also clears its bar on the dark card #1A1F28.
    The attribute is set before first paint by the inline script in <head>
@@ -142,12 +143,12 @@ Date           Description                      Programmer name
     --border-ui:   #7A8496;   /* control boundaries      4.85:1 (card 4.38) */
 
     --black:       #FFFFFF;   /* display headings        18.28:1  AAA       */
-    --ink:         #EFECE3;   /* body text — the brand bone  15.47:1  AAA   */
+    --ink:         #EFECE3;   /* body text, the brand bone  15.47:1  AAA   */
     --slate:       #A9B2C0;   /* captions, metadata       8.54:1  AAA       */
 
-    /* --denim-brand stays #4A70A9: 3.64:1 here, 3.29:1 on card — still
+    /* --denim-brand stays #4A70A9: 3.64:1 here, 3.29:1 on card, still
        legal for fills, borders and focus rings (3:1). Still never text. */
-    --denim:       #8FABD4;   /* links — the brand soft-blue  7.79:1  AAA   */
+    --denim:       #8FABD4;   /* links, the brand soft-blue  7.79:1  AAA   */
     --denim-dark:  #B4C8E6;   /* link hover              10.75:1  AAA       */
     --clay:        #E0906B;   /* trust signals, evidence  7.29:1  AAA       */
     --emerald:     #5FBF92;   /* affirmative states       8.14:1  AAA       */
@@ -182,7 +183,7 @@ body {
 a { color: var(--denim); text-decoration: none; }
 a:hover { color: var(--denim-dark); text-decoration: underline; text-underline-offset: 3px; }
 
-/* Focus is never removed — only restyled. */
+/* Focus is never removed, only restyled. */
 a:focus-visible,
 button:focus-visible,
 input:focus-visible,
@@ -196,7 +197,7 @@ summary:focus-visible {
 
 img { max-width: 100%; display: block; }
 
-/* --------------------------------------------------------------- utilities */
+/* Utilities */
 .container { width: 100%; max-width: var(--maxw); margin-inline: auto; padding-inline: var(--gutter); }
 
 .skip-link {
@@ -207,15 +208,15 @@ img { max-width: 100%; display: block; }
 .skip-link:focus { left: 0; text-decoration: none; }
 
 /* Off-screen text for assistive tech only. Used to announce that a link opens
-   in a new tab (WCAG 3.2.5) — the ' \2197' marker in .ext is visual only. */
+   in a new tab (WCAG 3.2.5). The ' \2197' marker in .ext is visual only. */
 .visually-hidden {
   position: absolute; width: 1px; height: 1px;
   margin: -1px; padding: 0; border: 0;
   clip-path: inset(50%); overflow: hidden; white-space: nowrap;
 }
 
-/* ------------------------------------------------------------------ header */
-/* Pass 2 (2026-09-29): the header CTA is Schedule a call; Download CV lives in the Home hero, the drawer, the footer and About. Three menu items only —
+/* Header */
+/* Pass 2 (2026-09-29): the header CTA is Schedule a call; Download CV lives in the Home hero, the drawer, the footer and About. Three menu items only:
    "Proof" was removed by the peer test, and the old Contact header link
    was dropped because Contact is already a menu item. */
 /* Floating header (2026-09-29). The sticky element is a transparent strip whose
@@ -270,7 +271,7 @@ img { max-width: 100%; display: block; }
 .wordmark-name {
   font-family: var(--font-display);
   font-size: 1.125rem; font-weight: 600; letter-spacing: -0.01em;
-  white-space: nowrap;        /* the name is one unit — never break it */
+  white-space: nowrap;        /* the name is one unit; never break it */
 }
 .wordmark-sub {
   margin-top: 4px; padding-top: 3px; border-top: 1px solid currentColor;
@@ -294,7 +295,7 @@ img { max-width: 100%; display: block; }
 
 .header-cta { display: flex; align-items: center; gap: 12px; }
 
-/* Theme switch. A utility control, not an IA item — the menu is still three
+/* Theme switch. A utility control, not an IA item. The menu is still three
    links. aria-pressed carries the state; the icon shows the theme a press
    will switch TO (moon in light, sun in dark), the same convention as the
    reference theme. 44 x 44 px target. */
@@ -322,7 +323,7 @@ img { max-width: 100%; display: block; }
 .nav-toggle[aria-expanded="true"] .bar:nth-child(2) { opacity: 0; }
 .nav-toggle[aria-expanded="true"] .bar:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
-/* Scrolled state — everything on the bar turns white on the gradient. */
+/* Scrolled state: everything on the bar turns white on the gradient. */
 .site-header.is-scrolled .header-inner {
   background-color: #4A70A9; border-color: transparent;
   box-shadow: 0 12px 28px rgba(19, 22, 28, 0.25);
@@ -346,7 +347,7 @@ img { max-width: 100%; display: block; }
    stop (1.0:1), so it goes white here (5.02:1), as it does on the footer card. */
 .site-header.is-scrolled :focus-visible { outline-color: #FFFFFF; }
 
-/* Pass 2 — at 1024 px and below the bar is the wordmark and the hamburger only; the links, the
+/* Pass 2: at 1024 px and below the bar is the wordmark and the hamburger only; the links, the
    theme switch and Schedule a call move into the drawer. The wordmark text is never hidden:
    with two items in the bar it fits from 320 px (26 px mark + 10 + ~105 px name + 44 px toggle). */
 @media (max-width: 1024px) {
@@ -428,7 +429,7 @@ html.drawer-open { overflow: hidden; scrollbar-gutter: stable; }   /* no layout 
 }
 .theme-toggle:focus-visible { background-color: color-mix(in srgb, var(--soft-blue) 22%, transparent); }
 
-/* ------------------------------------------------------------------ button */
+/* Button */
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 8px;
   min-height: var(--tap); padding: 0 22px;
@@ -441,7 +442,7 @@ html.drawer-open { overflow: hidden; scrollbar-gutter: stable; }   /* no layout 
 .btn:hover { text-decoration: none; }
 .btn:active { transform: translateY(1px); box-shadow: 0 1px 2px rgba(19, 22, 28, 0.1); }
 /* Primary: the denim-depth gradient. background-color is the lightest stop
-   (#4A70A9, 5.02:1 with white) — what the audit measures. */
+   (#4A70A9, 5.02:1 with white): what the audit measures. */
 .btn-primary {
   background-color: #4A70A9; background-image: var(--grad-brand); color: #FFFFFF;
   box-shadow: 0 2px 6px rgba(36, 59, 97, 0.20), 0 1px 2px rgba(36, 59, 97, 0.12);
@@ -459,7 +460,7 @@ html.drawer-open { overflow: hidden; scrollbar-gutter: stable; }   /* no layout 
 .btn-ghost { background: transparent; color: var(--denim); padding: 0 4px; }
 .btn-ghost:hover { color: var(--denim-dark); text-decoration: underline; text-underline-offset: 3px; }
 
-/* -------------------------------------------------------------------- hero */
+/* Hero */
 /* IA v2: "Opens with a one-line intro." Built against the persona constraint
    of a 30–60 second first review: who, what, proof and CV above the fold. */
 .hero { padding: 88px 0 72px; border-bottom: 1px solid var(--rule); }
@@ -529,9 +530,9 @@ html.drawer-open { overflow: hidden; scrollbar-gutter: stable; }   /* no layout 
 }
 
 
-/* Wednesday revision R1 — the hero's right half carries the proof of
+/* Wednesday revision R1: the hero's right half carries the proof of
    "and get found": an excerpt of the page's own Person JSON-LD.
-   On ink: bone 15.34:1, soft-blue 7.72:1, rule-strong 8.57:1 — all AAA.
+   On ink: bone 15.34:1, soft-blue 7.72:1, rule-strong 8.57:1, all AAA.
    Soft-blue is text here only because the ground is ink, not bone. */
 .hero-grid { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 56px; align-items: center; }
 .hero-proof { margin: 0; }
@@ -543,7 +544,7 @@ html.drawer-open { overflow: hidden; scrollbar-gutter: stable; }   /* no layout 
 }
 .code-bar { display: flex; gap: 6px; padding: 12px 16px; border-bottom: 1px solid var(--code-chrome); }
 .code-bar span { width: 10px; height: 10px; border-radius: 50%; background: var(--code-chrome); }
-/* macOS window controls — decorative (the bar is aria-hidden), same in both themes. */
+/* macOS window controls: decorative (the bar is aria-hidden), same in both themes. */
 .code-bar span:nth-child(1) { background: #FF5F57; }
 .code-bar span:nth-child(2) { background: #FEBC2E; }
 .code-bar span:nth-child(3) { background: #28C840; }
@@ -557,7 +558,7 @@ html.drawer-open { overflow: hidden; scrollbar-gutter: stable; }   /* no layout 
 .code-window .c { color: var(--code-comment); }
 .hero-proof figcaption { margin-top: 12px; font-size: 0.875rem; color: var(--slate); max-width: 48ch; }
 
-/* ----------------------------------------------------------------- section */
+/* Section */
 .section { padding: 72px 0; border-bottom: 1px solid var(--rule); }
 .section:last-of-type { border-bottom: none; }
 .section-title {
@@ -568,9 +569,9 @@ html.drawer-open { overflow: hidden; scrollbar-gutter: stable; }   /* no layout 
 .section-lede { margin-top: 14px; max-width: 62ch; color: var(--slate); }
 .section-head { margin-bottom: 40px; }
 
-/* ------------------------------------------------------------- work / cards */
+/* Work / cards */
 /* IA v2, Work branch: three case studies, "strongest project first".
-   Live-site and code links are NOT here — after revision 2 of the peer test
+   Live-site and code links are NOT here. After revision 2 of the peer test
    they live only inside each case study. The card links to the case study. */
 .work-list { display: grid; gap: 0; border-top: 1px solid var(--rule); }
 /* Sub-block under the case studies (first-year code): same rows, smaller lead-in. */
@@ -605,7 +606,7 @@ html.drawer-open { overflow: hidden; scrollbar-gutter: stable; }   /* no layout 
 .work-summary { color: var(--slate); max-width: 60ch; }
 .work-action { display: flex; align-items: center; min-height: var(--tap); padding-top: 4px; }
 
-/* Stack tags — monospace chips, soft-blue fill with ink text (fill-only rule) */
+/* Stack tags: monospace chips, soft-blue fill with ink text (fill-only rule) */
 .stack { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; list-style: none; }
 .stack li {
   font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.02em;
@@ -619,7 +620,7 @@ html.drawer-open { overflow: hidden; scrollbar-gutter: stable; }   /* no layout 
   transition: background-color var(--t-exit), border-color var(--t-exit), transform var(--t-exit), box-shadow var(--t-exit);
 }
 
-/* ------------------------------------------------------------ testimonials */
+/* Testimonials */
 /* A section of Home, not a menu item (IA v2 keeps three branches). Without script the
    slides stack as a list; script.js adds .is-enhanced and turns them into a carousel.
    No star ratings: one writer gave none, and a mixed set would break the identical format. */
@@ -693,7 +694,7 @@ html.drawer-open { overflow: hidden; scrollbar-gutter: stable; }   /* no layout 
   .is-enhanced .t-track, .is-enhanced .t-slide, .is-enhanced .t-arrow { transition: none; }
 }
 
-/* ------------------------------------------------------------- case study */
+/* Case study */
 .breadcrumb {
   font-family: var(--font-mono); font-size: 0.8125rem; color: var(--slate);
   padding: 8px 0 0; display: flex; flex-wrap: wrap; gap: 0; align-items: center;
@@ -791,7 +792,7 @@ html.drawer-open { overflow: hidden; scrollbar-gutter: stable; }   /* no layout 
   padding: 36px 0; border-top: 1px solid var(--rule);
 }
 
-/* ---------------------------------------------------------------- about */
+/* About */
 /* Addendum 1 (D14): the portrait sits beside the intro and the contact card overlaps its
    bottom edge. The card is the one raised element over the photo, so its shadow marks a
    real elevation. */
@@ -947,7 +948,7 @@ html.drawer-open { overflow: hidden; scrollbar-gutter: stable; }   /* no layout 
 .a-title { color: var(--ink); }
 .a-meta { color: var(--slate); font-size: 0.8125rem; }
 
-/* Wednesday revision R3 — the rest of a long group, on request. Same
+/* Wednesday revision R3: the rest of a long group, on request. Same
    glyph-not-colour state marker as the FAQ; summary clears the 44 px target. */
 .cert-more { margin-top: 10px; border-top: 1px solid var(--rule); }
 .cert-more > summary {
@@ -983,7 +984,7 @@ html.drawer-open { overflow: hidden; scrollbar-gutter: stable; }   /* no layout 
 }
 .cert-more.cert-all > summary { font-size: 1rem; }
 
-/* ---------------------------------------------------------------- contact */
+/* Contact */
 /* IA v2, Contact branch, "all on one page" (the note carried on the chart). Form on the
    left; the right column is Email, Working hours, Schedule a call, Follow (icon links),
    then the map. */
@@ -1068,12 +1069,12 @@ html.drawer-open { overflow: hidden; scrollbar-gutter: stable; }   /* no layout 
 }
 .form-status[hidden] { display: none; }
 
-/* -------------------------------------------------------------------- FAQ */
+/* FAQ */
 /* Declared addition beyond IA chart v2 (Revision Mapping §7). Built on native
    <details>/<summary>: the disclosure semantics, keyboard operation and the
    expanded/collapsed announcement come from the element itself, so there is no
    JS to desynchronise from the DOM and nothing to animate against
-   prefers-reduced-motion. Depth stays at 2 — this is a section of Contact,
+   prefers-reduced-motion. Depth stays at 2. This is a section of Contact,
    not a fourth branch. */
 .faq-list { border-top: 1px solid var(--rule); max-width: 80ch; }
 
@@ -1089,7 +1090,7 @@ html.drawer-open { overflow: hidden; scrollbar-gutter: stable; }   /* no layout 
 
 /* The question is a real h3 inside the summary, so heading navigation reaches
    each question and not only the section title. It nests under the section's
-   h2 — no level is skipped. */
+   h2; no level is skipped. */
 .faq-q {
   font-family: var(--font-display);
   font-size: 1.0625rem; font-weight: 600; line-height: 1.45;
@@ -1123,7 +1124,7 @@ html.drawer-open { overflow: hidden; scrollbar-gutter: stable; }   /* no layout 
   .faq-item[open]::details-content { height: auto; }
 }
 
-/* ----------------------------------------------------------------- footer */
+/* Footer */
 .btn-light { background: #FFFFFF; color: #243B61; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12); }
 .btn-light:hover { color: #243B61; }
 .btn-light svg { width: 16px; height: 16px; }
@@ -1210,7 +1211,7 @@ html.drawer-open { overflow: hidden; scrollbar-gutter: stable; }   /* no layout 
 /* A link inside running text must be told apart by more than colour (WCAG 1.4.1). */
 main p a:not(.btn):not(.qa-link):not(.btn-ghost) { text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
 
-/* -------------------------------------------------------------- assistant */
+/* Assistant */
 /* Quick answers (Pass 2). Launcher: brand gradient, 56 px. The visitor bubble is #3B5F99 in both
    themes (white 6.40:1); --denim would turn soft-blue in dark and fail with white text. */
 .qa-launcher {
@@ -1303,7 +1304,7 @@ html.drawer-open .to-top, html.qa-open .to-top, html.consent-open .to-top { disp
 @media (prefers-reduced-motion: reduce) { .qa-launcher:hover { transform: none; } }
 @media print { .site-drawer, .drawer-shade, .qa-launcher, .qa-panel { display: none !important; } }
 
-/* ------------------------------------------------ hover layer (2026-09-29) */
+/* Hover layer (2026-09-29) */
 /* Hover only where a pointer can hover, so a tap on a phone never leaves a card
    stuck "lifted". Entering uses --t-enter; the base rules carry --t-exit, so
    leaving is faster. Tags and cards are not links: no pointer cursor. */
@@ -1345,11 +1346,11 @@ html.drawer-open .to-top, html.qa-open .to-top, html.consent-open .to-top { disp
   .faq-item[open] > summary:hover::after { transform: rotate(180deg) scale(1.15); }
 }
 
-/* ======================================================================
-   RESPONSIVE — 1280 px desktop → 360 px mobile
-   IA v2 rule: "Same order at 360 px — stacked, never reordered or hidden."
+/*
+   Responsive rules, 1280 px desktop down to 360 px mobile
+   IA v2 rule: "Same order at 360 px, stacked, never reordered or hidden."
    Every branch present on desktop is present on mobile, in the same order.
-   ====================================================================== */
+   */
 
 @media (max-width: 900px) {
   .contact-grid { grid-template-columns: 1fr; gap: 48px; }
@@ -1412,7 +1413,7 @@ html.drawer-open .to-top, html.qa-open .to-top, html.consent-open .to-top { disp
   .faq-answer { padding-bottom: 18px; }
 }
 
-/* Hard 360 px check — nothing may overflow the viewport at this width. */
+/* Hard 360 px check: nothing may overflow the viewport at this width. */
 @media (max-width: 380px) {
   :root { --gutter: 16px; }
   .hero-intro { font-size: 1.875rem; }
@@ -1420,7 +1421,7 @@ html.drawer-open .to-top, html.qa-open .to-top, html.consent-open .to-top { disp
   .logo-mark { width: 24px; height: 24px; }
 }
 
-/* WCAG 2.3.3 — respect a reduced-motion preference. */
+/* WCAG 2.3.3: respect a reduced-motion preference. */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .faq-item::details-content { transition: none; }
@@ -1442,7 +1443,7 @@ html.drawer-open .to-top, html.qa-open .to-top, html.consent-open .to-top { disp
   .faq-item[open] > summary:focus-visible::after { transform: rotate(180deg); }
 }
 
-/* Print — the CV and case studies should survive a paper review. */
+/* Print: the CV and case studies should survive a paper review. */
 @media print {
   .site-header, .nav-toggle, .site-footer, .closing-cta, .hero-actions, .to-top { display: none; }
   body { background: var(--paper); }
@@ -1451,7 +1452,7 @@ html.drawer-open .to-top, html.qa-open .to-top, html.consent-open .to-top { disp
 }
 
 
-/* -------------------------------------------------------------- consent */
+/* Consent */
 /* Cookie and embed choice (2026-09-29). Bottom-left on a wide screen so the assistant launcher keeps
    the right corner; a full-width sheet on a phone. Both buttons are .btn-secondary: Decline must not
    weigh less than Allow. The one shadow is the elevation marker for a layer that sits over content. */
