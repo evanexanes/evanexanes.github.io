@@ -10,6 +10,7 @@ Date           Description                      Programmer name
 ======================================================================
 09/28/2026     Initial Implementation           EPPE
 11/09/2026     Added file header                EPPE with Claude
+11/09/2026     Added section comments           EPPE with Claude
 ======================================================================
 -->
 <html lang="en">
@@ -50,6 +51,7 @@ Date           Description                      Programmer name
 
 <a class="skip-link" href="#main">Skip to main content</a>
 
+<!-- Site header: logo, the three main links, the theme switch and the hamburger button used on phones. -->
 <header class="site-header">
   <div class="container header-inner">
     <a class="wordmark" href="index.html" aria-label="Evan Exanes, Web developer · SEO — home">
@@ -63,6 +65,7 @@ Date           Description                      Programmer name
       <span class="wordmark-text"><span class="wordmark-name">Evan Exanes</span><span class="wordmark-sub">Web developer · SEO</span></span>
     </a>
 
+    <!-- Main navigation for wide screens. -->
     <nav class="site-nav" aria-label="Main">
       <a href="index.html#work">Work</a>
       <a href="06-about.html">About</a>
@@ -82,6 +85,7 @@ Date           Description                      Programmer name
     </button>
   </div>
 </header>
+<!-- Phone menu: a dimmed backdrop and the drawer. script.js opens and closes both. -->
 <div class="drawer-shade" id="drawer-shade" hidden></div>
 <div class="site-drawer" id="site-drawer" role="dialog" aria-modal="true" aria-label="Menu" hidden>
   <div class="drawer-top">
@@ -101,8 +105,10 @@ Date           Description                      Programmer name
 </div>
 <!-- /site-drawer -->
 
+<!-- Main content. The skip link at the top of the page jumps here. -->
 <main id="main">
 
+  <!-- Contact hero: opening headline. -->
   <section class="hero">
     <div class="container">
       <p class="hero-role">Contact</p>
@@ -120,6 +126,7 @@ Date           Description                      Programmer name
        links to LinkedIn, GitHub and Facebook) and a city-level map. GitHub
        is NEW — added by peer-test revision 3.
        ================================================================== -->
+  <!-- Contact options: the message form and the direct contact details. -->
   <section class="section">
     <div class="container">
       <div class="contact-grid">
@@ -129,6 +136,7 @@ Date           Description                      Programmer name
             <h2 class="section-title">Send a message</h2>
           </div>
 
+          <!-- Contact form. The message is posted to the Web3Forms service. -->
           <form action="https://api.web3forms.com/submit" method="post" id="contact-form">
             <input type="hidden" name="access_key" value="dae31f1c-c049-45db-a905-1a70c41cd405">
             <input type="hidden" name="from_name" value="Portfolio contact form">
@@ -236,6 +244,7 @@ Date           Description                      Programmer name
        in a static frame and in the Figma import; the rest are collapsed.
        name="faq" makes the items one-open-at-a-time (native exclusive accordion; script.js covers older browsers).
        ================================================================== -->
+  <!-- FAQ: the questions that come up first. The same questions are published as FAQPage structured data at the foot of the page. -->
   <section class="section" id="faq">
     <div class="container">
       <div class="section-head">
@@ -356,6 +365,7 @@ Date           Description                      Programmer name
 
 </main>
 
+<!-- Site footer: page links, work links and contact details. -->
 <footer class="site-footer">
   <div class="container">
     <div class="footer-columns">
@@ -371,6 +381,7 @@ Date           Description                      Programmer name
           <li><a class="social-link" href="https://www.facebook.com/eekswiii" target="_blank" rel="noopener noreferrer" aria-label="Facebook (opens in a new tab)" title="Facebook"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M13.5 22v-8h2.7l.4-3.2h-3.1V8.8c0-.9.3-1.5 1.6-1.5h1.7V4.4c-.3 0-1.3-.1-2.5-.1-2.5 0-4.1 1.5-4.1 4.2v2.3H7.4V14h2.8v8z"/></svg></a></li>
         </ul>
       </div>
+      <!-- Footer link lists. -->
       <nav class="footer-nav-lists" aria-label="Footer">
         <div>
           <h2 class="footer-heading">Pages</h2>

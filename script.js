@@ -11,6 +11,7 @@ Date           Description                      Programmer name
 ======================================================================
 09/28/2026     Initial Implementation           EPPE
 11/09/2026     Added header and comments        EPPE with Claude
+11/09/2026     Added function comments          EPPE with Claude
 ======================================================================
 */
 
@@ -29,8 +30,10 @@ Date           Description                      Programmer name
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
   var hideTimer = null;
 
+  /* True while the drawer is open. aria-expanded on the hamburger button is the single source of truth. */
   function isOpen() { return toggle.getAttribute('aria-expanded') === 'true'; }
 
+  /* Links and buttons inside the drawer that can take focus, for the Tab trap. Hidden ones are skipped. */
   function focusables() {
     var all = drawer.querySelectorAll('a[href], button:not([disabled])');
     var out = [];
@@ -40,6 +43,7 @@ Date           Description                      Programmer name
     return out;
   }
 
+  /* Shows the drawer and the dimmed page, then moves focus to the first link. */
   function open() {
     clearTimeout(hideTimer);
     drawer.hidden = false;
@@ -55,6 +59,7 @@ Date           Description                      Programmer name
     if (start) { start.focus(); } else if (f.length) { f[0].focus(); }
   }
 
+  /* Starts the slide-out and hides the drawer when it ends. returnFocus sends focus back to the hamburger button. */
   function close(returnFocus) {
     if (!isOpen()) { return; }
     drawer.classList.remove('is-open');
@@ -67,9 +72,11 @@ Date           Description                      Programmer name
     if (returnFocus) { toggle.focus(); }
   }
 
+  /* The hamburger button opens the drawer, or closes it if it is already open. */
   toggle.addEventListener('click', function () {
     if (isOpen()) { close(true); } else { open(); }
   });
+  /* Clicking the dimmed page closes the drawer. */
   shade.addEventListener('click', function () { close(true); });
   drawer.addEventListener('click', function (e) {
     if (e.target.closest('[data-drawer-close]')) { close(true); return; }
@@ -113,11 +120,13 @@ Date           Description                      Programmer name
   var btns = document.querySelectorAll('[data-theme-toggle]');
   if (!btns.length) { return; }
 
+  /* Keeps aria-pressed on every theme switch button in step with the current theme. */
   function sync() {
     var dark = String(root.getAttribute('data-theme') === 'dark');
     for (var i = 0; i < btns.length; i++) { btns[i].setAttribute('aria-pressed', dark); }
   }
 
+  /* Switches between light and dark, remembers the choice in localStorage and updates the buttons. Storage can be blocked, so the write is wrapped. */
   function flip() {
     var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
     root.setAttribute('data-theme', next);
@@ -155,6 +164,7 @@ Date           Description                      Programmer name
   'use strict';
 
   var items = document.querySelectorAll('details[name="faq"]');
+  /* When one FAQ answer opens, closes the others so only one is open at a time. */
   function closeOthers() {
     if (!this.open) { return; }
     for (var j = 0; j < items.length; j++) {
@@ -177,11 +187,14 @@ Date           Description                      Programmer name
   var root = document.documentElement;
   var banner = null;
 
+  /* Reads the saved consent answer, or null when storage is blocked. */
   function read() { try { return localStorage.getItem(KEY); } catch (e) { return null; } }
+  /* Saves the consent answer. Fails silently when storage is blocked. */
   function write(v) { try { localStorage.setItem(KEY, v); } catch (e) {} }
 
   window.siteConsent = { allowed: function () { return read() === 'accepted'; } };
 
+  /* Replaces a map's consent gate with its iframe. Only called once the visitor has accepted. */
   function mount(fig) {
     if (fig.querySelector('iframe')) { return; }
     var f = document.createElement('iframe');
@@ -193,17 +206,20 @@ Date           Description                      Programmer name
     if (gate) { gate.hidden = true; }
     fig.insertBefore(f, fig.firstChild);
   }
+  /* Removes a map's iframe and shows its consent gate again. */
   function unmount(fig) {
     var f = fig.querySelector('iframe');
     if (f) { fig.removeChild(f); }
     var gate = fig.querySelector('.map-gate');
     if (gate) { gate.hidden = false; }
   }
+  /* Runs fn on every map figure on the page. */
   function eachMap(fn) {
     var figs = document.querySelectorAll('[data-map-src]');
     for (var i = 0; i < figs.length; i++) { fn(figs[i]); }
   }
 
+  /* Removes the consent banner and the page spacing it reserved. */
   function hide() {
     if (!banner) { return; }
     banner.parentNode.removeChild(banner);
@@ -212,6 +228,7 @@ Date           Description                      Programmer name
     root.style.removeProperty('--consent-h');
   }
 
+  /* Saves the visitor's answer, closes the banner and mounts or unmounts the maps to match. */
   function choose(v) {
     var was = read();
     write(v);
@@ -222,6 +239,7 @@ Date           Description                      Programmer name
     if (was === 'accepted' && window.Cal && window.Cal.loaded) { location.reload(); }
   }
 
+  /* Builds and shows the consent banner. focus decides whether keyboard focus moves into it. */
   function show(focus) {
     if (banner) { return; }
     banner = document.createElement('section');
@@ -284,6 +302,7 @@ Date           Description                      Programmer name
   if (!document.querySelector('[data-cal-link]')) { return; }
   var loaded = false;
 
+  /* Loads the Cal.com embed once, the first time it is needed and only with consent. */
   function load() {
     if (loaded) { return; }
     loaded = true;
@@ -316,6 +335,7 @@ Date           Description                      Programmer name
     window.Cal.ns['30min']('ui', { hideEventTypeDetails: false, layout: 'month_view' });
   }
 
+  /* Loads Cal.com when a visitor hovers, focuses, touches or clicks a Schedule a call link, if consent was given. */
   function onIntent(e) {
     if (!(window.siteConsent && window.siteConsent.allowed())) { return; }
     if (e.target && e.target.closest && e.target.closest('[data-cal-link]')) { load(); }
@@ -349,6 +369,7 @@ Date           Description                      Programmer name
     { q: 'Can I see your CV?', a: 'Yes, here it is as a PDF.', link: { href: 'assets/Evan_Exanes_CV.pdf', text: 'Download CV (PDF)', download: 'Evan_Exanes_CV.pdf' } }
   ];
 
+  /* Builds an element with an optional class and text. Text goes in through textContent, so it cannot inject markup. */
   function el(tag, cls, text) {
     var n = document.createElement(tag);
     if (cls) { n.className = cls; }
@@ -408,6 +429,7 @@ Date           Description                      Programmer name
 
   var asked = [];
 
+  /* Shows a button for every question not yet asked. When all have been asked, the list starts over. */
   function renderChips() {
     chips.innerHTML = '';
     var left = [];
@@ -421,6 +443,7 @@ Date           Description                      Programmer name
     }
   }
 
+  /* Adds the visitor's question and its pre-written reply to the log. */
   function answer(i) {
     var item = QA[i];
     log.appendChild(el('p', 'qa-bubble qa-bubble--me', item.q));
@@ -442,6 +465,7 @@ Date           Description                      Programmer name
     if (first) { first.focus({ preventScroll: true }); }
   }
 
+  /* Opens or closes the Quick answers panel and moves focus to the first question when it opens. */
   function setOpen(open) {
     panel.hidden = !open;
     launcher.setAttribute('aria-expanded', String(open));
@@ -482,6 +506,7 @@ Date           Description                      Programmer name
 
   /* ticking limits the scroll handler to one update per animation frame. */
   var ticking = false;
+  /* Shows the back-to-top button once the visitor has scrolled past one screen height. */
   function update() {
     ticking = false;
     /* Never hide the button while it has focus, or keyboard focus falls back to the body. */
@@ -514,10 +539,12 @@ Date           Description                      Programmer name
   if (!nums.length || !('IntersectionObserver' in window)) { return; }
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { return; }
 
+  /* Writes the final numbers at once. Used before printing so a page never prints a half-counted figure. */
   function finish() {
     nums.forEach(function (el) { el.textContent = el.getAttribute('data-count-to'); });
   }
 
+  /* Counts a figure up from 0 to its data-count-to value over 1.5 seconds with an ease-out curve. */
   function countUp(el) {
     var target = parseInt(el.getAttribute('data-count-to'), 10);
     var start = null;
@@ -556,6 +583,7 @@ Date           Description                      Programmer name
   var list = document.getElementById('cert-list');
   if (!list) { return; }
 
+  /* Opens the certificates list when the hash points at an item inside it. Returns that item or null. */
   function openFor(hash) {
     if (!hash || hash.length < 2) { return null; }
     var target = document.getElementById(hash.slice(1));
@@ -601,6 +629,7 @@ Date           Description                      Programmer name
   var visible = true;
   var startX = null;
 
+  /* Moves the carousel to slide i, wrapping at either end, and marks the active slide for screen readers. */
   function show(i) {
     index = (i + total) % total;
     track.style.transform = 'translateX(' + (-100 * index) + '%)';
@@ -612,10 +641,12 @@ Date           Description                      Programmer name
     count.textContent = (index + 1) + ' / ' + total;
   }
 
+  /* Cancels the pending autoplay timer. */
   function clear() {
     if (timer) { clearTimeout(timer); timer = null; }
   }
 
+  /* Arms the next autoplay step unless the carousel is stopped, hovered, focused, off screen or the tab is hidden. */
   /* Slide changes are announced only once the visitor drives the carousel. */
   function schedule() {
     clear();
@@ -624,6 +655,7 @@ Date           Description                      Programmer name
     timer = setTimeout(function () { show(index + 1); schedule(); }, interval);
   }
 
+  /* Moves by one slide on a click or key press. Any manual move stops autoplay for good. */
   function move(step) {
     stopped = true;
     clear();
@@ -693,6 +725,7 @@ Date           Description                      Programmer name
 
   var button = form.querySelector('button[type="submit"]');
 
+  /* Shows a status message under the form and moves focus to it. */
   function show(message) {
     status.textContent = message;
     status.hidden = false;
