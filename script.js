@@ -10,9 +10,9 @@ Date Compiled: 09/28/2026
 Date           Description                      Programmer name
 ======================================================================
 09/28/2026     Initial Implementation           EPPE
-11/09/2026     Added header and comments        EPPE with Claude
-11/09/2026     Added function comments          EPPE with Claude
-11/09/2026     Corrected two comments           EPPE with Claude
+11/09/2026     Added header and comments        EPPE
+11/09/2026     Added function comments          EPPE
+11/09/2026     Corrected two comments           EPPE
 ======================================================================
 */
 
