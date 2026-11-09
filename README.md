@@ -16,7 +16,13 @@
 
 </div>
 
+## What this shows
+- Eleven pages of case studies, a CV, certificates and a contact page, written in plain HTML, CSS and JavaScript.
+- The phone menu traps focus and closes on Escape, the theme switch remembers its choice, and reduced-motion settings stop the animations.
+- The Google Map and the Cal.com booking pop-up load only after the visitor allows embeds.
+
 ## Contents
+- [What this shows](#what-this-shows)
 - [About](#about)
 - [Pages](#pages)
 - [Features](#features)
@@ -82,4 +88,4 @@ GitHub Pages serves the `main` branch from the repository root. A merge to `main
 Released under the [MIT License](LICENSE). The certificate PDFs and the portrait are personal documents and are not covered by it.
 
 ## Author
-**Evan Prens P. Exanes** · [GitHub](https://github.com/evanexanes) · [Portfolio](https://evanexanes.github.io/)
+**Evan Prens P. Exanes** · [GitHub](https://github.com/evanexanes) · [Portfolio](https://evanexanes.github.io/) · [Contact](https://evanexanes.github.io/07-contact.html)
