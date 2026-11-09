@@ -1,8 +1,34 @@
-# Evan Exanes: portfolio
+<div align="center">
 
-Portfolio of Evan Prens P. Exanes, web developer and SEO specialist. A static site in HTML, CSS and plain JavaScript, with no build step and no framework. Built for USERDES at Asia Pacific College.
+# Evan Exanes: Portfolio
 
-**Live site:** https://evanexanes.github.io/
+**Web developer and SEO specialist. Eleven pages in plain HTML, CSS and JavaScript, with no build step and no framework.**
+
+[![Live site](https://img.shields.io/badge/Live%20site-evanexanes.github.io-2d4a7c?style=for-the-badge)](https://evanexanes.github.io/)
+
+![HTML5](https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white)
+![CSS3](https://img.shields.io/badge/CSS3-1572B6?logo=css3&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=black)
+![GitHub Pages](https://img.shields.io/badge/Hosted%20on-GitHub%20Pages-181717?logo=github&logoColor=white)
+[![License: MIT](https://img.shields.io/badge/License-MIT-2d4a7c.svg)](LICENSE)
+
+<img src="docs/screenshot.webp" alt="The portfolio home page: headline, structured-data excerpt and the four-fact strip" width="860">
+
+</div>
+
+## Contents
+- [About](#about)
+- [Pages](#pages)
+- [Features](#features)
+- [Project structure](#project-structure)
+- [Run it locally](#run-it-locally)
+- [Deploy](#deploy)
+- [Source file headers](#source-file-headers)
+- [License](#license)
+- [Author](#author)
+
+## About
+The portfolio of Evan Prens P. Exanes. It shows the work behind four WordPress practice builds, two first-year programming projects and an SEO case study, plus a CV, certificates and a contact page. It was built for USERDES at Asia Pacific College.
 
 ## Pages
 
@@ -20,9 +46,9 @@ Portfolio of Evan Prens P. Exanes, web developer and SEO specialist. A static si
 | Case study: NCTN Bank | `10-case-study-nctn-bank.html` |
 | Case study: SEO on this site | `11-case-study-seo.html` |
 
-The four WordPress case studies each link to a live demo, a static export that lives in its own repository: [corporate-website](https://github.com/evanexanes/corporate-website), [blog-website](https://github.com/evanexanes/blog-website), [ecommerce-website](https://github.com/evanexanes/ecommerce-website) and [personal-website](https://github.com/evanexanes/personal-website). The MotoPulse and NCTN Bank case studies link to [motopulse](https://github.com/evanexanes/motopulse) and [nctn-bank-java](https://github.com/evanexanes/nctn-bank-java).
+The four WordPress case studies link to a live demo, a static export in its own repository: [corporate-website](https://github.com/evanexanes/corporate-website), [blog-website](https://github.com/evanexanes/blog-website), [ecommerce-website](https://github.com/evanexanes/ecommerce-website) and [personal-website](https://github.com/evanexanes/personal-website). The MotoPulse and NCTN Bank case studies link to [motopulse](https://github.com/evanexanes/motopulse) and [nctn-bank-java](https://github.com/evanexanes/nctn-bank-java).
 
-## What the site does
+## Features
 - **Light and dark theme.** The header switch flips it, and the browser remembers the choice.
 - **Phone menu.** At 1024 px and below, a hamburger opens a side drawer that traps focus, closes on Escape and hands focus back to the button.
 - **Quick answers.** A panel of pre-written answers. It is not AI, and it makes no network request.
@@ -30,27 +56,48 @@ The four WordPress case studies each link to a live demo, a static export that l
 - **Contact form.** It posts to Web3Forms and points to an email address if the request fails.
 - **Reduced motion.** The count-up numbers and the carousel autoplay switch off when the visitor asks for reduced motion.
 
-## Files
+## Project structure
 
 | Path | What it holds |
 |---|---|
 | `styles.css` | Styles for every page, including both themes |
 | `script.js` | Page behaviour as independent blocks: drawer, theme switch, consent, booking pop-up, Quick answers, carousel, contact form and more |
 | `assets/` | The CV (PDF), fonts, 33 certificate PDFs and images |
+| `docs/` | The screenshot shown above |
 | `sitemap.xml`, `robots.txt` | Files for search engines |
 | `.nojekyll` | Tells GitHub Pages to serve the files as they are |
 
 ## Run it locally
-No build step. Open `index.html` in a browser, or serve the folder:
+There is no build step. Open `index.html` in a browser, or serve the folder:
 
 ```bash
 python3 -m http.server 8000
 ```
 
-Then open http://localhost:8000. The map, the booking pop-up and the contact form need an internet connection.
+Then open <http://localhost:8000>. The map, the booking pop-up and the contact form need an internet connection.
 
 ## Deploy
-GitHub Pages serves the `main` branch from the repository root.
+GitHub Pages serves the `main` branch from the repository root. A merge to `main` redeploys the site.
 
 ## Source file headers
-Every HTML, CSS and JavaScript file opens with a header block: program name, description, author, date compiled and a change history. A commit that changes a file adds a row to its history.
+Every hand-written HTML, CSS and JavaScript file opens with the block below. A commit that changes a file adds a row to its history table.
+
+```text
+Program name: <file name>
+Description: <what the file does>
+Author: Exanes, Evan Prens
+Date Compiled: MM/DD/YYYY
+======================================================================
+Date           Description                      Programmer name
+======================================================================
+MM/DD/YYYY     Initial Implementation           EPPE
+======================================================================
+```
+
+`EPPE` is Evan Prens P. Exanes. A row reading `EPPE with Claude` marks a change written with AI help.
+
+## License
+Released under the [MIT License](LICENSE). The certificate PDFs and the portrait are personal documents and are not covered by it.
+
+## Author
+**Evan Prens P. Exanes** · [GitHub](https://github.com/evanexanes) · [Portfolio](https://evanexanes.github.io/)
