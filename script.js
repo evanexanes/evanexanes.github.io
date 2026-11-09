@@ -1,3 +1,19 @@
+/*
+Program name: script.js
+Description: Behaviour for the portfolio, as independent blocks: phone drawer, theme
+   switch, floating header, FAQ, cookie and embed consent, Cal.com booking pop-up,
+   Quick answers panel, back-to-top button, count-up stats, certificate list,
+   carousel and contact form.
+Author: Exanes, Evan Prens
+Date Compiled: 09/28/2026
+======================================================================
+Date           Description                      Programmer name
+======================================================================
+09/28/2026     Initial Implementation           EPPE
+11/09/2026     Added header and comments        EPPE with Claude
+======================================================================
+*/
+
 /* evanexanes.com — Pass 2 (2026-09-29)
    The mobile drawer: at 1024 px and below the hamburger opens a modal side panel with the
    same three links, Schedule a call, Download CV and the theme switch. Focus moves in and is
@@ -80,6 +96,7 @@
   });
 
   /* Returning to desktop width closes the drawer. */
+  /* One pixel above the 1024 px width where the hamburger appears. */
   var wide = window.matchMedia('(min-width: 1025px)');
   var onChange = function (e) { if (e.matches) { close(false); } };
   if (wide.addEventListener) { wide.addEventListener('change', onChange); }
@@ -463,6 +480,7 @@
 
   Array.prototype.forEach.call(document.querySelectorAll('.footer-top'), function (a) { a.hidden = true; });
 
+  /* ticking limits the scroll handler to one update per animation frame. */
   var ticking = false;
   function update() {
     ticking = false;
@@ -505,6 +523,7 @@
     var start = null;
     function step(now) {
       if (start === null) { start = now; }
+      /* Progress runs from 0 to 1 over 1500 ms. */
       var p = Math.min(1, (now - start) / 1500);
       el.textContent = String(Math.round(target * (1 - Math.pow(1 - p, 3))));  /* ease-out cubic */
       if (p < 1) { window.requestAnimationFrame(step); }
@@ -571,6 +590,7 @@
   var total = slides.length;
   if (total < 2 || !viewport || !track || !prev || !next || !count) { return; }
 
+  /* Milliseconds per slide. data-interval on the carousel overrides the 7000 default. */
   var interval = parseInt(stage.getAttribute('data-interval'), 10) || 7000;
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
   var index = 0;
@@ -623,6 +643,7 @@
     if (startX === null) { return; }
     var dx = e.clientX - startX;
     startX = null;
+    /* A drag shorter than 40 px counts as a tap, not a swipe. */
     if (dx < -40) { move(1); }
     else if (dx > 40) { move(-1); }
   });
