@@ -15,7 +15,7 @@ Date           Description                      Programmer name
 ======================================================================
 */
 
-/* evanexanes.com — Pass 2 (2026-09-29)
+/* evanexanes.com, Pass 2 (2026-09-29)
    The mobile drawer: at 1024 px and below the hamburger opens a modal side panel with the
    same three links, Schedule a call, Download CV and the theme switch. Focus moves in and is
    trapped; Esc, the close button and the shade close it and return focus to the hamburger. */
@@ -111,7 +111,7 @@ Date           Description                      Programmer name
 })();
 
 /* Theme switch (final prototype, 2026-09-28). The starting theme is already
-   on <html> — set by the inline script in <head> before first paint. This
+   on <html>, set by the inline script in <head> before first paint. This
    only flips it, remembers the choice, and keeps aria-pressed in step. */
 (function () {
   'use strict';
