@@ -12,6 +12,7 @@ Date           Description                      Programmer name
 09/28/2026     Initial Implementation           EPPE
 11/09/2026     Added header and comments        EPPE with Claude
 11/09/2026     Added function comments          EPPE with Claude
+11/09/2026     Corrected two comments           EPPE with Claude
 ======================================================================
 */
 
@@ -194,7 +195,7 @@ Date           Description                      Programmer name
 
   window.siteConsent = { allowed: function () { return read() === 'accepted'; } };
 
-  /* Replaces a map's consent gate with its iframe. Only called once the visitor has accepted. */
+  /* Puts a map's iframe in place of its consent gate, which is hidden rather than removed. Runs for every map once the visitor accepts, and for one map when its own load button is clicked. */
   function mount(fig) {
     if (fig.querySelector('iframe')) { return; }
     var f = document.createElement('iframe');
@@ -335,7 +336,7 @@ Date           Description                      Programmer name
     window.Cal.ns['30min']('ui', { hideEventTypeDetails: false, layout: 'month_view' });
   }
 
-  /* Loads Cal.com when a visitor hovers, focuses, touches or clicks a Schedule a call link, if consent was given. */
+  /* Loads Cal.com when a visitor hovers, focuses or touches a Schedule a call link, if consent was given. Bound to pointerover, focusin and touchstart. */
   function onIntent(e) {
     if (!(window.siteConsent && window.siteConsent.allowed())) { return; }
     if (e.target && e.target.closest && e.target.closest('[data-cal-link]')) { load(); }
