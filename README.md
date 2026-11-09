@@ -23,7 +23,6 @@
 - [Project structure](#project-structure)
 - [Run it locally](#run-it-locally)
 - [Deploy](#deploy)
-- [Source file headers](#source-file-headers)
 - [License](#license)
 - [Author](#author)
 
@@ -78,23 +77,6 @@ Then open <http://localhost:8000>. The map, the booking pop-up and the contact f
 
 ## Deploy
 GitHub Pages serves the `main` branch from the repository root. A merge to `main` redeploys the site.
-
-## Source file headers
-Every hand-written HTML, CSS and JavaScript file opens with the block below. A commit that changes a file adds a row to its history table.
-
-```text
-Program name: <file name>
-Description: <what the file does>
-Author: Exanes, Evan Prens
-Date Compiled: MM/DD/YYYY
-======================================================================
-Date           Description                      Programmer name
-======================================================================
-MM/DD/YYYY     Initial Implementation           EPPE
-======================================================================
-```
-
-`EPPE` is Evan Prens P. Exanes. A row reading `EPPE with Claude` marks a change written with AI help.
 
 ## License
 Released under the [MIT License](LICENSE). The certificate PDFs and the portrait are personal documents and are not covered by it.
